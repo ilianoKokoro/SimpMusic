@@ -620,200 +620,200 @@ class PlaylistFragment : Fragment() {
                 PlaylistItemAdapter.OnOptionClickListener {
                 override fun onOptionClick(position: Int) {
                     val playListBrowseValue = viewModel.playlistBrowse.value
-                    if(playListBrowseValue != null){
-                    val song =
-                        playListBrowseValue.tracks[position]
-                    viewModel.getSongEntity(song.toSongEntity())
-                    val dialog = BottomSheetDialog(requireContext())
-                    val bottomSheetView = BottomSheetNowPlayingBinding.inflate(layoutInflater)
-                    with(bottomSheetView) {
-                        btSleepTimer.visibility = View.GONE
-                        viewModel.songEntity.observe(viewLifecycleOwner) { songEntity ->
-                            if (songEntity != null) {
-                                if (songEntity.liked) {
-                                    tvFavorite.text = getString(R.string.liked)
-                                    cbFavorite.isChecked = true
-                                } else {
-                                    tvFavorite.text = getString(R.string.like)
-                                    cbFavorite.isChecked = false
+                    if (playListBrowseValue != null) {
+                        val song =
+                            playListBrowseValue.tracks[position]
+                        viewModel.getSongEntity(song.toSongEntity())
+                        val dialog = BottomSheetDialog(requireContext())
+                        val bottomSheetView = BottomSheetNowPlayingBinding.inflate(layoutInflater)
+                        with(bottomSheetView) {
+                            btSleepTimer.visibility = View.GONE
+                            viewModel.songEntity.observe(viewLifecycleOwner) { songEntity ->
+                                if (songEntity != null) {
+                                    if (songEntity.liked) {
+                                        tvFavorite.text = getString(R.string.liked)
+                                        cbFavorite.isChecked = true
+                                    } else {
+                                        tvFavorite.text = getString(R.string.like)
+                                        cbFavorite.isChecked = false
+                                    }
                                 }
                             }
-                        }
-                        btChangeLyricsProvider.visibility = View.GONE
-                        tvSongTitle.text = song.title
-                        tvSongTitle.isSelected = true
-                        tvSongArtist.text = song.artists.toListName().connectArtists()
-                        tvSongArtist.isSelected = true
-                        if (song.album != null) {
-                            setEnabledAll(btAlbum, true)
-                            tvAlbum.text = song.album.name
-                        } else {
-                            tvAlbum.text = getString(R.string.no_album)
-                            setEnabledAll(btAlbum, false)
-                        }
-                        btAlbum.setOnClickListener {
-                            val albumId = song.album?.id
-                            if (albumId != null) {
-                                findNavController().navigateSafe(
-                                    R.id.action_global_albumFragment,
-                                    Bundle().apply {
-                                        putString("browseId", albumId)
-                                    },
+                            btChangeLyricsProvider.visibility = View.GONE
+                            tvSongTitle.text = song.title
+                            tvSongTitle.isSelected = true
+                            tvSongArtist.text = song.artists.toListName().connectArtists()
+                            tvSongArtist.isSelected = true
+                            if (song.album != null) {
+                                setEnabledAll(btAlbum, true)
+                                tvAlbum.text = song.album.name
+                            } else {
+                                tvAlbum.text = getString(R.string.no_album)
+                                setEnabledAll(btAlbum, false)
+                            }
+                            btAlbum.setOnClickListener {
+                                val albumId = song.album?.id
+                                if (albumId != null) {
+                                    findNavController().navigateSafe(
+                                        R.id.action_global_albumFragment,
+                                        Bundle().apply {
+                                            putString("browseId", albumId)
+                                        },
+                                    )
+                                    dialog.dismiss()
+                                } else {
+                                    Toast
+                                        .makeText(
+                                            requireContext(),
+                                            getString(R.string.no_album),
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                }
+                            }
+                            btAddQueue.setOnClickListener {
+                                sharedViewModel.addToQueue(song)
+                            }
+                            btPlayNext.setOnClickListener {
+                                sharedViewModel.playNext(song)
+                            }
+                            ivThumbnail.load(song.thumbnails?.lastOrNull()?.url)
+                            btRadio.setOnClickListener {
+                                val args = Bundle()
+                                args.putString("radioId", "RDAMVM${song.videoId}")
+                                args.putString(
+                                    "videoId",
+                                    song.videoId,
                                 )
                                 dialog.dismiss()
-                            } else {
-                                Toast
-                                    .makeText(
-                                        requireContext(),
-                                        getString(R.string.no_album),
-                                        Toast.LENGTH_SHORT,
-                                    ).show()
+                                findNavController().navigateSafe(
+                                    R.id.action_global_playlistFragment,
+                                    args,
+                                )
                             }
-                        }
-                        btAddQueue.setOnClickListener {
-                            sharedViewModel.addToQueue(song)
-                        }
-                        btPlayNext.setOnClickListener {
-                            sharedViewModel.playNext(song)
-                        }
-                        ivThumbnail.load(song.thumbnails?.lastOrNull()?.url)
-                        btRadio.setOnClickListener {
-                            val args = Bundle()
-                            args.putString("radioId", "RDAMVM${song.videoId}")
-                            args.putString(
-                                "videoId",
-                                song.videoId,
-                            )
-                            dialog.dismiss()
-                            findNavController().navigateSafe(
-                                R.id.action_global_playlistFragment,
-                                args,
-                            )
-                        }
-                        btLike.setOnClickListener {
-                            if (cbFavorite.isChecked) {
-                                cbFavorite.isChecked = false
-                                tvFavorite.text = getString(R.string.like)
-                                viewModel.updateLikeStatus(song.videoId, 0)
-                            } else {
-                                cbFavorite.isChecked = true
-                                tvFavorite.text = getString(R.string.liked)
-                                viewModel.updateLikeStatus(song.videoId, 1)
+                            btLike.setOnClickListener {
+                                if (cbFavorite.isChecked) {
+                                    cbFavorite.isChecked = false
+                                    tvFavorite.text = getString(R.string.like)
+                                    viewModel.updateLikeStatus(song.videoId, 0)
+                                } else {
+                                    cbFavorite.isChecked = true
+                                    tvFavorite.text = getString(R.string.liked)
+                                    viewModel.updateLikeStatus(song.videoId, 1)
+                                }
                             }
-                        }
-                        btSeeArtists.setOnClickListener {
-                            val subDialog = BottomSheetDialog(requireContext())
-                            val subBottomSheetView =
-                                BottomSheetSeeArtistOfNowPlayingBinding.inflate(layoutInflater)
-                            if (!song.artists.isNullOrEmpty()) {
-                                val artistAdapter = SeeArtistOfNowPlayingAdapter(song.artists)
-                                subBottomSheetView.rvArtists.apply {
-                                    adapter = artistAdapter
+                            btSeeArtists.setOnClickListener {
+                                val subDialog = BottomSheetDialog(requireContext())
+                                val subBottomSheetView =
+                                    BottomSheetSeeArtistOfNowPlayingBinding.inflate(layoutInflater)
+                                if (!song.artists.isNullOrEmpty()) {
+                                    val artistAdapter = SeeArtistOfNowPlayingAdapter(song.artists)
+                                    subBottomSheetView.rvArtists.apply {
+                                        adapter = artistAdapter
+                                        layoutManager = LinearLayoutManager(requireContext())
+                                    }
+                                    artistAdapter.setOnClickListener(
+                                        object :
+                                            SeeArtistOfNowPlayingAdapter.OnItemClickListener {
+                                            override fun onItemClick(position: Int) {
+                                                val artist = song.artists[position]
+                                                if (artist.id != null) {
+                                                    findNavController().navigateSafe(
+                                                        R.id.action_global_artistFragment,
+                                                        Bundle().apply {
+                                                            putString("channelId", artist.id)
+                                                        },
+                                                    )
+                                                    subDialog.dismiss()
+                                                    dialog.dismiss()
+                                                }
+                                            }
+                                        },
+                                    )
+                                }
+
+                                subDialog.setCancelable(true)
+                                subDialog.setContentView(subBottomSheetView.root)
+                                subDialog.show()
+                            }
+                            btDownload.visibility = View.GONE
+                            btAddPlaylist.setOnClickListener {
+                                viewModel.getLocalPlaylist()
+                                val listLocalPlaylist: ArrayList<LocalPlaylistEntity> = arrayListOf()
+                                val addPlaylistDialog = BottomSheetDialog(requireContext())
+                                val viewAddPlaylist =
+                                    BottomSheetAddToAPlaylistBinding.inflate(layoutInflater)
+                                val addToAPlaylistAdapter = AddToAPlaylistAdapter(arrayListOf())
+                                addToAPlaylistAdapter.setVideoId(song.videoId)
+                                viewAddPlaylist.rvLocalPlaylists.apply {
+                                    adapter = addToAPlaylistAdapter
                                     layoutManager = LinearLayoutManager(requireContext())
                                 }
-                                artistAdapter.setOnClickListener(
+                                viewModel.listLocalPlaylist.observe(viewLifecycleOwner) { list ->
+                                    Log.d("Check Local Playlist", list.toString())
+                                    listLocalPlaylist.clear()
+                                    listLocalPlaylist.addAll(list)
+                                    addToAPlaylistAdapter.updateList(listLocalPlaylist)
+                                }
+                                addToAPlaylistAdapter.setOnItemClickListener(
                                     object :
-                                        SeeArtistOfNowPlayingAdapter.OnItemClickListener {
+                                        AddToAPlaylistAdapter.OnItemClickListener {
                                         override fun onItemClick(position: Int) {
-                                            val artist = song.artists[position]
-                                            if (artist.id != null) {
-                                                findNavController().navigateSafe(
-                                                    R.id.action_global_artistFragment,
-                                                    Bundle().apply {
-                                                        putString("channelId", artist.id)
-                                                    },
-                                                )
-                                                subDialog.dismiss()
-                                                dialog.dismiss()
+                                            val playlist = listLocalPlaylist[position]
+                                            viewModel.updateInLibrary(song.videoId)
+                                            val tempTrack = ArrayList<String>()
+                                            if (playlist.tracks != null) {
+                                                tempTrack.addAll(playlist.tracks)
                                             }
+                                            if (!tempTrack.contains(
+                                                    song.videoId,
+                                                ) &&
+                                                playlist.syncedWithYouTubePlaylist == 1 &&
+                                                playlist.youtubePlaylistId != null
+                                            ) {
+                                                viewModel.addToYouTubePlaylist(
+                                                    playlist.id,
+                                                    playlist.youtubePlaylistId,
+                                                    song.videoId,
+                                                )
+                                            }
+                                            if (!tempTrack.contains(song.videoId)) {
+                                                viewModel.insertPairSongLocalPlaylist(
+                                                    PairSongLocalPlaylist(
+                                                        playlistId = playlist.id,
+                                                        songId = song.videoId,
+                                                        position = playlist.tracks?.size ?: 0,
+                                                        inPlaylist = LocalDateTime.now(),
+                                                    ),
+                                                )
+                                                tempTrack.add(song.videoId)
+                                            }
+
+                                            viewModel.updateLocalPlaylistTracks(
+                                                tempTrack.removeConflicts(),
+                                                playlist.id,
+                                            )
+                                            addPlaylistDialog.dismiss()
+                                            dialog.dismiss()
                                         }
                                     },
                                 )
+                                addPlaylistDialog.setContentView(viewAddPlaylist.root)
+                                addPlaylistDialog.setCancelable(true)
+                                addPlaylistDialog.show()
                             }
-
-                            subDialog.setCancelable(true)
-                            subDialog.setContentView(subBottomSheetView.root)
-                            subDialog.show()
-                        }
-                        btDownload.visibility = View.GONE
-                        btAddPlaylist.setOnClickListener {
-                            viewModel.getLocalPlaylist()
-                            val listLocalPlaylist: ArrayList<LocalPlaylistEntity> = arrayListOf()
-                            val addPlaylistDialog = BottomSheetDialog(requireContext())
-                            val viewAddPlaylist =
-                                BottomSheetAddToAPlaylistBinding.inflate(layoutInflater)
-                            val addToAPlaylistAdapter = AddToAPlaylistAdapter(arrayListOf())
-                            addToAPlaylistAdapter.setVideoId(song.videoId)
-                            viewAddPlaylist.rvLocalPlaylists.apply {
-                                adapter = addToAPlaylistAdapter
-                                layoutManager = LinearLayoutManager(requireContext())
+                            btShare.setOnClickListener {
+                                val shareIntent = Intent(Intent.ACTION_SEND)
+                                shareIntent.type = "text/plain"
+                                val url = "https://youtube.com/watch?v=${song.videoId}"
+                                shareIntent.putExtra(Intent.EXTRA_TEXT, url)
+                                val chooserIntent =
+                                    Intent.createChooser(shareIntent, getString(R.string.share_url))
+                                startActivity(chooserIntent)
                             }
-                            viewModel.listLocalPlaylist.observe(viewLifecycleOwner) { list ->
-                                Log.d("Check Local Playlist", list.toString())
-                                listLocalPlaylist.clear()
-                                listLocalPlaylist.addAll(list)
-                                addToAPlaylistAdapter.updateList(listLocalPlaylist)
-                            }
-                            addToAPlaylistAdapter.setOnItemClickListener(
-                                object :
-                                    AddToAPlaylistAdapter.OnItemClickListener {
-                                    override fun onItemClick(position: Int) {
-                                        val playlist = listLocalPlaylist[position]
-                                        viewModel.updateInLibrary(song.videoId)
-                                        val tempTrack = ArrayList<String>()
-                                        if (playlist.tracks != null) {
-                                            tempTrack.addAll(playlist.tracks)
-                                        }
-                                        if (!tempTrack.contains(
-                                                song.videoId,
-                                            ) &&
-                                            playlist.syncedWithYouTubePlaylist == 1 &&
-                                            playlist.youtubePlaylistId != null
-                                        ) {
-                                            viewModel.addToYouTubePlaylist(
-                                                playlist.id,
-                                                playlist.youtubePlaylistId,
-                                                song.videoId,
-                                            )
-                                        }
-                                        if (!tempTrack.contains(song.videoId)) {
-                                            viewModel.insertPairSongLocalPlaylist(
-                                                PairSongLocalPlaylist(
-                                                    playlistId = playlist.id,
-                                                    songId = song.videoId,
-                                                    position = playlist.tracks?.size ?: 0,
-                                                    inPlaylist = LocalDateTime.now(),
-                                                ),
-                                            )
-                                            tempTrack.add(song.videoId)
-                                        }
-
-                                        viewModel.updateLocalPlaylistTracks(
-                                            tempTrack.removeConflicts(),
-                                            playlist.id,
-                                        )
-                                        addPlaylistDialog.dismiss()
-                                        dialog.dismiss()
-                                    }
-                                },
-                            )
-                            addPlaylistDialog.setContentView(viewAddPlaylist.root)
-                            addPlaylistDialog.setCancelable(true)
-                            addPlaylistDialog.show()
+                            dialog.setCancelable(true)
+                            dialog.setContentView(bottomSheetView.root)
+                            dialog.show()
                         }
-                        btShare.setOnClickListener {
-                            val shareIntent = Intent(Intent.ACTION_SEND)
-                            shareIntent.type = "text/plain"
-                            val url = "https://youtube.com/watch?v=${song.videoId}"
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, url)
-                            val chooserIntent =
-                                Intent.createChooser(shareIntent, getString(R.string.share_url))
-                            startActivity(chooserIntent)
-                        }
-                        dialog.setCancelable(true)
-                        dialog.setContentView(bottomSheetView.root)
-                        dialog.show()
-                    }
                     }
                 }
             },
@@ -848,13 +848,11 @@ class PlaylistFragment : Fragment() {
                 viewModel.playlistBrowse.value?.tracks?.let {
                     shuffledList.addAll(it)
                 }
-                shuffleList.shuffle()
-                val afterShuffleIndex =
-                    shuffleList.indexOf(
-                        viewModel.playlistBrowse.value
-                            ?.tracks
-                            ?.get(index),
-                    )
+                shuffledList.shuffle()
+
+                val indexInQueue = 0
+                val indexInPlaylist = viewModel.playlistBrowse.value?.tracks?.indexOf(shuffledList.first()) ?: 0
+
                 viewModel.setQueueData(
                     QueueData(
                         listTracks = shuffledList,
@@ -869,8 +867,8 @@ class PlaylistFragment : Fragment() {
                         continuation = null,
                     ),
                 )
-                viewModel.playlistBrowse.value?.tracks?.get(index)?.let {
-                    viewModel.loadMediaItem(
+                viewModel.playlistBrowse.value?.tracks?.get(indexInPlaylist)?.let {
+                    sharedViewModel.loadMediaItemFromTrack(
                         it,
                         type = Config.PLAYLIST_CLICK,
                         index = indexInQueue
@@ -880,17 +878,13 @@ class PlaylistFragment : Fragment() {
                 val shuffledList: ArrayList<Track> = arrayListOf()
                 viewModel.listTrack.value
                     .toArrayListTrack()
-                    .let { it1 -> shuffleList.addAll(it1) }
-                viewModel.listTrack.value
-                    .getOrNull(index)
-                    ?.let { shuffleList.remove(it.toTrack()) }
-                shuffleList.shuffle()
-                val afterShuffleIndex =
-                    shuffleList.indexOf(
-                        viewModel.listTrack.value
-                            .getOrNull(index)
-                            ?.toTrack(),
-                    )
+                    .let { it1 -> shuffledList.addAll(it1) }
+                shuffledList.shuffle()
+                shuffledList.remove(shuffledList.first())
+
+                val indexInQueue = 0
+                val indexInPlaylist = viewModel.listTrack.value.toArrayListTrack().indexOf(shuffledList.first())
+
                 viewModel.setQueueData(
                     QueueData(
                         listTracks = shuffledList,
@@ -908,7 +902,7 @@ class PlaylistFragment : Fragment() {
                 viewModel.listTrack.value
                     .getOrNull(indexInPlaylist)
                     ?.let {
-                        viewModel.loadMediaItem(
+                        sharedViewModel.loadMediaItemFromTrack(
                             it.toTrack(),
                             type = Config.PLAYLIST_CLICK,
                             index = indexInQueue
