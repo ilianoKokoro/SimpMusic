@@ -24,7 +24,7 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
             arg("KOIN_CONFIG_CHECK", "true")
-            arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
+            arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
         }
 
         resourceConfigurations +=
@@ -69,8 +69,6 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
         jvmToolchain(21)
