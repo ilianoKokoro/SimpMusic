@@ -196,10 +196,10 @@ class MainActivity : AppCompatActivity() {
 //            WindowCompat.setDecorFitsSystemWindows(window, false)
         enableEdgeToEdge(
             navigationBarStyle =
-                SystemBarStyle.auto(
-                    lightScrim = Color.Transparent.toArgb(),
-                    darkScrim = Color.Transparent.toArgb(),
-                ),
+            SystemBarStyle.auto(
+                lightScrim = Color.Transparent.toArgb(),
+                darkScrim = Color.Transparent.toArgb(),
+            ),
         )
         viewModel.checkIsRestoring()
         viewModel.runWorker()
@@ -347,7 +347,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.bottom_navigation_item_library, R.id.downloadedFragment,
                 R.id.mostPlayedFragment, R.id.followedFragment,
                 R.id.favoriteFragment, R.id.localPlaylistFragment,
-                -> {
+                    -> {
                     binding.bottomNavigationView.menu
                         .findItem(
                             R.id.bottom_navigation_item_library,
@@ -399,7 +399,7 @@ class MainActivity : AppCompatActivity() {
                         "fragment_log_in",
                         "MusixmatchFragment",
                     )
-                ).contains(destination.label)
+                    ).contains(destination.label)
             ) {
                 lifecycleScope.launch { viewModel.showOrHideMiniplayer.emit(false) }
                 Log.w("MainActivity", "onCreate: HIDE MINIPLAYER")
@@ -599,7 +599,7 @@ class MainActivity : AppCompatActivity() {
                                         "fragment_log_in",
                                         "MusixmatchFragment",
                                     )
-                                ).contains(navController.currentDestination?.label) &&
+                                    ).contains(navController.currentDestination?.label) &&
                                 it.nowPlayingTitle.isNotEmpty() &&
                                 binding.miniplayer.visibility != View.VISIBLE
                             ) {
@@ -827,7 +827,7 @@ class MainActivity : AppCompatActivity() {
             }
             return false
         } catch (_: Exception) {
-            return true
+            return false // Switch to true for strict check
         }
     }
 
