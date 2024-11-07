@@ -3,8 +3,7 @@ android = "8.7.2"
 kotlin = "2.0.0"
 serialization = "2.0.0"
 ksp = "2.0.0-1.0.22"
-#noinspection GradleDependency (2024.10.01 breaks the pullToRefresh)
-compose-bom = "2024.08.00"
+compose-bom = "2024.10.01"
 constraintlayout-compose = "1.1.0"
 activity-compose = "1.9.3"
 lifecycle-viewmodel-compose = "2.8.7"
@@ -12,7 +11,7 @@ lifecycle-runtime-ktx = "2.8.7"
 core-ktx = "1.15.0"
 appcompat = "1.7.0"
 work = "2.10.0"
-material = "1.12.0"
+material = "1.11.0" #Version 1.12.0 caused bug
 startup-runtime = "1.2.0"
 lifecycle-livedata-ktx = "2.8.7"
 lifecycle-viewmodel-ktx = "2.8.7"
@@ -59,6 +58,7 @@ koin-annotations = "1.4.0-RC4"
 desugaring = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugaring" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-material3-lib = { group = "androidx.compose.material3", name = "material3" }
+compose-material3-sizeclass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-material-ripple = { group = "androidx.compose.material", name = "material-ripple" }
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }

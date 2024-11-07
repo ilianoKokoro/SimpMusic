@@ -413,7 +413,7 @@ class Ytmusic {
     suspend fun pipedStreams(
         videoId: String,
         pipedInstance: String,
-    ) = httpClient.get("https://$pipedInstance/streams/$videoId") {
+    ) = httpClient.get("$pipedInstance/streams/$videoId") {
         contentType(ContentType.Application.Json)
     }
 
@@ -789,6 +789,23 @@ class Ytmusic {
     suspend fun checkForUpdate() =
         httpClient.get("https://api.github.com/repos/maxrave-dev/SimpMusic/releases/latest") {
             contentType(ContentType.Application.Json)
+        }
+
+    suspend fun playlist(playlistId: String) =
+        httpClient.post("browse") {
+            ytClient(YouTubeClient.WEB_REMIX, !cookie.isNullOrEmpty())
+            setBody(
+                BrowseBody(
+                    context =
+                        YouTubeClient.WEB_REMIX.toContext(
+                            locale,
+                            visitorData,
+                        ),
+                    browseId = playlistId,
+                    params = "wAEB",
+                ),
+            )
+            parameter("alt", "json")
         }
 
     suspend fun browse(

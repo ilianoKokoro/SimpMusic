@@ -352,7 +352,7 @@ class PlaylistFragment : Fragment() {
         binding.btPlayPause.setOnClickListener {
             if (!viewModel.isRadio.value) {
                 if (viewModel.playlistBrowse.value != null) {
-                    sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                    viewModel.setQueueData(
                         QueueData(
                             listTracks = (viewModel.playlistBrowse.value?.tracks ?: arrayListOf()) as ArrayList<Track>,
                             firstPlayedTrack =
@@ -372,7 +372,7 @@ class PlaylistFragment : Fragment() {
                         ?.tracks
                         ?.get(0)
                         ?.let {
-                            sharedViewModel.loadMediaItemFromTrack(
+                            viewModel.loadMediaItem(
                                 it,
                                 type = Config.PLAYLIST_CLICK,
                                 index = 0,
@@ -381,7 +381,7 @@ class PlaylistFragment : Fragment() {
                 } else if (viewModel.playlistEntity.value != null &&
                     viewModel.playlistEntity.value?.downloadState == DownloadState.STATE_DOWNLOADED
                 ) {
-                    sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                    viewModel.setQueueData(
                         QueueData(
                             listTracks = viewModel.listTrack.value.toArrayListTrack(),
                             firstPlayedTrack =
@@ -398,7 +398,7 @@ class PlaylistFragment : Fragment() {
                         ),
                     )
                     viewModel.listTrack.value.firstOrNull()?.let {
-                        sharedViewModel.loadMediaItemFromTrack(
+                        viewModel.loadMediaItem(
                             it.toTrack(),
                             type = Config.PLAYLIST_CLICK,
                             index = 0,
@@ -414,7 +414,7 @@ class PlaylistFragment : Fragment() {
                 }
             } else {
                 if (viewModel.playlistBrowse.value != null) {
-                    sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                    viewModel.setQueueData(
                         QueueData(
                             listTracks = (viewModel.playlistBrowse.value?.tracks ?: arrayListOf()) as ArrayList<Track>,
                             firstPlayedTrack =
@@ -434,7 +434,7 @@ class PlaylistFragment : Fragment() {
                         ),
                     )
                     viewModel.playlistBrowse.value?.tracks?.firstOrNull()?.let {
-                        sharedViewModel.loadMediaItemFromTrack(
+                        viewModel.loadMediaItem(
                             it,
                             type = Config.PLAYLIST_CLICK,
                             index = 0,
@@ -443,7 +443,7 @@ class PlaylistFragment : Fragment() {
                 } else if (viewModel.playlistEntity.value != null &&
                     viewModel.playlistEntity.value?.downloadState == DownloadState.STATE_DOWNLOADED
                 ) {
-                    sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                    viewModel.setQueueData(
                         QueueData(
                             listTracks = viewModel.listTrack.value.toArrayListTrack(),
                             firstPlayedTrack =
@@ -463,7 +463,7 @@ class PlaylistFragment : Fragment() {
                         ),
                     )
                     viewModel.listTrack.value.firstOrNull()?.let {
-                        sharedViewModel.loadMediaItemFromTrack(
+                        viewModel.loadMediaItem(
                             it.toTrack(),
                             type = Config.PLAYLIST_CLICK,
                             index = 0,
@@ -485,7 +485,7 @@ class PlaylistFragment : Fragment() {
                 override fun onItemClick(position: Int) {
                     if (!viewModel.isRadio.value) {
                         if (viewModel.playlistBrowse.value != null) {
-                            sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                            viewModel.setQueueData(
                                 QueueData(
                                     listTracks = (viewModel.playlistBrowse.value?.tracks ?: arrayListOf()) as ArrayList<Track>,
                                     firstPlayedTrack =
@@ -503,7 +503,7 @@ class PlaylistFragment : Fragment() {
                             )
                             viewModel.playlistBrowse.value?.tracks?.get(position)?.let {
                                 Log.w(tag, "track: $it")
-                                sharedViewModel.loadMediaItemFromTrack(
+                                viewModel.loadMediaItem(
                                     it,
                                     type = Config.PLAYLIST_CLICK,
                                     index = position,
@@ -512,7 +512,7 @@ class PlaylistFragment : Fragment() {
                         } else if (viewModel.playlistEntity.value != null &&
                             viewModel.playlistEntity.value?.downloadState == DownloadState.STATE_DOWNLOADED
                         ) {
-                            sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                            viewModel.setQueueData(
                                 QueueData(
                                     listTracks = viewModel.listTrack.value.toArrayListTrack(),
                                     firstPlayedTrack =
@@ -530,7 +530,7 @@ class PlaylistFragment : Fragment() {
                             )
                             viewModel.listTrack.value.getOrNull(position)?.let {
                                 Log.w(tag, "track: $it")
-                                sharedViewModel.loadMediaItemFromTrack(
+                                viewModel.loadMediaItem(
                                     it.toTrack(),
                                     type = Config.PLAYLIST_CLICK,
                                     index = position,
@@ -546,7 +546,7 @@ class PlaylistFragment : Fragment() {
                         }
                     } else {
                         if (viewModel.playlistBrowse.value != null) {
-                            sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                            viewModel.setQueueData(
                                 QueueData(
                                     listTracks = (viewModel.playlistBrowse.value?.tracks ?: arrayListOf()) as ArrayList<Track>,
                                     firstPlayedTrack =
@@ -567,7 +567,7 @@ class PlaylistFragment : Fragment() {
                             )
                             viewModel.playlistBrowse.value?.tracks?.get(position)?.let {
                                 Log.w(tag, "track: $it")
-                                sharedViewModel.loadMediaItemFromTrack(
+                                viewModel.loadMediaItem(
                                     it,
                                     type = Config.PLAYLIST_CLICK,
                                     index = position,
@@ -576,7 +576,7 @@ class PlaylistFragment : Fragment() {
                         } else if (viewModel.playlistEntity.value != null &&
                             viewModel.playlistEntity.value?.downloadState == DownloadState.STATE_DOWNLOADED
                         ) {
-                            sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                            viewModel.setQueueData(
                                 QueueData(
                                     listTracks = viewModel.listTrack.value.toArrayListTrack(),
                                     firstPlayedTrack =
@@ -597,7 +597,7 @@ class PlaylistFragment : Fragment() {
                             )
                             viewModel.listTrack.value.getOrNull(position)?.let {
                                 Log.w(tag, "track: $it")
-                                sharedViewModel.loadMediaItemFromTrack(
+                                viewModel.loadMediaItem(
                                     it.toTrack(),
                                     type = Config.PLAYLIST_CLICK,
                                     index = position,
@@ -848,12 +848,14 @@ class PlaylistFragment : Fragment() {
                 viewModel.playlistBrowse.value?.tracks?.let {
                     shuffledList.addAll(it)
                 }
-                shuffledList.shuffle()
-
-                val indexInQueue = 0
-                val indexInPlaylist = viewModel.playlistBrowse.value?.tracks?.indexOf(shuffledList.first()) ?: 0
-
-                sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                shuffleList.shuffle()
+                val afterShuffleIndex =
+                    shuffleList.indexOf(
+                        viewModel.playlistBrowse.value
+                            ?.tracks
+                            ?.get(index),
+                    )
+                viewModel.setQueueData(
                     QueueData(
                         listTracks = shuffledList,
                         firstPlayedTrack = viewModel.playlistBrowse.value
@@ -867,8 +869,8 @@ class PlaylistFragment : Fragment() {
                         continuation = null,
                     ),
                 )
-                viewModel.playlistBrowse.value?.tracks?.get(indexInPlaylist)?.let {
-                    sharedViewModel.loadMediaItemFromTrack(
+                viewModel.playlistBrowse.value?.tracks?.get(index)?.let {
+                    viewModel.loadMediaItem(
                         it,
                         type = Config.PLAYLIST_CLICK,
                         index = indexInQueue
@@ -878,14 +880,18 @@ class PlaylistFragment : Fragment() {
                 val shuffledList: ArrayList<Track> = arrayListOf()
                 viewModel.listTrack.value
                     .toArrayListTrack()
-                    .let { it1 -> shuffledList.addAll(it1) }
-                shuffledList.shuffle()
-                shuffledList.remove(shuffledList.first())
-
-                val indexInQueue = 0
-                val indexInPlaylist = viewModel.listTrack.value.toArrayListTrack().indexOf(shuffledList.first())
-
-                sharedViewModel.simpleMediaServiceHandler?.setQueueData(
+                    .let { it1 -> shuffleList.addAll(it1) }
+                viewModel.listTrack.value
+                    .getOrNull(index)
+                    ?.let { shuffleList.remove(it.toTrack()) }
+                shuffleList.shuffle()
+                val afterShuffleIndex =
+                    shuffleList.indexOf(
+                        viewModel.listTrack.value
+                            .getOrNull(index)
+                            ?.toTrack(),
+                    )
+                viewModel.setQueueData(
                     QueueData(
                         listTracks = shuffledList,
                         firstPlayedTrack = viewModel.listTrack.value
@@ -902,7 +908,7 @@ class PlaylistFragment : Fragment() {
                 viewModel.listTrack.value
                     .getOrNull(indexInPlaylist)
                     ?.let {
-                        sharedViewModel.loadMediaItemFromTrack(
+                        viewModel.loadMediaItem(
                             it.toTrack(),
                             type = Config.PLAYLIST_CLICK,
                             index = indexInQueue
