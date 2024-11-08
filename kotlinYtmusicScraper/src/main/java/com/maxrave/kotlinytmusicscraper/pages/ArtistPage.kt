@@ -57,7 +57,11 @@ data class ArtistPage(
                         fromMusicTwoRowItemRenderer(renderer)
                     }
                 },
-                moreEndpoint = renderer.header.musicCarouselShelfBasicHeaderRenderer.moreContentButton?.buttonRenderer?.navigationEndpoint?.browseEndpoint
+                moreEndpoint = renderer.header.musicCarouselShelfBasicHeaderRenderer
+                    .moreContentButton
+                    ?.buttonRenderer
+                    ?.navigationEndpoint
+                    ?.browseEndpoint
             )
         }
 

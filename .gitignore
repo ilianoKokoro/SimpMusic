@@ -15,7 +15,9 @@
 local.properties
 /app/release/
 crowdin.yml
-.kotlin/sessions/
+# Kotlin 2.0
+.kotlin/
+.idea
 
 # CUSTOM
 
