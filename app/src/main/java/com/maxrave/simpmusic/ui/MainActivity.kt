@@ -827,7 +827,7 @@ class MainActivity : AppCompatActivity() {
             }
             return false
         } catch (_: Exception) {
-            return false // Switch to true for strict check
+            return true // Switch to false for loose check
         }
     }
 
