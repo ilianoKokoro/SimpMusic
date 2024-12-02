@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,12 +25,12 @@ import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil3.load
-import coil3.request.crossfade
-import coil3.request.placeholder
 import coil3.asDrawable
+import coil3.load
 import coil3.request.CachePolicy
 import coil3.request.allowHardware
+import coil3.request.crossfade
+import coil3.request.placeholder
 import coil3.toBitmap
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
@@ -816,9 +815,58 @@ class PlaylistFragment : Fragment() {
                                     Intent.createChooser(shareIntent, getString(R.string.share_url))
                                 startActivity(chooserIntent)
                             }
-                            dialog.setCancelable(true)
-                            dialog.setContentView(bottomSheetView.root)
-                            dialog.show()
+                            viewModel.listLocalPlaylist.observe(viewLifecycleOwner) { list ->
+                                Log.d("Check Local Playlist", list.toString())
+                                listLocalPlaylist.clear()
+                                listLocalPlaylist.addAll(list)
+                                addToAPlaylistAdapter.updateList(listLocalPlaylist)
+                            }
+                            addToAPlaylistAdapter.setOnItemClickListener(
+                                object :
+                                    AddToAPlaylistAdapter.OnItemClickListener {
+                                    override fun onItemClick(position: Int) {
+                                        val playlist = listLocalPlaylist[position]
+                                        viewModel.updateInLibrary(song.videoId)
+                                        val tempTrack = ArrayList<String>()
+                                        if (playlist.tracks != null) {
+                                            tempTrack.addAll(playlist.tracks)
+                                        }
+                                        if (!tempTrack.contains(
+                                                song.videoId,
+                                            ) &&
+                                            playlist.syncState == LocalPlaylistEntity.YouTubeSyncState.Synced &&
+                                            playlist.youtubePlaylistId != null
+                                        ) {
+                                            viewModel.addToYouTubePlaylist(
+                                                playlist.id,
+                                                playlist.youtubePlaylistId,
+                                                song.videoId,
+                                            )
+                                        }
+                                        if (!tempTrack.contains(song.videoId)) {
+                                            viewModel.insertPairSongLocalPlaylist(
+                                                PairSongLocalPlaylist(
+                                                    playlistId = playlist.id,
+                                                    songId = song.videoId,
+                                                    position = playlist.tracks?.size ?: 0,
+                                                    inPlaylist = LocalDateTime.now(),
+                                                ),
+                                            )
+                                            tempTrack.add(song.videoId)
+                                        }
+
+                                        viewModel.updateLocalPlaylistTracks(
+                                            tempTrack.removeConflicts(),
+                                            playlist.id,
+                                        )
+                                        addPlaylistDialog.dismiss()
+                                        dialog.dismiss()
+                                    }
+                                },
+                            )
+                            addPlaylistDialog.setContentView(viewAddPlaylist.root)
+                            addPlaylistDialog.setCancelable(true)
+                            addPlaylistDialog.show()
                         }
                     }
                 }

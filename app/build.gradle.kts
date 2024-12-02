@@ -48,7 +48,8 @@ android {
                 "uk",
                 "iw",
                 "az",
-                "hi"
+                "hi",
+                "th"
             )
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -305,6 +306,9 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp)
+
+    // Store5
+    implementation(libs.store)
 }
 aboutLibraries {
     prettyPrint = true
