@@ -772,7 +772,7 @@ class PlaylistFragment : Fragment() {
                                             if (!tempTrack.contains(
                                                     song.videoId,
                                                 ) &&
-                                                playlist.syncedWithYouTubePlaylist == 1 &&
+                                                playlist.syncState == LocalPlaylistEntity.YouTubeSyncState.Synced &&
                                                 playlist.youtubePlaylistId != null
                                             ) {
                                                 viewModel.addToYouTubePlaylist(
@@ -815,58 +815,9 @@ class PlaylistFragment : Fragment() {
                                     Intent.createChooser(shareIntent, getString(R.string.share_url))
                                 startActivity(chooserIntent)
                             }
-                            viewModel.listLocalPlaylist.observe(viewLifecycleOwner) { list ->
-                                Log.d("Check Local Playlist", list.toString())
-                                listLocalPlaylist.clear()
-                                listLocalPlaylist.addAll(list)
-                                addToAPlaylistAdapter.updateList(listLocalPlaylist)
-                            }
-                            addToAPlaylistAdapter.setOnItemClickListener(
-                                object :
-                                    AddToAPlaylistAdapter.OnItemClickListener {
-                                    override fun onItemClick(position: Int) {
-                                        val playlist = listLocalPlaylist[position]
-                                        viewModel.updateInLibrary(song.videoId)
-                                        val tempTrack = ArrayList<String>()
-                                        if (playlist.tracks != null) {
-                                            tempTrack.addAll(playlist.tracks)
-                                        }
-                                        if (!tempTrack.contains(
-                                                song.videoId,
-                                            ) &&
-                                            playlist.syncState == LocalPlaylistEntity.YouTubeSyncState.Synced &&
-                                            playlist.youtubePlaylistId != null
-                                        ) {
-                                            viewModel.addToYouTubePlaylist(
-                                                playlist.id,
-                                                playlist.youtubePlaylistId,
-                                                song.videoId,
-                                            )
-                                        }
-                                        if (!tempTrack.contains(song.videoId)) {
-                                            viewModel.insertPairSongLocalPlaylist(
-                                                PairSongLocalPlaylist(
-                                                    playlistId = playlist.id,
-                                                    songId = song.videoId,
-                                                    position = playlist.tracks?.size ?: 0,
-                                                    inPlaylist = LocalDateTime.now(),
-                                                ),
-                                            )
-                                            tempTrack.add(song.videoId)
-                                        }
-
-                                        viewModel.updateLocalPlaylistTracks(
-                                            tempTrack.removeConflicts(),
-                                            playlist.id,
-                                        )
-                                        addPlaylistDialog.dismiss()
-                                        dialog.dismiss()
-                                    }
-                                },
-                            )
-                            addPlaylistDialog.setContentView(viewAddPlaylist.root)
-                            addPlaylistDialog.setCancelable(true)
-                            addPlaylistDialog.show()
+                            dialog.setCancelable(true)
+                            dialog.setContentView(bottomSheetView.root)
+                            dialog.show()
                         }
                     }
                 }
@@ -922,7 +873,7 @@ class PlaylistFragment : Fragment() {
                     ),
                 )
                 viewModel.playlistBrowse.value?.tracks?.get(indexInPlaylist)?.let {
-                    sharedViewModel.loadMediaItemFromTrack(
+                    viewModel.loadMediaItem(
                         it,
                         type = Config.PLAYLIST_CLICK,
                         index = indexInQueue
@@ -956,7 +907,7 @@ class PlaylistFragment : Fragment() {
                 viewModel.listTrack.value
                     .getOrNull(indexInPlaylist)
                     ?.let {
-                        sharedViewModel.loadMediaItemFromTrack(
+                        viewModel.loadMediaItem(
                             it.toTrack(),
                             type = Config.PLAYLIST_CLICK,
                             index = indexInQueue
