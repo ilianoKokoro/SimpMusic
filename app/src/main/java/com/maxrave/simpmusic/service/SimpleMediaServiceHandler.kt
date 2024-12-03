@@ -121,14 +121,14 @@ class SimpleMediaServiceHandler(
                 isPlaying = player.isPlaying,
                 isShuffle = player.shuffleModeEnabled,
                 repeatState =
-                    when (player.repeatMode) {
-                        Player.REPEAT_MODE_ONE -> RepeatState.One
-                        Player.REPEAT_MODE_ALL -> RepeatState.All
-                        Player.REPEAT_MODE_OFF -> RepeatState.None
-                        else -> {
-                            RepeatState.None
-                        }
-                    },
+                when (player.repeatMode) {
+                    Player.REPEAT_MODE_ONE -> RepeatState.One
+                    Player.REPEAT_MODE_ALL -> RepeatState.All
+                    Player.REPEAT_MODE_OFF -> RepeatState.None
+                    else -> {
+                        RepeatState.None
+                    }
+                },
                 isLiked = false,
                 isNextAvailable = player.hasNextMediaItem(),
                 isPreviousAvailable = player.hasPreviousMediaItem(),
@@ -440,49 +440,48 @@ class SimpleMediaServiceHandler(
             jobWatchtime =
                 launch {
                     simpleMediaState.collect { state ->
-                        if (state is SimpleMediaState.Progress)
-                            {
-                                val value = state.progress
-                                if (value > 0 && watchTimeList.isNotEmpty()) {
-                                    val second = (value / 1000).toFloat()
-                                    if (second in watchTimeList.last()..watchTimeList.last() + 1.2f) {
-                                        val watchTimeUrl =
-                                            _format.value?.playbackTrackingVideostatsWatchtimeUrl
-                                        val cpn = _format.value?.cpn
-                                        if (second + 20.23f < (player.duration / 1000).toFloat()) {
-                                            watchTimeList.add(second + 20.23f)
-                                            if (watchTimeUrl != null && cpn != null) {
-                                                mainRepository
-                                                    .updateWatchTime(
-                                                        watchTimeUrl,
-                                                        watchTimeList,
-                                                        cpn,
-                                                        queueData.value?.playlistId,
-                                                    ).collect { response ->
-                                                        if (response == 204) {
-                                                            Log.d("Check updateWatchTime", "Success")
-                                                        }
+                        if (state is SimpleMediaState.Progress) {
+                            val value = state.progress
+                            if (value > 0 && watchTimeList.isNotEmpty()) {
+                                val second = (value / 1000).toFloat()
+                                if (second in watchTimeList.last()..watchTimeList.last() + 1.2f) {
+                                    val watchTimeUrl =
+                                        _format.value?.playbackTrackingVideostatsWatchtimeUrl
+                                    val cpn = _format.value?.cpn
+                                    if (second + 20.23f < (player.duration / 1000).toFloat()) {
+                                        watchTimeList.add(second + 20.23f)
+                                        if (watchTimeUrl != null && cpn != null) {
+                                            mainRepository
+                                                .updateWatchTime(
+                                                    watchTimeUrl,
+                                                    watchTimeList,
+                                                    cpn,
+                                                    queueData.value?.playlistId,
+                                                ).collect { response ->
+                                                    if (response == 204) {
+                                                        Log.d("Check updateWatchTime", "Success")
                                                     }
-                                            }
-                                        } else {
-                                            watchTimeList.clear()
-                                            if (watchTimeUrl != null && cpn != null) {
-                                                mainRepository
-                                                    .updateWatchTimeFull(
-                                                        watchTimeUrl,
-                                                        cpn,
-                                                        queueData.value?.playlistId,
-                                                    ).collect { response ->
-                                                        if (response == 204) {
-                                                            Log.d("Check updateWatchTimeFull", "Success")
-                                                        }
-                                                    }
-                                            }
+                                                }
                                         }
-                                        Log.w("Check updateWatchTime", watchTimeList.toString())
+                                    } else {
+                                        watchTimeList.clear()
+                                        if (watchTimeUrl != null && cpn != null) {
+                                            mainRepository
+                                                .updateWatchTimeFull(
+                                                    watchTimeUrl,
+                                                    cpn,
+                                                    queueData.value?.playlistId,
+                                                ).collect { response ->
+                                                    if (response == 204) {
+                                                        Log.d("Check updateWatchTimeFull", "Success")
+                                                    }
+                                                }
+                                        }
                                     }
+                                    Log.w("Check updateWatchTime", watchTimeList.toString())
                                 }
                             }
+                        }
                     }
                 }
             jobWatchtime?.join()
@@ -814,14 +813,17 @@ class SimpleMediaServiceHandler(
                 _simpleMediaState.value = SimpleMediaState.Initial
                 Log.d(TAG, "onPlaybackStateChanged: Idle")
             }
+
             Player.STATE_ENDED -> {
                 _simpleMediaState.value = SimpleMediaState.Ended
                 Log.d(TAG, "onPlaybackStateChanged: Ended")
             }
+
             Player.STATE_READY -> {
                 Log.d(TAG, "onPlaybackStateChanged: Ready")
                 _simpleMediaState.value = SimpleMediaState.Ready(player.duration)
             }
+
             else -> {
                 if (current >= loaded) {
                     _simpleMediaState.value = SimpleMediaState.Buffering(player.currentPosition)
@@ -946,10 +948,10 @@ class SimpleMediaServiceHandler(
                         var offset = regex.find(continuation)?.value?.toInt() ?: return@launch
                         val posString = continuation.removePrefix("SHUFFLE${offset}_")
                         val listPosition = converter.fromStringToListInt(posString) ?: return@launch
-                        val theLastLoad = 50*(offset + 1) >= listPosition.size
+                        val theLastLoad = 50 * (offset + 1) >= listPosition.size
                         mainRepository.getPlaylistPairSongByListPosition(
                             longId,
-                            listPosition.subList(50*offset, if (theLastLoad) listPosition.size else 50*(offset + 1)),
+                            listPosition.subList(50 * offset, if (theLastLoad) listPosition.size else 50 * (offset + 1)),
                         ).singleOrNull()?.let { pair ->
                             Log.w("Check loadMore response", pair.size.toString())
                             mainRepository.getSongsByListVideoId(pair.map { it.songId }).single().let { songs ->
@@ -958,7 +960,7 @@ class SimpleMediaServiceHandler(
                                     loadMoreCatalog(songs.toArrayListTrack())
                                     offset++
                                     _queueData.update {
-                                        if (!theLastLoad){
+                                        if (!theLastLoad) {
                                             it?.copy(
                                                 continuation = "SHUFFLE${offset}_$posString",
                                             )
@@ -1055,6 +1057,7 @@ class SimpleMediaServiceHandler(
                                 continuation = response.data?.second,
                             )
                     }
+
                     is Resource.Error -> {
                         Log.d("Check Related", "getRelated: ${response.message}")
                         _queueData.value =
@@ -1357,7 +1360,7 @@ class SimpleMediaServiceHandler(
                     mainRepository
                         .getSongById(id)
                         .singleOrNull()
-                        ?.liked ?: false
+                        ?.liked == true
                 Log.w("Check liked", liked.toString())
                 _controlState.value = _controlState.value.copy(isLiked = liked)
                 setNotificationLayout?.invoke(
@@ -1503,12 +1506,12 @@ class SimpleMediaServiceHandler(
                             catalogMetadata.add(
                                 track.copy(
                                     artists =
-                                        listOf(
-                                            Artist(
-                                                songInfo.authorId,
-                                                songInfo.author ?: "",
-                                            ),
+                                    listOf(
+                                        Artist(
+                                            songInfo.authorId,
+                                            songInfo.author ?: "",
                                         ),
+                                    ),
                                 ),
                             )
                             addMediaItemNotSet(
@@ -1645,12 +1648,12 @@ class SimpleMediaServiceHandler(
                                 catalogMetadata.add(
                                     track.copy(
                                         artists =
-                                            listOf(
-                                                Artist(
-                                                    songInfo.authorId,
-                                                    songInfo.author ?: "",
-                                                ),
+                                        listOf(
+                                            Artist(
+                                                songInfo.authorId,
+                                                songInfo.author ?: "",
                                             ),
+                                        ),
                                     ),
                                 )
                             } else {
@@ -1711,12 +1714,12 @@ class SimpleMediaServiceHandler(
                                     catalogMetadata.add(
                                         track.copy(
                                             artists =
-                                                listOf(
-                                                    Artist(
-                                                        songInfo.authorId,
-                                                        songInfo.author ?: "",
-                                                    ),
+                                            listOf(
+                                                Artist(
+                                                    songInfo.authorId,
+                                                    songInfo.author ?: "",
                                                 ),
+                                            ),
                                         ),
                                     )
                                     addMediaItemNotSet(
@@ -1876,12 +1879,12 @@ class SimpleMediaServiceHandler(
                             player.currentMediaItemIndex + 1,
                             track.copy(
                                 artists =
-                                    listOf(
-                                        Artist(
-                                            songInfo.authorId,
-                                            songInfo.author ?: "",
-                                        ),
+                                listOf(
+                                    Artist(
+                                        songInfo.authorId,
+                                        songInfo.author ?: "",
                                     ),
+                                ),
                             ),
                         )
                         addMediaItemNotSet(

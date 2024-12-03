@@ -392,7 +392,7 @@ fun QuickPicksItem(
     widthDp: Dp,
     data: Content
 ) {
-    val tag = "QuickPicksItem"
+    "QuickPicksItem"
     Box(
         modifier = Modifier
             .wrapContentHeight()

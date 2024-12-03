@@ -29,9 +29,9 @@ fun BrowseResponse.fromPlaylistToTrack(): List<SongItem> =
                 ?.firstOrNull()
                 ?.musicPlaylistShelfRenderer
                 ?.contents
-    )?.mapNotNull { content ->
-        content.toSongItem()
-    } ?: emptyList()
+        )?.mapNotNull { content ->
+            content.toSongItem()
+        } ?: emptyList()
 
 fun BrowseResponse.fromPlaylistToTrackWithSetVideoId(): List<Pair<SongItem, String>> =
     (
@@ -79,12 +79,12 @@ fun BrowseResponse.fromPlaylistContinuationToTrackWithSetVideoId(): List<Pair<So
     (this.continuationContents
         ?.musicPlaylistShelfContinuation
         ?.contents
-    ?: this.continuationContents
-        ?.sectionListContinuation
-        ?.contents
-        ?.firstOrNull()
-        ?.musicShelfRenderer
-        ?.contents)
+        ?: this.continuationContents
+            ?.sectionListContinuation
+            ?.contents
+            ?.firstOrNull()
+            ?.musicShelfRenderer
+            ?.contents)
         ?.mapNotNull { contents ->
             Pair(
                 contents.toSongItem() ?: return@mapNotNull null,
@@ -102,12 +102,12 @@ fun BrowseResponse.getPlaylistContinuation(): String? =
         ?.sectionListRenderer
         ?.continuations
         ?.getContinuation()
-    ?: this.contents
-        ?.twoColumnBrowseResultsRenderer
-        ?.secondaryContents
-        ?.sectionListRenderer
-        ?.continuations
-        ?.getContinuation()
+        ?: this.contents
+            ?.twoColumnBrowseResultsRenderer
+            ?.secondaryContents
+            ?.sectionListRenderer
+            ?.continuations
+            ?.getContinuation()
 
 fun BrowseResponse.getContinuePlaylistContinuation(): String? =
     this.continuationContents
@@ -124,56 +124,64 @@ fun MusicShelfRenderer.Content.toSongItem(): SongItem? {
     val menu = this.musicResponsiveListItemRenderer?.menu
     return SongItem(
         id =
-            flexColumns
-                ?.firstOrNull()
-                ?.musicResponsiveListItemFlexColumnRenderer
-                ?.text
-                ?.runs
-                ?.firstOrNull()
-                ?.navigationEndpoint
-                ?.watchEndpoint
-                ?.videoId ?: return null,
+        flexColumns
+            ?.firstOrNull()
+            ?.musicResponsiveListItemFlexColumnRenderer
+            ?.text
+            ?.runs
+            ?.firstOrNull()
+            ?.navigationEndpoint
+            ?.watchEndpoint
+            ?.videoId ?: return null,
         title =
-            flexColumns
-                .firstOrNull()
-                ?.musicResponsiveListItemFlexColumnRenderer
-                ?.text
-                ?.runs
-                ?.firstOrNull()
-                ?.text ?: return null,
+        flexColumns
+            .firstOrNull()
+            ?.musicResponsiveListItemFlexColumnRenderer
+            ?.text
+            ?.runs
+            ?.firstOrNull()
+            ?.text ?: return null,
         artists =
-            flexColumns
-                .apply {
-                    Log.w("PlaylistParser", "Artists: ${this.map {
-                        it.musicResponsiveListItemFlexColumnRenderer.text?.runs?.firstOrNull()?.text
-                    }}")
-                }
-                .filter {
+        flexColumns
+            .apply {
+                Log.w(
+                    "PlaylistParser", "Artists: ${
+                        this.map {
+                            it.musicResponsiveListItemFlexColumnRenderer.text?.runs?.firstOrNull()?.text
+                        }
+                    }"
+                )
+            }
+            .filter {
                 it.musicResponsiveListItemFlexColumnRenderer.isArtist()
             }.apply {
-                    Log.w("PlaylistParser", "Artists after filter: ${this.map {
-                        it.musicResponsiveListItemFlexColumnRenderer.text?.runs?.firstOrNull()?.text
-                    }}")
-                }
-                .mapNotNull { it.musicResponsiveListItemFlexColumnRenderer.toArtist() },
+                Log.w(
+                    "PlaylistParser", "Artists after filter: ${
+                        this.map {
+                            it.musicResponsiveListItemFlexColumnRenderer.text?.runs?.firstOrNull()?.text
+                        }
+                    }"
+                )
+            }
+            .mapNotNull { it.musicResponsiveListItemFlexColumnRenderer.toArtist() },
         album =
-            flexColumns.find {
-                it.musicResponsiveListItemFlexColumnRenderer.isAlbum()
-            }?.musicResponsiveListItemFlexColumnRenderer?.toAlbum(),
+        flexColumns.find {
+            it.musicResponsiveListItemFlexColumnRenderer.isAlbum()
+        }?.musicResponsiveListItemFlexColumnRenderer?.toAlbum(),
         duration =
-            fixedColumns
-                ?.firstOrNull()
-                ?.musicResponsiveListItemFlexColumnRenderer
-                ?.text
-                ?.runs
-                ?.firstOrNull()
-                ?.text
-                .toDurationSeconds(),
+        fixedColumns
+            ?.firstOrNull()
+            ?.musicResponsiveListItemFlexColumnRenderer
+            ?.text
+            ?.runs
+            ?.firstOrNull()
+            ?.text
+            .toDurationSeconds(),
         thumbnail =
-            this.musicResponsiveListItemRenderer
-                ?.thumbnail
-                ?.musicThumbnailRenderer
-                ?.getThumbnailUrl() ?: "",
+        this.musicResponsiveListItemRenderer
+            ?.thumbnail
+            ?.musicThumbnailRenderer
+            ?.getThumbnailUrl() ?: "",
         endpoint = flexColumns
             .first()
             .musicResponsiveListItemFlexColumnRenderer
@@ -183,22 +191,22 @@ fun MusicShelfRenderer.Content.toSongItem(): SongItem? {
             ?.navigationEndpoint
             ?.watchEndpoint,
         explicit =
-            this.musicResponsiveListItemRenderer?.badges?.toSongBadges()?.contains(
-                SongItem.SongBadges.Explicit,
-            ) ?: false,
+        this.musicResponsiveListItemRenderer?.badges?.toSongBadges()?.contains(
+            SongItem.SongBadges.Explicit,
+        ) == true,
         thumbnails =
-            this.musicResponsiveListItemRenderer
-                ?.thumbnail
-                ?.musicThumbnailRenderer
-                ?.thumbnail,
+        this.musicResponsiveListItemRenderer
+            ?.thumbnail
+            ?.musicThumbnailRenderer
+            ?.thumbnail,
         likeStatus =
-            menu
-                ?.menuRenderer
-                ?.topLevelButtons
-                ?.firstOrNull()
-                ?.likeButtonRenderer
-                ?.toLikeStatus()
-                ?: LikeStatus.INDIFFERENT,
+        menu
+            ?.menuRenderer
+            ?.topLevelButtons
+            ?.firstOrNull()
+            ?.likeButtonRenderer
+            ?.toLikeStatus()
+            ?: LikeStatus.INDIFFERENT,
         badges = this.musicResponsiveListItemRenderer?.badges?.toSongBadges(),
     )
 }

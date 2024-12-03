@@ -140,7 +140,7 @@ fun PlaylistScreen(
     navController: NavController,
 ) {
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
+    rememberCoroutineScope()
 
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.downloading_animation),
@@ -321,12 +321,13 @@ fun PlaylistScreen(
                 ) {
                     Box(
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1f)
-                                .clip(
-                                    RoundedCornerShape(8.dp),
-                                ).angledGradientBackground(uiState.colors, 25f),
+                        Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .clip(
+                                RoundedCornerShape(8.dp),
+                            )
+                            .angledGradientBackground(uiState.colors, 25f),
                     )
                     Box(
                         modifier =
@@ -414,14 +415,14 @@ fun PlaylistScreen(
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Text(
                                         text =
-                                            stringResource(
-                                                id = R.string.created_at,
-                                                uiState.inLibrary?.format(
-                                                    DateTimeFormatter.ofPattern(
-                                                        "kk:mm - dd MMM uuuu",
-                                                    ),
-                                                ) ?: "",
-                                            ),
+                                        stringResource(
+                                            id = R.string.created_at,
+                                            uiState.inLibrary?.format(
+                                                DateTimeFormatter.ofPattern(
+                                                    "kk:mm - dd MMM uuuu",
+                                                ),
+                                            ) ?: "",
+                                        ),
                                         style = typo.bodyMedium,
                                         color = Color(0xC4FFFFFF),
                                     )
@@ -593,11 +594,11 @@ fun PlaylistScreen(
                                 //                                )
                                 Text(
                                     text =
-                                        stringResource(
-                                            id = R.string.album_length,
-                                            (uiState.trackCount).toString(),
-                                            "",
-                                        ),
+                                    stringResource(
+                                        id = R.string.album_length,
+                                        (uiState.trackCount).toString(),
+                                        "",
+                                    ),
                                     color = Color.White,
                                     style = typo.bodyMedium,
                                     modifier = Modifier.padding(vertical = 8.dp),
@@ -816,13 +817,13 @@ fun PlaylistScreen(
             title = uiState.title,
             ytPlaylistId = uiState.ytPlaylistId,
             onEditTitle =
-                { newTitle ->
-                    viewModel.updatePlaylistTitle(newTitle, uiState.id)
-                },
+            { newTitle ->
+                viewModel.updatePlaylistTitle(newTitle, uiState.id)
+            },
             onEditThumbnail =
-                { thumbUri ->
-                    viewModel.updatePlaylistThumbnail(thumbUri, uiState.id)
-                },
+            { thumbUri ->
+                viewModel.updatePlaylistThumbnail(thumbUri, uiState.id)
+            },
             onAddToQueue = {
                 viewModel.addAllToQueue()
             },
@@ -849,8 +850,8 @@ fun PlaylistScreen(
             onDismissRequest = { showSyncAlertDialog = false },
             confirmButton = {
                 TextButton(onClick = {
-                        viewModel.syncPlaylistWithYouTubePlaylist(uiState.id)
-                        showSyncAlertDialog = false
+                    viewModel.syncPlaylistWithYouTubePlaylist(uiState.id)
+                    showSyncAlertDialog = false
                 }) {
                     Text(text = stringResource(id = R.string.yes))
                 }
@@ -911,9 +912,9 @@ fun PlaylistScreen(
                 }
             },
             colors =
-                TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                ),
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
+            ),
             modifier = Modifier.angledGradientBackground(uiState.colors, 90f),
         )
     }

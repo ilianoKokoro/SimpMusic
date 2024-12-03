@@ -153,10 +153,10 @@ fun NowPlayingScreen(
 
     @Suppress("ktlint:standard:property-naming")
     val TAG = "NowPlayingScreen"
-    val context = LocalContext.current
+    LocalContext.current
     val localDensity = LocalDensity.current
     val uriHandler = LocalUriHandler.current
-    val coroutineScope = rememberCoroutineScope()
+    rememberCoroutineScope()
 
     // ViewModel State
     val controllerState by sharedViewModel.controllerState.collectAsState()
@@ -277,10 +277,10 @@ fun NowPlayingScreen(
     val controlLayoutAlpha: Float by animateFloatAsState(
         targetValue = if (showHideControlLayout) 1f else 0f,
         animationSpec =
-            tween(
-                durationMillis = 500,
-                easing = LinearEasing,
-            ),
+        tween(
+            durationMillis = 500,
+            easing = LinearEasing,
+        ),
         label = "ControlLayoutAlpha",
     )
 
@@ -368,16 +368,17 @@ fun NowPlayingScreen(
         Modifier
             .verticalScroll(
                 mainScrollState,
-            ).then(
+            )
+            .then(
                 if (showHideMiddleLayout) {
                     Modifier.background(
                         Brush.linearGradient(
                             colors =
-                                listOf(
-                                    startColor.value,
-                                    endColor
-                                        .value,
-                                ),
+                            listOf(
+                                startColor.value,
+                                endColor
+                                    .value,
+                            ),
                             start = gradientOffset.start,
                             end = gradientOffset.end,
                         ),
@@ -391,12 +392,12 @@ fun NowPlayingScreen(
             // Canvas Layout
             Box(
                 modifier =
-                    Modifier
-                        .height(screenInfo.hDP.dp)
-                        .fillMaxWidth()
-                        .alpha(
-                            if (!showHideMiddleLayout) 1f else 0f,
-                        ),
+                Modifier
+                    .height(screenInfo.hDP.dp)
+                    .fillMaxWidth()
+                    .alpha(
+                        if (!showHideMiddleLayout) 1f else 0f,
+                    ),
             ) {
                 // Canvas Layout
                 Crossfade(targetState = screenDataState.canvasData?.isVideo) { isVideo ->
@@ -405,9 +406,9 @@ fun NowPlayingScreen(
                             MediaPlayerView(
                                 url = it,
                                 modifier =
-                                    Modifier
-                                        .fillMaxHeight()
-                                        .wrapContentWidth(unbounded = true, align = Alignment.CenterHorizontally),
+                                Modifier
+                                    .fillMaxHeight()
+                                    .wrapContentWidth(unbounded = true, align = Alignment.CenterHorizontally),
                             )
                         }
                     } else if (isVideo == false) {
@@ -426,26 +427,26 @@ fun NowPlayingScreen(
                 Crossfade(
                     targetState = (screenDataState.canvasData != null && showHideControlLayout),
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .align(
-                                Alignment.BottomCenter,
-                            ),
+                    Modifier
+                        .fillMaxSize()
+                        .align(
+                            Alignment.BottomCenter,
+                        ),
                 ) {
                     if (it) {
                         Box(
                             modifier =
-                                Modifier
-                                    .fillMaxSize()
-                                    .background(
-                                        Brush.verticalGradient(
-                                            colorStops =
-                                                arrayOf(
-                                                    0.8f to overlay,
-                                                    1f to Color.Black,
-                                                ),
+                            Modifier
+                                .fillMaxSize()
+                                .background(
+                                    Brush.verticalGradient(
+                                        colorStops =
+                                        arrayOf(
+                                            0.8f to overlay,
+                                            1f to Color.Black,
                                         ),
                                     ),
+                                ),
                         )
                     }
                 }
@@ -453,21 +454,21 @@ fun NowPlayingScreen(
 
             TopAppBar(
                 modifier =
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .onGloballyPositioned {
-                            topAppBarHeightDp =
-                                with(localDensity) {
-                                    it.size.height
-                                        .toDp()
-                                        .value
-                                        .toInt()
-                                }
-                        },
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .onGloballyPositioned {
+                        topAppBarHeightDp =
+                            with(localDensity) {
+                                it.size.height
+                                    .toDp()
+                                    .value
+                                    .toInt()
+                            }
+                    },
                 colors =
-                    TopAppBarDefaults.topAppBarColors().copy(
-                        containerColor = Color.Transparent,
-                    ),
+                TopAppBarDefaults.topAppBarColors().copy(
+                    containerColor = Color.Transparent,
+                ),
                 title = {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -486,14 +487,14 @@ fun NowPlayingScreen(
                             textAlign = TextAlign.Center,
                             maxLines = 1,
                             modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(align = Alignment.CenterVertically)
-                                    .basicMarquee(
-                                        iterations = Int.MAX_VALUE,
-                                        animationMode = MarqueeAnimationMode.Immediately
-                                    )
-                                    .focusable(),
+                            Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(align = Alignment.CenterVertically)
+                                .basicMarquee(
+                                    iterations = Int.MAX_VALUE,
+                                    animationMode = MarqueeAnimationMode.Immediately
+                                )
+                                .focusable(),
                         )
                     }
                 },
@@ -523,9 +524,9 @@ fun NowPlayingScreen(
             Column {
                 Spacer(
                     modifier =
-                        Modifier.height(
-                            topAppBarHeightDp.dp,
-                        ),
+                    Modifier.height(
+                        topAppBarHeightDp.dp,
+                    ),
                 )
                 Box {
                     Column(
@@ -534,30 +535,33 @@ fun NowPlayingScreen(
                     ) {
                         Spacer(
                             modifier =
-                                Modifier
-                                    .animateContentSize()
-                                    .height(
-                                        middleLayoutPaddingDp.dp,
-                                    ).fillMaxWidth(),
+                            Modifier
+                                .animateContentSize()
+                                .height(
+                                    middleLayoutPaddingDp.dp,
+                                )
+                                .fillMaxWidth(),
                         )
 
                         // Middle Layout
                         Box(
                             modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 40.dp)
-                                    .onGloballyPositioned {
-                                        middleLayoutHeightDp =
-                                            with(localDensity) {
-                                                it.size.height
-                                                    .toDp()
-                                                    .value
-                                                    .toInt()
-                                            }
-                                    }.alpha(
-                                        if (showHideMiddleLayout) 1f else 0f,
-                                    ).aspectRatio(1f),
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 40.dp)
+                                .onGloballyPositioned {
+                                    middleLayoutHeightDp =
+                                        with(localDensity) {
+                                            it.size.height
+                                                .toDp()
+                                                .value
+                                                .toInt()
+                                        }
+                                }
+                                .alpha(
+                                    if (showHideMiddleLayout) 1f else 0f,
+                                )
+                                .aspectRatio(1f),
                         ) {
                             // IS SONG => Show Artwork
                             AsyncImage(
@@ -579,9 +583,11 @@ fun NowPlayingScreen(
                                     .fillMaxWidth()
                                     .aspectRatio(
                                         if (!screenDataState.isVideo) 1f else 16f / 9,
-                                    ).clip(
+                                    )
+                                    .clip(
                                         RoundedCornerShape(8.dp),
-                                    ).alpha(
+                                    )
+                                    .alpha(
                                         if (!screenDataState.isVideo || !shouldShowVideo) 1f else 0f,
                                     ),
                             )
@@ -593,14 +599,15 @@ fun NowPlayingScreen(
                             ) {
                                 Box(
                                     modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .aspectRatio(16f / 9)
-                                            .clip(
-                                                RoundedCornerShape(8.dp),
-                                            ).background(
-                                                md_theme_dark_background,
-                                            ),
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(16f / 9)
+                                        .clip(
+                                            RoundedCornerShape(8.dp),
+                                        )
+                                        .background(
+                                            md_theme_dark_background,
+                                        ),
                                 ) {
                                     // Player
                                     Box(Modifier.fillMaxSize()) {
@@ -608,16 +615,16 @@ fun NowPlayingScreen(
                                     }
                                     Box(
                                         modifier =
-                                            Modifier
-                                                .fillMaxSize()
-                                                .clickable(
-                                                    onClick = { showHideFullscreenOverlay = !showHideFullscreenOverlay },
-                                                    indication = null,
-                                                    interactionSource =
-                                                        remember {
-                                                            MutableInteractionSource()
-                                                        },
-                                                ),
+                                        Modifier
+                                            .fillMaxSize()
+                                            .clickable(
+                                                onClick = { showHideFullscreenOverlay = !showHideFullscreenOverlay },
+                                                indication = null,
+                                                interactionSource =
+                                                remember {
+                                                    MutableInteractionSource()
+                                                },
+                                            ),
                                     ) {
                                         Crossfade(
                                             targetState = showHideFullscreenOverlay,
@@ -625,18 +632,18 @@ fun NowPlayingScreen(
                                             if (it) {
                                                 Box(
                                                     modifier =
-                                                        Modifier
-                                                            .fillMaxSize()
-                                                            .background(
-                                                                Brush.verticalGradient(
-                                                                    colorStops =
-                                                                        arrayOf(
-                                                                            0.03f to blackMoreOverlay,
-                                                                            0.15f to overlay,
-                                                                            0.8f to Color.Transparent,
-                                                                        ),
+                                                    Modifier
+                                                        .fillMaxSize()
+                                                        .background(
+                                                            Brush.verticalGradient(
+                                                                colorStops =
+                                                                arrayOf(
+                                                                    0.03f to blackMoreOverlay,
+                                                                    0.15f to overlay,
+                                                                    0.8f to Color.Transparent,
                                                                 ),
                                                             ),
+                                                        ),
                                                 ) {
                                                     IconButton(onClick = {
                                                         navController.navigateSafe(
@@ -657,16 +664,16 @@ fun NowPlayingScreen(
                                                     ) {
                                                         FilledTonalIconButton(
                                                             colors =
-                                                                IconButtonDefaults.iconButtonColors().copy(
-                                                                    containerColor = Color.Transparent,
-                                                                ),
+                                                            IconButtonDefaults.iconButtonColors().copy(
+                                                                containerColor = Color.Transparent,
+                                                            ),
                                                             modifier =
-                                                                Modifier
-                                                                    .size(48.dp)
-                                                                    .aspectRatio(1f)
-                                                                    .clip(
-                                                                        CircleShape,
-                                                                    ),
+                                                            Modifier
+                                                                .size(48.dp)
+                                                                .aspectRatio(1f)
+                                                                .clip(
+                                                                    CircleShape,
+                                                                ),
                                                             onClick = {
                                                                 sharedViewModel.onUIEvent(UIEvent.Backward)
                                                             },
@@ -676,23 +683,23 @@ fun NowPlayingScreen(
                                                                 tint = Color.White,
                                                                 contentDescription = "",
                                                                 modifier =
-                                                                    Modifier
-                                                                        .size(36.dp)
-                                                                        .alpha(0.8f),
+                                                                Modifier
+                                                                    .size(36.dp)
+                                                                    .alpha(0.8f),
                                                             )
                                                         }
                                                         FilledTonalIconButton(
                                                             colors =
-                                                                IconButtonDefaults.iconButtonColors().copy(
-                                                                    containerColor = Color.Transparent,
-                                                                ),
+                                                            IconButtonDefaults.iconButtonColors().copy(
+                                                                containerColor = Color.Transparent,
+                                                            ),
                                                             modifier =
-                                                                Modifier
-                                                                    .size(48.dp)
-                                                                    .aspectRatio(1f)
-                                                                    .clip(
-                                                                        CircleShape,
-                                                                    ),
+                                                            Modifier
+                                                                .size(48.dp)
+                                                                .aspectRatio(1f)
+                                                                .clip(
+                                                                    CircleShape,
+                                                                ),
                                                             onClick = {
                                                                 sharedViewModel.onUIEvent(UIEvent.Forward)
                                                             },
@@ -702,9 +709,9 @@ fun NowPlayingScreen(
                                                                 tint = Color.White,
                                                                 contentDescription = "",
                                                                 modifier =
-                                                                    Modifier
-                                                                        .size(36.dp)
-                                                                        .alpha(0.8f),
+                                                                Modifier
+                                                                    .size(36.dp)
+                                                                    .alpha(0.8f),
                                                             )
                                                         }
                                                     }
@@ -718,11 +725,12 @@ fun NowPlayingScreen(
 
                         Spacer(
                             modifier =
-                                Modifier
-                                    .animateContentSize()
-                                    .height(
-                                        middleLayoutPaddingDp.dp,
-                                    ).fillMaxWidth(),
+                            Modifier
+                                .animateContentSize()
+                                .height(
+                                    middleLayoutPaddingDp.dp,
+                                )
+                                .fillMaxWidth(),
                         )
 
                         // Info Layout
@@ -742,12 +750,12 @@ fun NowPlayingScreen(
                             ) {
                                 Row(
                                     modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .padding(horizontal = 40.dp),
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 40.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
-                                    
+
                                     Column(Modifier.weight(1f)) {
                                         Text(
                                             text = screenDataState.nowPlayingTitle,
@@ -755,14 +763,14 @@ fun NowPlayingScreen(
                                             maxLines = 1,
                                             color = Color.White,
                                             modifier =
-                                                Modifier
-                                                    .fillMaxWidth()
-                                                    .wrapContentHeight(align = Alignment.CenterVertically)
-                                                    .basicMarquee(
-                                                        iterations = Int.MAX_VALUE,
-                                                        animationMode = MarqueeAnimationMode.Immediately
-                                                    )
-                                                    .focusable(),
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .wrapContentHeight(align = Alignment.CenterVertically)
+                                                .basicMarquee(
+                                                    iterations = Int.MAX_VALUE,
+                                                    animationMode = MarqueeAnimationMode.Immediately
+                                                )
+                                                .focusable(),
                                         )
                                         Spacer(modifier = Modifier.height(3.dp))
                                         Text(
@@ -770,20 +778,20 @@ fun NowPlayingScreen(
                                             style = typo.bodyMedium,
                                             maxLines = 1,
                                             modifier =
-                                                Modifier
-                                                    .fillMaxWidth()
-                                                    .wrapContentHeight(align = Alignment.CenterVertically)
-                                                    .basicMarquee(
-                                                        iterations = Int.MAX_VALUE,
-                                                        animationMode = MarqueeAnimationMode.Immediately
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .wrapContentHeight(align = Alignment.CenterVertically)
+                                                .basicMarquee(
+                                                    iterations = Int.MAX_VALUE,
+                                                    animationMode = MarqueeAnimationMode.Immediately
+                                                )
+                                                .focusable()
+                                                .clickable {
+                                                    navController.navigateSafe(
+                                                        R.id.action_global_artistFragment,
+                                                        bundleOf("channelId" to screenDataState.songInfoData?.authorId),
                                                     )
-                                                    .focusable()
-                                                    .clickable {
-                                                        navController.navigateSafe(
-                                                            R.id.action_global_artistFragment,
-                                                            bundleOf("channelId" to screenDataState.songInfoData?.authorId),
-                                                        )
-                                                    },
+                                                },
                                         )
                                     }
                                     Spacer(modifier = Modifier.size(10.dp))
@@ -796,13 +804,14 @@ fun NowPlayingScreen(
                                     Modifier
                                         .padding(
                                             top = 15.dp,
-                                        ).padding(horizontal = 40.dp),
+                                        )
+                                        .padding(horizontal = 40.dp),
                                 ) {
                                     Box(
                                         modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .height(24.dp),
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .height(24.dp),
                                         contentAlignment = Alignment.Center,
                                     ) {
                                         Crossfade(timelineState.loading) {
@@ -824,8 +833,7 @@ fun NowPlayingScreen(
                                                         strokeCap = StrokeCap.Round,
                                                     )
                                                 }
-                                            }
-                                            else {
+                                            } else {
                                                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                                                     LinearProgressIndicator(
                                                         progress = { timelineState.bufferedPercent.toFloat() / 100 },
@@ -858,12 +866,12 @@ fun NowPlayingScreen(
                                             },
                                             valueRange = 0f..100f,
                                             modifier =
-                                                Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(top = 3.dp)
-                                                    .align(
-                                                        Alignment.TopCenter,
-                                                    ),
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .padding(top = 3.dp)
+                                                .align(
+                                                    Alignment.TopCenter,
+                                                ),
                                             track = { sliderState ->
                                                 SliderDefaults.Track(
                                                     modifier = Modifier
@@ -883,23 +891,23 @@ fun NowPlayingScreen(
                                             thumb = {
                                                 SliderDefaults.Thumb(
                                                     modifier =
-                                                        Modifier
-                                                            .height(18.dp)
-                                                            .width(8.dp)
-                                                            .padding(
-                                                                vertical = 4.dp
-                                                            ),
+                                                    Modifier
+                                                        .height(18.dp)
+                                                        .width(8.dp)
+                                                        .padding(
+                                                            vertical = 4.dp
+                                                        ),
                                                     thumbSize = DpSize(8.dp, 8.dp),
                                                     interactionSource =
-                                                        remember {
-                                                            MutableInteractionSource()
-                                                        },
+                                                    remember {
+                                                        MutableInteractionSource()
+                                                    },
                                                     colors =
-                                                        SliderDefaults.colors().copy(
-                                                            thumbColor = Color.White,
-                                                            activeTrackColor = Color.White,
-                                                            inactiveTrackColor = Color.Transparent,
-                                                        ),
+                                                    SliderDefaults.colors().copy(
+                                                        thumbColor = Color.White,
+                                                        activeTrackColor = Color.White,
+                                                        inactiveTrackColor = Color.Transparent,
+                                                    ),
                                                     enabled = true,
                                                 )
                                             },
@@ -914,22 +922,22 @@ fun NowPlayingScreen(
                                 ) {
                                     Text(
                                         text =
-                                            if (timelineState.current >= 0L) {
-                                                formatDuration(timelineState.current)
-                                            } else {
-                                                stringResource(id = R.string.na_na)
-                                            },
+                                        if (timelineState.current >= 0L) {
+                                            formatDuration(timelineState.current)
+                                        } else {
+                                            stringResource(id = R.string.na_na)
+                                        },
                                         style = typo.bodyMedium,
                                         modifier = Modifier.weight(1f),
                                         textAlign = TextAlign.Left,
                                     )
                                     Text(
                                         text =
-                                            if (timelineState.total >= 0L) {
-                                                formatDuration(timelineState.total)
-                                            } else {
-                                                stringResource(id = R.string.na_na)
-                                            },
+                                        if (timelineState.total >= 0L) {
+                                            formatDuration(timelineState.total)
+                                        } else {
+                                            stringResource(id = R.string.na_na)
+                                        },
                                         style = typo.bodyMedium,
                                         modifier = Modifier.weight(1f),
                                         textAlign = TextAlign.Right,
@@ -938,32 +946,33 @@ fun NowPlayingScreen(
 
                                 Spacer(
                                     modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .height(5.dp),
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(5.dp),
                                 )
                                 // Control Button Layout
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.SpaceEvenly,
                                     modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .height(96.dp)
-                                            .padding(horizontal = 40.dp),
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(96.dp)
+                                        .padding(horizontal = 40.dp),
                                 ) {
                                     FilledTonalIconButton(
                                         colors =
-                                            IconButtonDefaults.iconButtonColors().copy(
-                                                containerColor = Color.Transparent,
-                                            ),
+                                        IconButtonDefaults.iconButtonColors().copy(
+                                            containerColor = Color.Transparent,
+                                        ),
                                         modifier =
-                                            Modifier
-                                                .size(48.dp)
-                                                .aspectRatio(1f)
-                                                .clip(
-                                                    CircleShape,
-                                                ).weight(1f),
+                                        Modifier
+                                            .size(48.dp)
+                                            .aspectRatio(1f)
+                                            .clip(
+                                                CircleShape,
+                                            )
+                                            .weight(1f),
                                         onClick = {
                                             sharedViewModel.onUIEvent(UIEvent.Shuffle)
                                         },
@@ -988,16 +997,17 @@ fun NowPlayingScreen(
                                     }
                                     FilledTonalIconButton(
                                         colors =
-                                            IconButtonDefaults.iconButtonColors().copy(
-                                                containerColor = Color.Transparent,
-                                            ),
+                                        IconButtonDefaults.iconButtonColors().copy(
+                                            containerColor = Color.Transparent,
+                                        ),
                                         modifier =
-                                            Modifier
-                                                .size(72.dp)
-                                                .aspectRatio(1f)
-                                                .clip(
-                                                    CircleShape,
-                                                ).weight(1f),
+                                        Modifier
+                                            .size(72.dp)
+                                            .aspectRatio(1f)
+                                            .clip(
+                                                CircleShape,
+                                            )
+                                            .weight(1f),
                                         onClick = {
                                             if (controllerState.isPreviousAvailable) {
                                                 sharedViewModel.onUIEvent(UIEvent.Previous)
@@ -1013,16 +1023,17 @@ fun NowPlayingScreen(
                                     }
                                     FilledTonalIconButton(
                                         colors =
-                                            IconButtonDefaults.iconButtonColors().copy(
-                                                containerColor = Color.Transparent,
-                                            ),
+                                        IconButtonDefaults.iconButtonColors().copy(
+                                            containerColor = Color.Transparent,
+                                        ),
                                         modifier =
-                                            Modifier
-                                                .size(96.dp)
-                                                .aspectRatio(1f)
-                                                .clip(
-                                                    CircleShape,
-                                                ).weight(1f),
+                                        Modifier
+                                            .size(96.dp)
+                                            .aspectRatio(1f)
+                                            .clip(
+                                                CircleShape,
+                                            )
+                                            .weight(1f),
                                         onClick = {
                                             sharedViewModel.onUIEvent(UIEvent.PlayPause)
                                         },
@@ -1047,16 +1058,17 @@ fun NowPlayingScreen(
                                     }
                                     FilledTonalIconButton(
                                         colors =
-                                            IconButtonDefaults.iconButtonColors().copy(
-                                                containerColor = Color.Transparent,
-                                            ),
+                                        IconButtonDefaults.iconButtonColors().copy(
+                                            containerColor = Color.Transparent,
+                                        ),
                                         modifier =
-                                            Modifier
-                                                .size(72.dp)
-                                                .aspectRatio(1f)
-                                                .clip(
-                                                    CircleShape,
-                                                ).weight(1f),
+                                        Modifier
+                                            .size(72.dp)
+                                            .aspectRatio(1f)
+                                            .clip(
+                                                CircleShape,
+                                            )
+                                            .weight(1f),
                                         onClick = {
                                             if (controllerState.isNextAvailable) {
                                                 sharedViewModel.onUIEvent(UIEvent.Next)
@@ -1072,16 +1084,17 @@ fun NowPlayingScreen(
                                     }
                                     FilledTonalIconButton(
                                         colors =
-                                            IconButtonDefaults.iconButtonColors().copy(
-                                                containerColor = Color.Transparent,
-                                            ),
+                                        IconButtonDefaults.iconButtonColors().copy(
+                                            containerColor = Color.Transparent,
+                                        ),
                                         modifier =
-                                            Modifier
-                                                .size(48.dp)
-                                                .aspectRatio(1f)
-                                                .clip(
-                                                    CircleShape,
-                                                ).weight(1f),
+                                        Modifier
+                                            .size(48.dp)
+                                            .aspectRatio(1f)
+                                            .clip(
+                                                CircleShape,
+                                            )
+                                            .weight(1f),
                                         onClick = {
                                             sharedViewModel.onUIEvent(UIEvent.Repeat)
                                         },
@@ -1122,20 +1135,20 @@ fun NowPlayingScreen(
                                 // 24.dp
                                 Box(
                                     modifier =
-                                        Modifier
-                                            .height(32.dp)
-                                            .fillMaxWidth()
-                                            .padding(horizontal = 40.dp),
+                                    Modifier
+                                        .height(32.dp)
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 40.dp),
                                 ) {
                                     IconButton(
                                         modifier =
-                                            Modifier
-                                                .size(24.dp)
-                                                .aspectRatio(1f)
-                                                .align(Alignment.CenterStart)
-                                                .clip(
-                                                    CircleShape,
-                                                ),
+                                        Modifier
+                                            .size(24.dp)
+                                            .aspectRatio(1f)
+                                            .align(Alignment.CenterStart)
+                                            .clip(
+                                                CircleShape,
+                                            ),
                                         onClick = {
                                             navController.navigateSafe(
                                                 R.id.action_global_infoFragment,
@@ -1150,31 +1163,30 @@ fun NowPlayingScreen(
                                         Crossfade(
                                             targetState = likeStatus == true,
                                         ) {
-                                            if (it)
-                                                {
-                                                    IconButton(
-                                                        modifier =
-                                                            Modifier
-                                                                .size(24.dp)
-                                                                .aspectRatio(1f)
-                                                                .clip(
-                                                                    CircleShape,
-                                                                ),
-                                                        onClick = {
-                                                            sharedViewModel.addToYouTubeLiked()
-                                                        },
-                                                    ) {
-                                                        Icon(imageVector = Icons.Filled.Done, tint = Color.White, contentDescription = "")
-                                                    }
-                                                } else {
+                                            if (it) {
                                                 IconButton(
                                                     modifier =
-                                                        Modifier
-                                                            .size(24.dp)
-                                                            .aspectRatio(1f)
-                                                            .clip(
-                                                                CircleShape,
-                                                            ),
+                                                    Modifier
+                                                        .size(24.dp)
+                                                        .aspectRatio(1f)
+                                                        .clip(
+                                                            CircleShape,
+                                                        ),
+                                                    onClick = {
+                                                        sharedViewModel.addToYouTubeLiked()
+                                                    },
+                                                ) {
+                                                    Icon(imageVector = Icons.Filled.Done, tint = Color.White, contentDescription = "")
+                                                }
+                                            } else {
+                                                IconButton(
+                                                    modifier =
+                                                    Modifier
+                                                        .size(24.dp)
+                                                        .aspectRatio(1f)
+                                                        .clip(
+                                                            CircleShape,
+                                                        ),
                                                     onClick = {
                                                         sharedViewModel.addToYouTubeLiked()
                                                     },
@@ -1186,12 +1198,12 @@ fun NowPlayingScreen(
                                         Spacer(modifier = Modifier.size(8.dp))
                                         IconButton(
                                             modifier =
-                                                Modifier
-                                                    .size(24.dp)
-                                                    .aspectRatio(1f)
-                                                    .clip(
-                                                        CircleShape,
-                                                    ),
+                                            Modifier
+                                                .size(24.dp)
+                                                .aspectRatio(1f)
+                                                .clip(
+                                                    CircleShape,
+                                                ),
                                             onClick = {
                                                 navController.navigateSafe(
                                                     R.id.action_global_queueFragment,
@@ -1210,26 +1222,28 @@ fun NowPlayingScreen(
                             androidx.compose.animation.AnimatedVisibility(visible = !showHideControlLayout) {
                                 Box(
                                     modifier =
-                                        Modifier
-                                            .height(
-                                                infoLayoutHeightDp.dp,
-                                            ).fillMaxWidth()
-                                            .padding(
-                                                vertical = 20.dp,
-                                                horizontal = 40.dp,
-                                            ).clickable(
-                                                onClick = {
-                                                    if (mainScrollState.value == 0) {
-                                                        showHideJob = true
-                                                        showHideControlLayout = !showHideControlLayout
-                                                    }
-                                                },
-                                                indication = null,
-                                                interactionSource =
-                                                    remember {
-                                                        MutableInteractionSource()
-                                                    },
-                                            ),
+                                    Modifier
+                                        .height(
+                                            infoLayoutHeightDp.dp,
+                                        )
+                                        .fillMaxWidth()
+                                        .padding(
+                                            vertical = 20.dp,
+                                            horizontal = 40.dp,
+                                        )
+                                        .clickable(
+                                            onClick = {
+                                                if (mainScrollState.value == 0) {
+                                                    showHideJob = true
+                                                    showHideControlLayout = !showHideControlLayout
+                                                }
+                                            },
+                                            indication = null,
+                                            interactionSource =
+                                            remember {
+                                                MutableInteractionSource()
+                                            },
+                                        ),
                                     contentAlignment = Alignment.BottomStart,
                                 ) {
                                     Row(
@@ -1269,23 +1283,24 @@ fun NowPlayingScreen(
                     androidx.compose.animation.AnimatedVisibility(visible = screenDataState.canvasData != null) {
                         Box(
                             modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .height(
-                                        (middleLayoutPaddingDp * 2 + middleLayoutHeightDp).dp,
-                                    ).clickable(
-                                        onClick = {
-                                            if (mainScrollState.value == 0) {
-                                                showHideJob = true
-                                                showHideControlLayout = !showHideControlLayout
-                                            }
-                                        },
-                                        indication = null,
-                                        interactionSource =
-                                            remember {
-                                                MutableInteractionSource()
-                                            },
-                                    ),
+                            Modifier
+                                .fillMaxWidth()
+                                .height(
+                                    (middleLayoutPaddingDp * 2 + middleLayoutHeightDp).dp,
+                                )
+                                .clickable(
+                                    onClick = {
+                                        if (mainScrollState.value == 0) {
+                                            showHideJob = true
+                                            showHideControlLayout = !showHideControlLayout
+                                        }
+                                    },
+                                    indication = null,
+                                    interactionSource =
+                                    remember {
+                                        MutableInteractionSource()
+                                    },
+                                ),
                         )
                     }
                 }
@@ -1299,9 +1314,9 @@ fun NowPlayingScreen(
                             onClick = {},
                             shape = RoundedCornerShape(8.dp),
                             colors =
-                                CardDefaults.elevatedCardColors().copy(
-                                    containerColor = startColor.value,
-                                ),
+                            CardDefaults.elevatedCardColors().copy(
+                                containerColor = startColor.value,
+                            ),
                         ) {
                             Column(modifier = Modifier.padding(15.dp)) {
                                 Spacer(modifier = Modifier.height(5.dp))
@@ -1319,9 +1334,9 @@ fun NowPlayingScreen(
                                             },
                                             contentPadding = PaddingValues(0.dp),
                                             modifier =
-                                                Modifier
-                                                    .height(20.dp)
-                                                    .width(40.dp),
+                                            Modifier
+                                                .height(20.dp)
+                                                .width(40.dp),
                                         ) {
                                             Text(text = stringResource(id = R.string.show))
                                         }
@@ -1331,9 +1346,9 @@ fun NowPlayingScreen(
                                 Spacer(modifier = Modifier.height(18.dp))
                                 Box(
                                     modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .height(300.dp),
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(300.dp),
                                 ) {
                                     screenDataState.lyricsData?.let {
                                         LyricsView(
@@ -1349,33 +1364,33 @@ fun NowPlayingScreen(
                                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
                                     Text(
                                         text =
-                                            when (screenDataState.lyricsData?.lyrics?.syncType) {
-                                                "LINE_SYNCED" -> stringResource(id = R.string.line_synced)
-                                                else -> stringResource(id = R.string.unsynced)
-                                            },
+                                        when (screenDataState.lyricsData?.lyrics?.syncType) {
+                                            "LINE_SYNCED" -> stringResource(id = R.string.line_synced)
+                                            else -> stringResource(id = R.string.unsynced)
+                                        },
                                         style = typo.bodySmall,
                                         textAlign = TextAlign.End,
                                         modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .padding(top = 10.dp),
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = 10.dp),
                                     )
                                     Text(
                                         text =
-                                            when (screenDataState.lyricsData?.lyricsProvider) {
-                                                LyricsProvider.MUSIXMATCH -> stringResource(id = R.string.lyrics_provider)
-                                                LyricsProvider.YOUTUBE -> stringResource(id = R.string.lyrics_provider_youtube)
-                                                LyricsProvider.SPOTIFY -> stringResource(id = R.string.spotify_lyrics_provider)
-                                                LyricsProvider.OFFLINE -> stringResource(id = R.string.offline_mode)
-                                                else -> {
-                                                    ""
-                                                }
-                                            },
+                                        when (screenDataState.lyricsData?.lyricsProvider) {
+                                            LyricsProvider.MUSIXMATCH -> stringResource(id = R.string.lyrics_provider)
+                                            LyricsProvider.YOUTUBE -> stringResource(id = R.string.lyrics_provider_youtube)
+                                            LyricsProvider.SPOTIFY -> stringResource(id = R.string.spotify_lyrics_provider)
+                                            LyricsProvider.OFFLINE -> stringResource(id = R.string.offline_mode)
+                                            else -> {
+                                                ""
+                                            }
+                                        },
                                         style = typo.bodySmall,
                                         textAlign = TextAlign.End,
                                         modifier =
-                                            Modifier
-                                                .fillMaxWidth(),
+                                        Modifier
+                                            .fillMaxWidth(),
                                     )
                                 }
                             }
@@ -1404,15 +1419,15 @@ fun NowPlayingScreen(
                             },
                             shape = RoundedCornerShape(8.dp),
                             colors =
-                                CardDefaults.elevatedCardColors().copy(
-                                    containerColor = startColor.value,
-                                ),
+                            CardDefaults.elevatedCardColors().copy(
+                                containerColor = startColor.value,
+                            ),
                         ) {
                             Box(
                                 modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .height(250.dp),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(250.dp),
                             ) {
                                 val thumb = screenDataState.songInfoData?.authorThumbnail
                                 AsyncImage(
@@ -1427,18 +1442,18 @@ fun NowPlayingScreen(
                                     contentDescription = null,
                                     contentScale = ContentScale.Crop,
                                     modifier =
-                                        Modifier
-                                            .fillMaxSize()
-                                            .alpha(0.8f)
-                                            .clip(
-                                                RoundedCornerShape(8.dp),
-                                            ),
+                                    Modifier
+                                        .fillMaxSize()
+                                        .alpha(0.8f)
+                                        .clip(
+                                            RoundedCornerShape(8.dp),
+                                        ),
                                 )
                                 Box(
                                     modifier =
-                                        Modifier
-                                            .padding(15.dp)
-                                            .fillMaxSize(),
+                                    Modifier
+                                        .padding(15.dp)
+                                        .fillMaxSize(),
                                 ) {
                                     Column(Modifier.align(Alignment.TopStart)) {
                                         Spacer(modifier = Modifier.height(5.dp))
@@ -1472,9 +1487,9 @@ fun NowPlayingScreen(
                             onClick = {},
                             shape = RoundedCornerShape(8.dp),
                             colors =
-                                CardDefaults.elevatedCardColors().copy(
-                                    containerColor = startColor.value,
-                                ),
+                            CardDefaults.elevatedCardColors().copy(
+                                containerColor = startColor.value,
+                            ),
                         ) {
                             Column(
                                 Modifier
@@ -1490,21 +1505,21 @@ fun NowPlayingScreen(
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
                                     text =
-                                        stringResource(
-                                            id = R.string.view_count,
-                                            "%,d".format(screenDataState.songInfoData?.viewCount),
-                                        ),
+                                    stringResource(
+                                        id = R.string.view_count,
+                                        "%,d".format(screenDataState.songInfoData?.viewCount),
+                                    ),
                                     style = typo.labelMedium,
                                     color = Color.White,
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
                                     text =
-                                        stringResource(
-                                            id = R.string.like_and_dislike,
-                                            screenDataState.songInfoData?.like ?: 0,
-                                            screenDataState.songInfoData?.dislike ?: 0,
-                                        ),
+                                    stringResource(
+                                        id = R.string.like_and_dislike,
+                                        screenDataState.songInfoData?.like ?: 0,
+                                        screenDataState.songInfoData?.dislike ?: 0,
+                                    ),
                                     style = typo.bodyMedium,
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
@@ -1539,9 +1554,9 @@ fun NowPlayingScreen(
                     Spacer(modifier = Modifier.height(10.dp))
                     Spacer(
                         modifier =
-                            Modifier.height(
-                                with(localDensity) { WindowInsets.systemBars.getBottom(localDensity).toDp() },
-                            ),
+                        Modifier.height(
+                            with(localDensity) { WindowInsets.systemBars.getBottom(localDensity).toDp() },
+                        ),
                     )
                 }
             }
