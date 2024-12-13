@@ -271,10 +271,10 @@ class SharedViewModel(
                         NowPlayingScreenData(
                             nowPlayingTitle = state.track?.title ?: "",
                             artistName =
-                                state.track
-                                    ?.artists
-                                    ?.toListName()
-                                    ?.firstOrNull() ?: "",
+                            state.track
+                                ?.artists
+                                ?.toListName()
+                                ?.firstOrNull() ?: "",
                             isVideo = false,
                             thumbnailURL = null,
                             canvasData = null,
@@ -322,6 +322,7 @@ class SharedViewModel(
                             SimpleMediaState.Initial -> {
                                 _timeline.update { it.copy(loading = true) }
                             }
+
                             SimpleMediaState.Ended -> {
                                 _timeline.update {
                                     it.copy(
@@ -603,12 +604,12 @@ class SharedViewModel(
                         _nowPlayingScreenData.update {
                             it.copy(
                                 canvasData =
-                                    response?.canvases?.firstOrNull()?.canvas_url?.let { canvasUrl ->
-                                        NowPlayingScreenData.CanvasData(
-                                            isVideo = canvasUrl.contains(".mp4"),
-                                            url = canvasUrl,
-                                        )
-                                    },
+                                response?.canvases?.firstOrNull()?.canvas_url?.let { canvasUrl ->
+                                    NowPlayingScreenData.CanvasData(
+                                        isVideo = canvasUrl.contains(".mp4"),
+                                        url = canvasUrl,
+                                    )
+                                },
                             )
                         }
                     }
@@ -1204,21 +1205,22 @@ class SharedViewModel(
                     _nowPlayingScreenData.update {
                         it.copy(
                             lyricsData =
-                                it.lyricsData?.copy(
-                                    translatedLyrics = lyrics,
-                                ),
+                            it.lyricsData?.copy(
+                                translatedLyrics = lyrics,
+                            ),
                         )
                     }
                 }
+
                 false -> {
                     if (lyrics != null) {
                         _nowPlayingScreenData.update {
                             it.copy(
                                 lyricsData =
-                                    NowPlayingScreenData.LyricsData(
-                                        lyrics = lyrics,
-                                        lyricsProvider = lyricsProvider,
-                                    ),
+                                NowPlayingScreenData.LyricsData(
+                                    lyrics = lyrics,
+                                    lyricsProvider = lyricsProvider,
+                                ),
                             )
                         }
                     } else {
@@ -1264,22 +1266,15 @@ class SharedViewModel(
                     .collect { response ->
                         Log.w(tag, response.second.data.toString())
 
-                    when (response.second) {
-                        is Resource.Success -> {
-                            if (response.second.data != null) {
-                                Log.d(tag, "Get Lyrics Data Success")
-                                updateLyrics(
-                                    videoId,
-                                    response.second.data,
-                                    false,
-                                    LyricsProvider.MUSIXMATCH
-                                )
-                                insertLyrics(
-                                    response.second.data!!.toLyricsEntity(
+                        when (response.second) {
+                            is Resource.Success -> {
+                                if (response.second.data != null) {
+                                    Log.d(tag, "Get Lyrics Data Success")
+                                    updateLyrics(
                                         videoId,
                                         response.second.data,
                                         false,
-                                        LyricsProvider.MUSIXMATCH,
+                                        LyricsProvider.MUSIXMATCH
                                     )
                                     insertLyrics(
                                         response.second.data!!.toLyricsEntity(
@@ -1301,25 +1296,11 @@ class SharedViewModel(
                                                         ),
                                                         true,
                                                     )
+
                                                 }
                                             }
-                                        }
-                                }
-                            } else if (dataStoreManager.spotifyLyrics.first() == TRUE) {
-                                getSpotifyLyrics(
-                                    song.toTrack().copy(
-                                        durationSeconds = duration,
-                                    ),
-                                    "${song.title} $artist",
-                                    duration,
-                                )
-                            }
-                        }
-
-                        is Resource.Error -> {
-                            Log.w(tag, "Get Lyrics Data Error")
-                            if (_lyrics.value?.message != "reset") {
-                                if (dataStoreManager.spotifyLyrics.first() == TRUE) {
+                                    }
+                                } else if (dataStoreManager.spotifyLyrics.first() == TRUE) {
                                     getSpotifyLyrics(
                                         song.toTrack().copy(
                                             durationSeconds = duration,
@@ -1327,14 +1308,30 @@ class SharedViewModel(
                                         "${song.title} $artist",
                                         duration,
                                     )
-                                } else {
-                                    getSavedLyrics(
-                                        song.toTrack().copy(
-                                            durationSeconds = duration,
-                                        ),
-                                    )
                                 }
                             }
+
+                            is Resource.Error -> {
+                                Log.w(tag, "Get Lyrics Data Error")
+                                if (_lyrics.value?.message != "reset") {
+                                    if (dataStoreManager.spotifyLyrics.first() == TRUE) {
+                                        getSpotifyLyrics(
+                                            song.toTrack().copy(
+                                                durationSeconds = duration,
+                                            ),
+                                            "${song.title} $artist",
+                                            duration,
+                                        )
+                                    } else {
+                                        getSavedLyrics(
+                                            song.toTrack().copy(
+                                                durationSeconds = duration,
+                                            ),
+                                        )
+                                    }
+                                }
+                            }
+
                         }
                     }
             } else if (dataStoreManager.lyricsProvider.first() == DataStoreManager.YOUTUBE) {
@@ -1355,10 +1352,12 @@ class SharedViewModel(
                                     song.toTrack().copy(
                                         durationSeconds = duration,
                                     ),
-                                    "${song.title} ${song.artistName?.firstOrNull() ?: simpleMediaServiceHandler.nowPlaying
-                                        .first()
-                                        ?.mediaMetadata
-                                        ?.artist ?: ""}",
+                                    "${song.title} ${
+                                        song.artistName?.firstOrNull() ?: simpleMediaServiceHandler.nowPlaying
+                                            .first()
+                                            ?.mediaMetadata
+                                            ?.artist ?: ""
+                                    }",
                                     duration,
                                 )
                             }
@@ -1371,10 +1370,12 @@ class SharedViewModel(
                                         song.toTrack().copy(
                                             durationSeconds = duration,
                                         ),
-                                        "${song.title} ${song.artistName?.firstOrNull() ?: simpleMediaServiceHandler.nowPlaying
-                                            .first()
-                                            ?.mediaMetadata
-                                            ?.artist ?: ""}",
+                                        "${song.title} ${
+                                            song.artistName?.firstOrNull() ?: simpleMediaServiceHandler.nowPlaying
+                                                .first()
+                                                ?.mediaMetadata
+                                                ?.artist ?: ""
+                                        }",
                                         duration,
                                     )
                                 } else {
