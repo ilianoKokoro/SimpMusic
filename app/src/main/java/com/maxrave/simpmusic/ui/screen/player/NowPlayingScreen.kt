@@ -410,12 +410,14 @@ fun NowPlayingScreen(
                         }
                     } else if (isVideo == false) {
                         AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(screenDataState.canvasData?.url)
-                                .diskCachePolicy(CachePolicy.ENABLED)
-                                .diskCacheKey(screenDataState.canvasData?.url)
-                                .crossfade(550)
-                                .build(),
+                            model =
+                                ImageRequest
+                                    .Builder(LocalContext.current)
+                                    .data(screenDataState.canvasData?.url)
+                                    .diskCachePolicy(CachePolicy.ENABLED)
+                                    .diskCacheKey(screenDataState.canvasData?.url)
+                                    .crossfade(550)
+                                    .build(),
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(),
                         )
@@ -484,14 +486,13 @@ fun NowPlayingScreen(
                             textAlign = TextAlign.Center,
                             maxLines = 1,
                             modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(align = Alignment.CenterVertically)
-                                .basicMarquee(
-                                    iterations = Int.MAX_VALUE,
-                                    animationMode = MarqueeAnimationMode.Immediately
-                                )
-                                .focusable(),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                                    .basicMarquee(
+                                        iterations = Int.MAX_VALUE,
+                                        animationMode = MarqueeAnimationMode.Immediately,
+                                    ).focusable(),
                         )
                     }
                 },
@@ -562,31 +563,34 @@ fun NowPlayingScreen(
                         ) {
                             // IS SONG => Show Artwork
                             AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data(screenDataState.thumbnailURL)
-                                    .diskCachePolicy(CachePolicy.ENABLED)
-                                    .diskCacheKey(screenDataState.thumbnailURL + "BIGGER")
-                                    .crossfade(550)
-                                    .build(),
+                                model =
+                                    ImageRequest
+                                        .Builder(LocalContext.current)
+                                        .data(screenDataState.thumbnailURL)
+                                        .diskCachePolicy(CachePolicy.ENABLED)
+                                        .diskCacheKey(screenDataState.thumbnailURL + "BIGGER")
+                                        .crossfade(550)
+                                        .build(),
                                 contentDescription = "",
                                 onSuccess = {
-                                    bitmap = it.result.image.toBitmap().asImageBitmap()
+                                    bitmap =
+                                        it.result.image
+                                            .toBitmap()
+                                            .asImageBitmap()
                                 },
                                 contentScale = ContentScale.Crop,
                                 placeholder = painterResource(id = R.drawable.holder),
                                 modifier =
-                                Modifier
-                                    .align(Alignment.Center)
-                                    .fillMaxWidth()
-                                    .aspectRatio(
-                                        if (!screenDataState.isVideo) 1f else 16f / 9,
-                                    )
-                                    .clip(
-                                        RoundedCornerShape(8.dp),
-                                    )
-                                    .alpha(
-                                        if (!screenDataState.isVideo || !shouldShowVideo) 1f else 0f,
-                                    ),
+                                    Modifier
+                                        .align(Alignment.Center)
+                                        .fillMaxWidth()
+                                        .aspectRatio(
+                                            if (!screenDataState.isVideo) 1f else 16f / 9,
+                                        ).clip(
+                                            RoundedCornerShape(8.dp),
+                                        ).alpha(
+                                            if (!screenDataState.isVideo || !shouldShowVideo) 1f else 0f,
+                                        ),
                             )
 
                             // IS VIDEO => Show Video
@@ -752,7 +756,6 @@ fun NowPlayingScreen(
                                         .padding(horizontal = 40.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
-
                                     Column(Modifier.weight(1f)) {
                                         Text(
                                             text = screenDataState.nowPlayingTitle,
@@ -760,14 +763,13 @@ fun NowPlayingScreen(
                                             maxLines = 1,
                                             color = Color.White,
                                             modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .wrapContentHeight(align = Alignment.CenterVertically)
-                                                .basicMarquee(
-                                                    iterations = Int.MAX_VALUE,
-                                                    animationMode = MarqueeAnimationMode.Immediately
-                                                )
-                                                .focusable(),
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                                                    .basicMarquee(
+                                                        iterations = Int.MAX_VALUE,
+                                                        animationMode = MarqueeAnimationMode.Immediately,
+                                                    ).focusable(),
                                         )
                                         Spacer(modifier = Modifier.height(3.dp))
                                         Text(
@@ -775,20 +777,19 @@ fun NowPlayingScreen(
                                             style = typo.bodyMedium,
                                             maxLines = 1,
                                             modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .wrapContentHeight(align = Alignment.CenterVertically)
-                                                .basicMarquee(
-                                                    iterations = Int.MAX_VALUE,
-                                                    animationMode = MarqueeAnimationMode.Immediately
-                                                )
-                                                .focusable()
-                                                .clickable {
-                                                    navController.navigateSafe(
-                                                        R.id.action_global_artistFragment,
-                                                        bundleOf("channelId" to screenDataState.songInfoData?.authorId),
-                                                    )
-                                                },
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                                                    .basicMarquee(
+                                                        iterations = Int.MAX_VALUE,
+                                                        animationMode = MarqueeAnimationMode.Immediately,
+                                                    ).focusable()
+                                                    .clickable {
+                                                        navController.navigateSafe(
+                                                            R.id.action_global_artistFragment,
+                                                            bundleOf("channelId" to screenDataState.songInfoData?.authorId),
+                                                        )
+                                                    },
                                         )
                                     }
                                     Spacer(modifier = Modifier.size(10.dp))
@@ -816,15 +817,14 @@ fun NowPlayingScreen(
                                                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                                                     LinearProgressIndicator(
                                                         modifier =
-                                                        Modifier
-                                                            .fillMaxWidth()
-                                                            .height(4.dp)
-                                                            .padding(
-                                                                horizontal = 3.dp
-                                                            )
-                                                            .clip(
-                                                                RoundedCornerShape(8.dp),
-                                                            ),
+                                                            Modifier
+                                                                .fillMaxWidth()
+                                                                .height(4.dp)
+                                                                .padding(
+                                                                    horizontal = 3.dp,
+                                                                ).clip(
+                                                                    RoundedCornerShape(8.dp),
+                                                                ),
                                                         color = Color.Gray,
                                                         trackColor = Color.DarkGray,
                                                         strokeCap = StrokeCap.Round,
@@ -835,19 +835,18 @@ fun NowPlayingScreen(
                                                     LinearProgressIndicator(
                                                         progress = { timelineState.bufferedPercent.toFloat() / 100 },
                                                         modifier =
-                                                        Modifier
-                                                            .fillMaxWidth()
-                                                            .height(4.dp)
-                                                            .padding(
-                                                                horizontal = 3.dp
-                                                            )
-                                                            .clip(
-                                                                RoundedCornerShape(8.dp),
-                                                            ),
+                                                            Modifier
+                                                                .fillMaxWidth()
+                                                                .height(4.dp)
+                                                                .padding(
+                                                                    horizontal = 3.dp,
+                                                                ).clip(
+                                                                    RoundedCornerShape(8.dp),
+                                                                ),
                                                         color = Color.Gray,
                                                         trackColor = Color.DarkGray,
                                                         strokeCap = StrokeCap.Round,
-                                                        drawStopIndicator = {}
+                                                        drawStopIndicator = {},
                                                     )
                                                 }
                                             }
@@ -871,29 +870,31 @@ fun NowPlayingScreen(
                                                 ),
                                             track = { sliderState ->
                                                 SliderDefaults.Track(
-                                                    modifier = Modifier
-                                                        .height(5.dp),
+                                                    modifier =
+                                                        Modifier
+                                                            .height(5.dp),
                                                     enabled = true,
                                                     sliderState = sliderState,
-                                                    colors = SliderDefaults.colors().copy(
-                                                        thumbColor = Color.White,
-                                                        activeTrackColor = Color.White,
-                                                        inactiveTrackColor = Color.Transparent,
-                                                    ),
+                                                    colors =
+                                                        SliderDefaults.colors().copy(
+                                                            thumbColor = Color.White,
+                                                            activeTrackColor = Color.White,
+                                                            inactiveTrackColor = Color.Transparent,
+                                                        ),
                                                     thumbTrackGapSize = 0.dp,
                                                     drawTick = { _, _ -> },
-                                                    drawStopIndicator = null
+                                                    drawStopIndicator = null,
                                                 )
                                             },
                                             thumb = {
                                                 SliderDefaults.Thumb(
                                                     modifier =
-                                                    Modifier
-                                                        .height(18.dp)
-                                                        .width(8.dp)
-                                                        .padding(
-                                                            vertical = 4.dp
-                                                        ),
+                                                        Modifier
+                                                            .height(18.dp)
+                                                            .width(8.dp)
+                                                            .padding(
+                                                                vertical = 4.dp,
+                                                            ),
                                                     thumbSize = DpSize(8.dp, 8.dp),
                                                     interactionSource =
                                                     remember {
@@ -1178,12 +1179,12 @@ fun NowPlayingScreen(
                                             } else {
                                                 IconButton(
                                                     modifier =
-                                                    Modifier
-                                                        .size(24.dp)
-                                                        .aspectRatio(1f)
-                                                        .clip(
-                                                            CircleShape,
-                                                        ),
+                                                        Modifier
+                                                            .size(24.dp)
+                                                            .aspectRatio(1f)
+                                                            .clip(
+                                                                CircleShape,
+                                                            ),
                                                     onClick = {
                                                         sharedViewModel.addToYouTubeLiked()
                                                     },
@@ -1248,22 +1249,24 @@ fun NowPlayingScreen(
                                     ) {
                                         val thumb = screenDataState.songInfoData?.authorThumbnail
                                         AsyncImage(
-                                            model = ImageRequest.Builder(LocalContext.current)
-                                                .data(thumb)
-                                                .diskCachePolicy(CachePolicy.ENABLED)
-                                                .diskCacheKey(thumb)
-                                                .crossfade(550)
-                                                .build(),
+                                            model =
+                                                ImageRequest
+                                                    .Builder(LocalContext.current)
+                                                    .data(thumb)
+                                                    .diskCachePolicy(CachePolicy.ENABLED)
+                                                    .diskCacheKey(thumb)
+                                                    .crossfade(550)
+                                                    .build(),
                                             placeholder = painterResource(R.drawable.holder),
                                             error = painterResource(R.drawable.holder),
                                             contentDescription = null,
                                             contentScale = ContentScale.Crop,
                                             modifier =
-                                            Modifier
-                                                .size(42.dp)
-                                                .clip(
-                                                    CircleShape,
-                                                ),
+                                                Modifier
+                                                    .size(42.dp)
+                                                    .clip(
+                                                        CircleShape,
+                                                    ),
                                         )
                                         Spacer(modifier = Modifier.size(12.dp))
                                         Text(
@@ -1428,12 +1431,14 @@ fun NowPlayingScreen(
                             ) {
                                 val thumb = screenDataState.songInfoData?.authorThumbnail
                                 AsyncImage(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(thumb)
-                                        .diskCachePolicy(CachePolicy.ENABLED)
-                                        .diskCacheKey(thumb)
-                                        .crossfade(550)
-                                        .build(),
+                                    model =
+                                        ImageRequest
+                                            .Builder(LocalContext.current)
+                                            .data(thumb)
+                                            .diskCachePolicy(CachePolicy.ENABLED)
+                                            .diskCacheKey(thumb)
+                                            .crossfade(550)
+                                            .build(),
                                     placeholder = painterResource(R.drawable.holder_video),
                                     error = painterResource(R.drawable.holder_video),
                                     contentDescription = null,

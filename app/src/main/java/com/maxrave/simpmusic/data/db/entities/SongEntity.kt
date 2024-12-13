@@ -27,9 +27,8 @@ data class SongEntity(
     val totalPlayTime: Long = 0, // in milliseconds
     val downloadState: Int = STATE_NOT_DOWNLOADED,
     val inLibrary: LocalDateTime = LocalDateTime.now(),
-    ): RecentlyType
-{
+) : RecentlyType {
     override fun objectType(): RecentlyType.Type = RecentlyType.Type.SONG
-    fun toggleLike() = copy(liked = !liked)
 
+    fun toggleLike() = copy(liked = !liked)
 }

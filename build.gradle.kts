@@ -24,8 +24,8 @@ subprojects {
                     freeCompilerArgs.addAll(
                         listOf(
                             "-P",
-                            "plugin:androidx.compose.compiler.plugins.kotlin:${it}Destination=${layout.buildDirectory.asFile.get().absolutePath}/compose_metrics"
-                        )
+                            "plugin:androidx.compose.compiler.plugins.kotlin:${it}Destination=${layout.buildDirectory.asFile.get().absolutePath}/compose_metrics",
+                        ),
                     )
                 }
             }

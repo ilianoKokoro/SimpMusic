@@ -339,11 +339,13 @@ class SimpleMediaServiceHandler(
                         mainRepository.updateListenCount(songEntity.videoId)
                     } else {
                         _controlState.update { it.copy(isLiked = false) }
-                        mainRepository.insertSong(
-                            track?.toSongEntity() ?: mediaItem.toSongEntity()!!,
-                        ).singleOrNull()?.let {
-                            Log.w(TAG, "getDataOfNowPlayingState: $it")
-                        }
+                        mainRepository
+                            .insertSong(
+                                track?.toSongEntity() ?: mediaItem.toSongEntity()!!,
+                            ).singleOrNull()
+                            ?.let {
+                                Log.w(TAG, "getDataOfNowPlayingState: $it")
+                            }
                     }
                     Log.w(TAG, "getDataOfNowPlayingState: $songEntity")
                     Log.w(TAG, "getDataOfNowPlayingState: $track")
@@ -794,20 +796,22 @@ class SimpleMediaServiceHandler(
 
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
-        val loaded = player.bufferedPosition.let {
-            if (it > 0) {
-                it
-            } else {
-                0
+        val loaded =
+            player.bufferedPosition.let {
+                if (it > 0) {
+                    it
+                } else {
+                    0
+                }
             }
-        }
-        val current = player.currentPosition.let {
-            if (it > 0) {
-                it
-            } else {
-                0
+        val current =
+            player.currentPosition.let {
+                if (it > 0) {
+                    it
+                } else {
+                    0
+                }
             }
-        }
         when (playbackState) {
             Player.STATE_IDLE -> {
                 _simpleMediaState.value = SimpleMediaState.Initial
@@ -912,14 +916,15 @@ class SimpleMediaServiceHandler(
                 if (localPlaylist != null) {
                     Log.w(TAG, "shufflePlaylist: Local playlist track size ${localPlaylist.tracks?.size}")
                     val trackCount = localPlaylist.tracks?.size ?: return@launch
-                    val listPosition = (0 until trackCount).toMutableList().apply {
-                        remove(randomTrackIndex)
-                    }
+                    val listPosition =
+                        (0 until trackCount).toMutableList().apply {
+                            remove(randomTrackIndex)
+                        }
                     if (listPosition.size <= 0) return@launch
                     listPosition.shuffle()
                     _queueData.update {
                         it?.copy(
-                            //After shuffle prefix is offset and list position
+                            // After shuffle prefix is offset and list position
                             continuation = "SHUFFLE0_${converter.fromListIntToString(listPosition)}",
                         )
                     }
@@ -949,30 +954,32 @@ class SimpleMediaServiceHandler(
                         val posString = continuation.removePrefix("SHUFFLE${offset}_")
                         val listPosition = converter.fromStringToListInt(posString) ?: return@launch
                         val theLastLoad = 50 * (offset + 1) >= listPosition.size
-                        mainRepository.getPlaylistPairSongByListPosition(
-                            longId,
-                            listPosition.subList(50 * offset, if (theLastLoad) listPosition.size else 50 * (offset + 1)),
-                        ).singleOrNull()?.let { pair ->
-                            Log.w("Check loadMore response", pair.size.toString())
-                            mainRepository.getSongsByListVideoId(pair.map { it.songId }).single().let { songs ->
-                                if (songs.isNotEmpty()) {
-                                    delay(300)
-                                    loadMoreCatalog(songs.toArrayListTrack())
-                                    offset++
-                                    _queueData.update {
-                                        if (!theLastLoad) {
-                                            it?.copy(
-                                                continuation = "SHUFFLE${offset}_$posString",
-                                            )
-                                        } else {
-                                            it?.copy(
-                                                continuation = null
-                                            )
+                        mainRepository
+                            .getPlaylistPairSongByListPosition(
+                                longId,
+                                listPosition.subList(50 * offset, if (theLastLoad) listPosition.size else 50 * (offset + 1)),
+                            ).singleOrNull()
+                            ?.let { pair ->
+                                Log.w("Check loadMore response", pair.size.toString())
+                                mainRepository.getSongsByListVideoId(pair.map { it.songId }).single().let { songs ->
+                                    if (songs.isNotEmpty()) {
+                                        delay(300)
+                                        loadMoreCatalog(songs.toArrayListTrack())
+                                        offset++
+                                        _queueData.update {
+                                            if (!theLastLoad) {
+                                                it?.copy(
+                                                    continuation = "SHUFFLE${offset}_$posString",
+                                                )
+                                            } else {
+                                                it?.copy(
+                                                    continuation = null,
+                                                )
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
                     } else {
                         val filter = if (continuation.startsWith(ASC)) FilterState.OlderFirst else FilterState.NewerFirst
                         val offset =
@@ -1006,13 +1013,13 @@ class SimpleMediaServiceHandler(
                                         _queueData.value =
                                             _queueData.value?.copy(
                                                 continuation =
-                                                if (filter ==
-                                                    FilterState.OlderFirst
-                                                ) {
-                                                    ASC + (offset + 1)
-                                                } else {
-                                                    DESC + (offset + 1).toString()
-                                                },
+                                                    if (filter ==
+                                                        FilterState.OlderFirst
+                                                    ) {
+                                                        ASC + (offset + 1)
+                                                    } else {
+                                                        DESC + (offset + 1).toString()
+                                                    },
                                             )
                                     } else {
                                         _stateFlow.value = StateSource.STATE_INITIALIZED
@@ -1478,7 +1485,10 @@ class SimpleMediaServiceHandler(
         }
     }
 
-    suspend fun loadMoreCatalog(listTrack: ArrayList<Track>, isAddToQueue: Boolean = false) {
+    suspend fun loadMoreCatalog(
+        listTrack: ArrayList<Track>,
+        isAddToQueue: Boolean = false,
+    ) {
         Log.d("Queue", listTrack.map { it.title }.toString())
         _stateFlow.value = StateSource.STATE_INITIALIZING
         val catalogMetadata: ArrayList<Track> = arrayListOf()
@@ -1492,11 +1502,18 @@ class SimpleMediaServiceHandler(
             }
             val artistName: String = track.artists.toListName().connectArtists()
             val isSong =
-                (track.thumbnails?.lastOrNull()?.height != 0 &&
-                    track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
-                    track.thumbnails?.lastOrNull()?.height != null) && (!thumbUrl
-                    .contains("hq720") && !thumbUrl
-                    .contains("maxresdefault") && !thumbUrl.contains("sddefault"))
+                (
+                    track.thumbnails?.lastOrNull()?.height != 0 &&
+                        track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
+                        track.thumbnails?.lastOrNull()?.height != null
+                ) &&
+                    (
+                        !thumbUrl
+                            .contains("hq720") &&
+                            !thumbUrl
+                                .contains("maxresdefault") &&
+                            !thumbUrl.contains("sddefault")
+                    )
             if (track.artists.isNullOrEmpty()) {
                 mainRepository
                     .getSongInfo(track.videoId)
@@ -1619,11 +1636,18 @@ class SimpleMediaServiceHandler(
                     thumbUrl = Regex("([wh])120").replace(thumbUrl, "$1544")
                 }
                 val isSong =
-                    (track.thumbnails?.lastOrNull()?.height != 0 &&
-                        track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
-                        track.thumbnails?.lastOrNull()?.height != null) && (!thumbUrl
-                        .contains("hq720") && !thumbUrl
-                        .contains("maxresdefault") && !thumbUrl.contains("sddefault"))
+                    (
+                        track.thumbnails?.lastOrNull()?.height != 0 &&
+                            track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
+                            track.thumbnails?.lastOrNull()?.height != null
+                    ) &&
+                        (
+                            !thumbUrl
+                                .contains("hq720") &&
+                                !thumbUrl
+                                    .contains("maxresdefault") &&
+                                !thumbUrl.contains("sddefault")
+                        )
                 if (downloaded == 1) {
                     if (track.artists.isNullOrEmpty()) {
                         mainRepository.getSongInfo(track.videoId).singleOrNull().let { songInfo ->
@@ -1866,11 +1890,18 @@ class SimpleMediaServiceHandler(
         }
         val artistName: String = track.artists.toListName().connectArtists()
         val isSong =
-            (track.thumbnails?.lastOrNull()?.height != 0 &&
-                track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
-                track.thumbnails?.lastOrNull()?.height != null) && (!thumbUrl
-                .contains("hq720") && !thumbUrl
-                .contains("maxresdefault") && !thumbUrl.contains("sddefault"))
+            (
+                track.thumbnails?.lastOrNull()?.height != 0 &&
+                    track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
+                    track.thumbnails?.lastOrNull()?.height != null
+            ) &&
+                (
+                    !thumbUrl
+                        .contains("hq720") &&
+                        !thumbUrl
+                            .contains("maxresdefault") &&
+                        !thumbUrl.contains("sddefault")
+                )
         if ((player.currentMediaItemIndex + 1 in 0..(queueData.first()?.listTracks?.size ?: 0))) {
             if (track.artists.isNullOrEmpty()) {
                 mainRepository.getSongInfo(track.videoId).cancellable().first().let { songInfo ->
