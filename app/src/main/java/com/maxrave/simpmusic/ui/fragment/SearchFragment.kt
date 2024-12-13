@@ -148,6 +148,7 @@ class SearchFragment : Fragment() {
                                     fetchSearchAll(query)
                                     Log.d("Check All", "All is checked")
                                 }
+
                                 "videos" -> {
                                     resultList.clear()
                                     resultAdapter.updateList(resultList)
@@ -155,6 +156,7 @@ class SearchFragment : Fragment() {
                                     binding.chipGroupTypeSearch.isClickable = true
                                     Log.d("Check Video", "Video is checked")
                                 }
+
                                 "songs" -> {
                                     resultList.clear()
                                     Log.d("Check ResultList", resultList.toString())
@@ -163,6 +165,7 @@ class SearchFragment : Fragment() {
                                     binding.chipGroupTypeSearch.isClickable = true
                                     Log.d("Check Song", "Song is checked")
                                 }
+
                                 "albums" -> {
                                     resultList.clear()
                                     resultAdapter.updateList(resultList)
@@ -170,6 +173,7 @@ class SearchFragment : Fragment() {
                                     binding.chipGroupTypeSearch.isClickable = true
                                     Log.d("Check Album", "Album is checked")
                                 }
+
                                 "artists" -> {
                                     resultList.clear()
                                     resultAdapter.updateList(resultList)
@@ -279,8 +283,8 @@ class SearchFragment : Fragment() {
 
         binding.suggestList.visibility = View.GONE
         binding.suggestListYtItem.visibility = View.GONE
-        if (viewModel.searchAllResult.value == null || viewModel.searchAllResult.value!!.isEmpty()) {
-            if (searchHistory.isEmpty()) {
+        if (viewModel.searchAllResult.value == null || viewModel.searchAllResult.value!!.isEmpty) {
+            if (searchHistory.isEmpty) {
                 binding.recentlyQueryView.visibility = View.GONE
                 binding.defaultLayout.visibility = View.VISIBLE
             } else {
@@ -972,6 +976,7 @@ class SearchFragment : Fragment() {
                             }
                         }
                     }
+
                     is Resource.Error -> {
                         response.message?.let { message ->
                             Snackbar
@@ -1019,6 +1024,7 @@ class SearchFragment : Fragment() {
                             }
                         }
                     }
+
                     is Resource.Error -> {
                         response.message?.let { message ->
                             Snackbar
@@ -1179,6 +1185,7 @@ class SearchFragment : Fragment() {
                                 }
                             }
                         }
+
                         is Resource.Error -> {
                             response.message?.let { message ->
                                 Snackbar
@@ -1231,6 +1238,7 @@ class SearchFragment : Fragment() {
                                 }
                             }
                         }
+
                         is Resource.Error -> {
                             response.message?.let { message ->
                                 Snackbar
@@ -1280,6 +1288,7 @@ class SearchFragment : Fragment() {
                                 }
                             }
                         }
+
                         is Resource.Error -> {
                             response.message?.let { message ->
                                 Snackbar
@@ -1349,6 +1358,7 @@ class SearchFragment : Fragment() {
                                 }
                             }
                         }
+
                         is Resource.Error -> {
                             response.message?.let { message ->
                                 Snackbar
@@ -1370,6 +1380,7 @@ class SearchFragment : Fragment() {
                                 album = it!!
                             }
                         }
+
                         is Resource.Error -> {
                             response.message?.let { message ->
                                 Snackbar
@@ -1391,6 +1402,7 @@ class SearchFragment : Fragment() {
                                 artist = artistsResultArrayList!!
                             }
                         }
+
                         is Resource.Error -> {
                             response.message?.let { message ->
                                 Snackbar
@@ -1412,6 +1424,7 @@ class SearchFragment : Fragment() {
                                 playlist = playlistsResultArrayList!!
                             }
                         }
+
                         is Resource.Error -> {
                             response.message?.let { message ->
                                 Snackbar
@@ -1556,6 +1569,7 @@ class SearchFragment : Fragment() {
                         suggestAdapter.updateData(suggestList)
                     }
                 }
+
                 is Resource.Error -> {
                 }
             }

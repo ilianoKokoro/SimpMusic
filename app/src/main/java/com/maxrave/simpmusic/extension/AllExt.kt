@@ -240,15 +240,15 @@ fun Track.toSongEntity(): SongEntity {
         isExplicit = this.isExplicit,
         likeStatus = this.likeStatus ?: "",
         thumbnails =
-            this.thumbnails?.last()?.url?.let {
-                if (it.contains("w120")) {
-                    return@let Regex("([wh])120").replace(it, "$1544")
-                } else if (it.contains("sddefault")) {
-                    return@let it.replace("sddefault", "maxresdefault")
-                } else {
-                    return@let it
-                }
-            },
+        this.thumbnails?.last()?.url?.let {
+            if (it.contains("w120")) {
+                return@let Regex("([wh])120").replace(it, "$1544")
+            } else if (it.contains("sddefault")) {
+                return@let it.replace("sddefault", "maxresdefault")
+            } else {
+                return@let it
+            }
+        },
         title = this.title,
         videoType = this.videoType ?: "",
         category = this.category,
@@ -362,13 +362,13 @@ fun Track.toMediaItem(): MediaItem {
     if (thumbUrl.contains("w120")) {
         thumbUrl = Regex("([wh])120").replace(thumbUrl, "$1544")
     }
-    val artistName: String = this.artists.toListName().connectArtists()
+    this.artists.toListName().connectArtists()
     val isSong =
         (
             this.thumbnails?.last()?.height != 0 &&
                 this.thumbnails?.last()?.height == this.thumbnails?.last()?.width &&
                 this.thumbnails?.last()?.height != null
-        ) &&
+            ) &&
             (!thumbUrl.contains("hq720") && !thumbUrl.contains("maxresdefault"))
     return MediaItem
         .Builder()
@@ -508,13 +508,13 @@ fun Track.addThumbnails(): Track =
         isExplicit = this.isExplicit,
         likeStatus = this.likeStatus,
         thumbnails =
-            listOf(
-                Thumbnail(
-                    720,
-                    "https://i.ytimg.com/vi/${this.videoId}/maxresdefault.jpg",
-                    1280,
-                ),
+        listOf(
+            Thumbnail(
+                720,
+                "https://i.ytimg.com/vi/${this.videoId}/maxresdefault.jpg",
+                1280,
             ),
+        ),
         title = this.title,
         videoId = this.videoId,
         videoType = this.videoType,
@@ -642,25 +642,25 @@ fun PipedResponse.toTrack(videoId: String): Track =
     Track(
         album = null,
         artists =
-            listOf(
-                Artist(
-                    this.uploaderUrl?.replace("/channel/", ""),
-                    this.uploader.toString(),
-                ),
+        listOf(
+            Artist(
+                this.uploaderUrl?.replace("/channel/", ""),
+                this.uploader.toString(),
             ),
+        ),
         duration = "",
         durationSeconds = 0,
         isAvailable = false,
         isExplicit = false,
         likeStatus = "INDIFFERENT",
         thumbnails =
-            listOf(
-                Thumbnail(
-                    720,
-                    this.thumbnailUrl ?: "https://i.ytimg.com/vi/$videoId/maxresdefault.jpg",
-                    1080,
-                ),
+        listOf(
+            Thumbnail(
+                720,
+                this.thumbnailUrl ?: "https://i.ytimg.com/vi/$videoId/maxresdefault.jpg",
+                1080,
             ),
+        ),
         title = this.title ?: " ",
         videoId = videoId,
         videoType = "Song",
@@ -676,22 +676,22 @@ fun YouTubeInitialPage.toTrack(): Track {
     return Track(
         album = null,
         artists =
-            listOf(
-                Artist(
-                    name = initialPage.videoDetails?.author ?: "",
-                    id = initialPage.videoDetails?.channelId,
-                ),
+        listOf(
+            Artist(
+                name = initialPage.videoDetails?.author ?: "",
+                id = initialPage.videoDetails?.channelId,
             ),
+        ),
         duration = initialPage.videoDetails?.lengthSeconds,
         durationSeconds = initialPage.videoDetails?.lengthSeconds?.toInt() ?: 0,
         isAvailable = false,
         isExplicit = false,
         likeStatus = null,
         thumbnails =
-            initialPage.videoDetails
-                ?.thumbnail
-                ?.thumbnails
-                ?.toListThumbnail() ?: listOf(),
+        initialPage.videoDetails
+            ?.thumbnail
+            ?.thumbnails
+            ?.toListThumbnail() ?: listOf(),
         title = initialPage.videoDetails?.title ?: "",
         videoId = initialPage.videoDetails?.videoId ?: "",
         videoType = "",
@@ -712,23 +712,23 @@ fun MusixmatchTranslationLyricsResponse.toLyrics(originalLyrics: Lyrics): Lyrics
         val translation =
             originalLyrics.copy(
                 lines =
-                    originalLyrics.lines?.mapIndexed { index, line ->
-                        line.copy(
-                            words =
-                                if (!line.words.contains("♫")) {
-                                    listTranslation
-                                        .find {
-                                            it.translation.matched_line == line.words ||
-                                                it.translation.subtitle_matched_line == line.words ||
-                                                it.translation.snippet == line.words
-                                        }?.translation
-                                        ?.description
-                                        ?: ""
-                                } else {
-                                    line.words
-                                },
-                        )
-                    },
+                originalLyrics.lines?.mapIndexed { index, line ->
+                    line.copy(
+                        words =
+                        if (!line.words.contains("♫")) {
+                            listTranslation
+                                .find {
+                                    it.translation.matched_line == line.words ||
+                                        it.translation.subtitle_matched_line == line.words ||
+                                        it.translation.snippet == line.words
+                                }?.translation
+                                ?.description
+                                ?: ""
+                        } else {
+                            line.words
+                        },
+                    )
+                },
             )
         return translation
     }
@@ -869,7 +869,7 @@ fun formatDuration(duration: Long): String {
     val seconds: Long = (
         TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) -
             minutes * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES)
-    )
+        )
     return String.format(Locale.ENGLISH, "%02d:%02d", minutes, seconds)
 }
 

@@ -217,13 +217,12 @@ fun parseGenreObject(data: BrowseResponse?): GenreObject? {
                                         ?.navigationEndpoint
                                         ?.watchEndpoint
                                         ?.videoId
-                                val thumbnails =
-                                    content.musicResponsiveListItemRenderer
-                                        ?.thumbnail
-                                        ?.musicThumbnailRenderer
-                                        ?.thumbnail
-                                        ?.thumbnails
-                                        ?.toListThumbnail()
+                                content.musicResponsiveListItemRenderer
+                                    ?.thumbnail
+                                    ?.musicThumbnailRenderer
+                                    ?.thumbnail
+                                    ?.thumbnails
+                                    ?.toListThumbnail()
                                 listItemsSong.add(
                                     ItemsSong(
                                         title = songName ?: "",
@@ -263,10 +262,10 @@ fun parseGenreObject(data: BrowseResponse?): GenreObject? {
                                         playlistBrowseId = playlistBrowseId ?: "",
                                         thumbnail = thumbnails ?: listOf(),
                                         title =
-                                            Title(
-                                                subtitle = subtitle,
-                                                title = contentTitle ?: "",
-                                            ),
+                                        Title(
+                                            subtitle = subtitle,
+                                            title = contentTitle ?: "",
+                                        ),
                                     ),
                                 )
                             }
@@ -318,10 +317,10 @@ fun parseGenreObject(data: BrowseResponse?): GenreObject? {
                                         playlistBrowseId = playlistBrowseId ?: "",
                                         thumbnail = thumbnails ?: listOf(),
                                         title =
-                                            Title(
-                                                subtitle = subtitle,
-                                                title = contentTitle ?: "",
-                                            ),
+                                        Title(
+                                            subtitle = subtitle,
+                                            title = contentTitle ?: "",
+                                        ),
                                     ),
                                 )
                             }
