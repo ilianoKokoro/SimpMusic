@@ -28,7 +28,7 @@ legacy-support-v4 = "1.0.0"
 coroutines-android = "1.9.0"
 coroutines-guava = "1.9.0"
 navigation = "2.8.5"
-gson = "2.10.1"
+gson = "2.11.0"
 coil3 = "3.0.4"
 kmpalette = "3.1.0"
 easypermissions = "3.0.0"
@@ -38,22 +38,23 @@ datastore-preferences = "1.1.1"
 swiperefreshlayout = "1.2.0-alpha01"
 insetter = "0.6.1"
 shimmer = "0.5.0"
-lottie = "6.4.0"
+lottie = "6.6.1"
 paging = "3.3.5"
 customactivityoncrash = "2.4.0"
-sdp-android = "1.1.0"
-ssp-android = "1.1.0"
-aboutlibraries = "10.10.0"
+sdp-android = "1.1.1"
+ssp-android = "1.1.1"
+aboutlibraries = "11.2.3"
 flexbox = "3.0.0"
-balloon = "1.6.4"
+balloon = "1.6.11"
 insetsx = "0.1.0-alpha10"
 ktor = "2.3.12"
 brotli = "0.1.2"
-ksoup = "0.3.1"
+ksoup = "0.4.1"
 desugaring = "2.1.3"
 koin-bom = "4.0.0-RC1"
 koin-annotations = "1.4.0-RC4"
 store = "5.1.0-alpha05"
+kotlinx-metadata-jvm = "0.9.0"
 
 [libraries]
 desugaring = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugaring" }
@@ -105,7 +106,7 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 easypermissions = { group = "pub.devrel", name = "easypermissions", version.ref = "easypermissions" }
 preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference-ktx" }
 fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment-ktx" }
-kotlinx-metadata-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-metadata-jvm", version = "0.8.0" }
+kotlinx-metadata-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-metadata-jvm", version.ref = "kotlinx-metadata-jvm" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 insetter = { group = "dev.chrisbanes.insetter", name = "insetter", version.ref = "insetter" }
