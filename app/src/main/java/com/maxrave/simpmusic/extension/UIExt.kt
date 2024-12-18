@@ -1,12 +1,14 @@
 package com.maxrave.simpmusic.extension
 
 import android.app.Activity
+import android.app.PictureInPictureParams
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Point
 import android.os.Build
 import android.util.Log
-import android.view.View
+import android.view.WindowManager
+import androidx.activity.ComponentActivity
 import androidx.annotation.ColorInt
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -21,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -47,7 +50,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.ColorUtils
 import com.kmpalette.palette.graphics.Palette
 import com.maxrave.simpmusic.ui.theme.md_theme_dark_background
@@ -393,7 +395,16 @@ fun LazyListState.animateScrollAndCentralizeItem(
 }
 
 @Composable
-fun KeepScreenOn() = AndroidView({ View(it).apply { keepScreenOn = true } })
+fun KeepScreenOn() {
+    val context = LocalContext.current
+    DisposableEffect(Unit) {
+        val window = context.findActivity().window
+        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        onDispose {
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+    }
+}
 
 @Composable
 fun LazyListState.isScrollingUp(): Boolean {
@@ -464,3 +475,58 @@ fun Palette?.getColorFromPalette(): Color {
     }
     return Color(ColorUtils.setAlphaComponent(startColor, 255))
 }
+
+fun Context.findActivity(): ComponentActivity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is ComponentActivity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("Picture in picture should be called in the context of an Activity")
+}
+
+@Composable
+fun PipListenerPreAPI12() {
+    // [START android_compose_pip_pre12_listener]
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+        val context = LocalContext.current
+        DisposableEffect(context) {
+            val onUserLeaveBehavior: () -> Unit = {
+                context.findActivity()
+                    .enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            }
+            context.findActivity().addOnUserLeaveHintListener(
+                onUserLeaveBehavior
+            )
+            onDispose {
+                context.findActivity().removeOnUserLeaveHintListener(
+                    onUserLeaveBehavior
+                )
+            }
+        }
+    } else {
+        Log.i("PiP info", "API does not support PiP")
+    }
+    // [END android_compose_pip_pre12_listener]
+}
+
+/**
+ * Android 12 and above Picture in Picture mode
+ */
+fun Modifier.pipModifier(context: Context) = this.onGloballyPositioned { layoutCoordinates ->
+    val builder = PictureInPictureParams.Builder()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        builder.setAutoEnterEnabled(true)
+    }
+    Log.w("PiP info", "layoutCoordinates: $layoutCoordinates")
+    context.findActivity().setPictureInPictureParams(builder.build())
+}
+
+@RequiresOptIn(
+    level = RequiresOptIn.Level.WARNING,
+    message = "This will be migrate to Compose. I use this to mark which fragment need to be migrate to Compose",
+)
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+annotation class IntermediaryMigrateApi

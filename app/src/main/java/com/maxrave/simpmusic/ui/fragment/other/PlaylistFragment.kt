@@ -218,7 +218,7 @@ class PlaylistFragment : Fragment() {
 //        }
 
         binding.topAppBar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
         binding.cbLove.setOnCheckedChangeListener { _, isChecked ->
             if (!isChecked) {
@@ -1139,7 +1139,7 @@ class PlaylistFragment : Fragment() {
 //                Snackbar
 //                    .make(binding.root, response.message.toString(), Snackbar.LENGTH_LONG)
 //                    .show()
-//                findNavController().popBackStack()
+//                findNavController().navigateUp()
 //            }
 //
 //            else -> {}
@@ -1504,7 +1504,7 @@ class PlaylistFragment : Fragment() {
 //                    Snackbar
 //                        .make(binding.root, response.message.toString(), Snackbar.LENGTH_LONG)
 //                        .show()
-//                    findNavController().popBackStack()
+//                    findNavController().navigateUp()
 //                }
 //
 //                else -> {}
@@ -1620,7 +1620,7 @@ class PlaylistFragment : Fragment() {
 //                                response.message.toString(),
 //                                Snackbar.LENGTH_LONG,
 //                            ).show()
-//                        findNavController().popBackStack()
+//                        findNavController().navigateUp()
 //                    }
 //
 //                    else -> {}

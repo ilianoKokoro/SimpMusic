@@ -65,6 +65,7 @@ compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-material-ripple = { group = "androidx.compose.material", name = "material-ripple" }
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+compose-ui-viewbinding = { group = "androidx.compose.ui", name = "ui-viewbinding" }
 constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayout-compose" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }

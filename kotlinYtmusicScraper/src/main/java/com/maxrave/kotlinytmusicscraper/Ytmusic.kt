@@ -35,6 +35,7 @@ import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
@@ -99,7 +100,7 @@ class Ytmusic {
             gl = Locale.getDefault().country,
             hl = Locale.getDefault().toLanguageTag(),
         )
-    var visitorData: String = "Cgt6SUNYVzB2VkJDbyjGrrSmBg%3D%3D"
+    var visitorData: String = "CgtMN0FkbDFaWERfdyi8t4u7BjIKCgJWThIEGgAgWQ%3D%3D"
     var cookie: String? = null
         set(value) {
             field = value
@@ -115,7 +116,11 @@ class Ytmusic {
         set(value) {
             field = value
             httpClient.close()
+            musixmatchClient.close()
+            spotifyClient.close()
             httpClient = createClient()
+            musixmatchClient = createMusixmatchClient()
+            spotifyClient = createSpotifyClient()
         }
 
     @OptIn(ExperimentalSerializationApi::class)
@@ -185,6 +190,11 @@ class Ytmusic {
             defaultRequest {
                 url("https://api.spotify.com")
             }
+            if (proxy != null) {
+                engine {
+                    proxy = this@Ytmusic.proxy
+                }
+            }
         }
 
     @OptIn(ExperimentalSerializationApi::class)
@@ -250,28 +260,33 @@ class Ytmusic {
             defaultRequest {
                 url("https://apic-desktop.musixmatch.com/ws/1.1/")
             }
+            if (proxy != null) {
+                engine {
+                    proxy = this@Ytmusic.proxy
+                }
+            }
         }
 
     @OptIn(ExperimentalSerializationApi::class)
     private fun createClient() =
         HttpClient(OkHttp) {
             expectSuccess = true
-            if (cachePath != null) {
-                engine {
-                    config {
-                        cache(
-                            okhttp3.Cache(cachePath!!, 50L * 1024 * 1024),
-                        )
-                    }
-                    if (cacheControlInterceptor != null) {
-                        addNetworkInterceptor(cacheControlInterceptor!!)
-                    }
-                    if (forceCacheInterceptor != null) {
-                        addInterceptor(forceCacheInterceptor!!)
-                    }
-                }
-            }
-            install(HttpCache)
+//            if (cachePath != null) {
+//                engine {
+//                    config {
+//                        cache(
+//                            okhttp3.Cache(cachePath!!, 50L * 1024 * 1024),
+//                        )
+//                    }
+//                    if (cacheControlInterceptor != null) {
+//                        addNetworkInterceptor(cacheControlInterceptor!!)
+//                    }
+//                    if (forceCacheInterceptor != null) {
+//                        addInterceptor(forceCacheInterceptor!!)
+//                    }
+//                }
+//            }
+//            install(HttpCache)
             install(ContentNegotiation) {
                 json(
                     Json {
@@ -379,12 +394,29 @@ class Ytmusic {
             contentType(ContentType.Application.Json)
         }
 
+    suspend fun noLogInPlayer(
+        videoId: String
+    ) = httpClient.post("player") {
+        accept(ContentType.Application.Json)
+        contentType(ContentType.Application.Json)
+        header("Host", "music.youtube.com")
+        setBody(
+            PlayerBody(
+                context = YouTubeClient.IOS.toContext(locale, visitorData),
+                playlistId = null,
+                cpn = null,
+                param = null,
+                videoId = videoId,
+            )
+        )
+    }
+
     suspend fun player(
         client: YouTubeClient,
         videoId: String,
         playlistId: String?,
         cpn: String?,
-    ) = httpClient.post("player") {
+    ) = createClient().post("player") {
         ytClient(client, setLogin = true)
         setBody(
             PlayerBody(

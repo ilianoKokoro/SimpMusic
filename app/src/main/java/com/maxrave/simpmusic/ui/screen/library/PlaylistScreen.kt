@@ -363,7 +363,7 @@ fun PlaylistScreen(
                         RippleIconButton(
                             resId = R.drawable.baseline_arrow_back_ios_new_24,
                         ) {
-                            navController.popBackStack()
+                            navController.navigateUp()
                         }
                     }
                     Column(
@@ -839,7 +839,7 @@ fun PlaylistScreen(
             },
             onDelete = {
                 viewModel.deletePlaylist(uiState.id)
-                navController.popBackStack()
+                navController.navigateUp()
             },
         )
     }
@@ -907,7 +907,7 @@ fun PlaylistScreen(
                             .size(32.dp),
                         true,
                     ) {
-                        navController.popBackStack()
+                        navController.navigateUp()
                     }
                 }
             },

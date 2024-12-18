@@ -5,6 +5,8 @@ import android.app.Service
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.text.Html
 import android.view.View
@@ -864,7 +866,8 @@ fun LocalDateTime.formatTimeAgo(context: Context): String {
     }
 }
 
-fun formatDuration(duration: Long): String {
+fun formatDuration(duration: Long, context: Context): String {
+    if (duration < 0L) return context.getString(R.string.na_na)
     val minutes: Long = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
     val seconds: Long = (
         TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) -
@@ -934,4 +937,27 @@ fun getSizeOfFile(dir: File): Long {
         }
     }
     return dirSize
+}
+
+fun isNetworkAvailable(context: Context?): Boolean {
+    val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    // Returns a Network object corresponding to
+    // the currently active default data network.
+    val network = connectivityManager.activeNetwork ?: return false
+
+    // Representation of the capabilities of an active network.
+    val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+    return when {
+        // Indicates this network uses a Wi-Fi transport,
+        // or WiFi has network connectivity
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+
+        // Indicates this network uses a Cellular transport. or
+        // Cellular has network connectivity
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+
+        // else return false
+        else -> false
+    }
 }

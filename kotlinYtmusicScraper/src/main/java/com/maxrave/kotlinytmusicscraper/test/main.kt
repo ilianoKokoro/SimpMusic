@@ -1,7 +1,6 @@
 package com.maxrave.kotlinytmusicscraper.test
 
 import com.google.gson.annotations.SerializedName
-import com.maxrave.kotlinytmusicscraper.YouTube
 import com.maxrave.kotlinytmusicscraper.Ytmusic
 import com.maxrave.kotlinytmusicscraper.models.GridRenderer
 import com.maxrave.kotlinytmusicscraper.models.MusicResponsiveListItemRenderer
@@ -11,47 +10,26 @@ import com.maxrave.kotlinytmusicscraper.models.SectionListRenderer
 import com.maxrave.kotlinytmusicscraper.models.Thumbnail
 import com.maxrave.kotlinytmusicscraper.models.YouTubeClient
 import com.maxrave.kotlinytmusicscraper.models.YouTubeLocale
+import com.maxrave.kotlinytmusicscraper.models.response.PlayerResponse
+import io.ktor.client.call.body
 import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
 
 fun main() {
     runBlocking {
+        testPlayer()
     }
 }
 
-fun testLrc() {
-    runBlocking {
-        YouTube
-            .customQuery("FEmusic_radio_builder")
-            .onSuccess {
-                println(it)
-            }.onFailure {
-                it.printStackTrace()
-            }
-    }
-}
-
-fun testSongInfo() {
-    runBlocking {
-        YouTube
-            .getYouTubeCaption("vfKiaXKO44M")
-            .onSuccess {
-                println(it)
-            }.onFailure {
-                it.printStackTrace()
-            }
-    }
-}
 
 fun testPlayer() {
     runBlocking {
         Ytmusic()
             .apply {
                 locale = YouTubeLocale("VN", "vi")
-                cookie = ""
             }.player(
-                YouTubeClient.TVHTML5,
+                YouTubeClient.IOS,
                 "ctiKD8jtvV8",
                 null,
                 (1..16)
@@ -64,7 +42,8 @@ fun testPlayer() {
                         ]
                     }.joinToString(""),
             ).apply {
-                println(bodyAsText())
+                println(toString())
+                println(body<PlayerResponse>())
             }
     }
 }
