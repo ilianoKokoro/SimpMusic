@@ -220,11 +220,7 @@ fun MediaPlayerView(
     }
     LaunchedEffect(true) {
         player.videoSize.let {
-            if (it.width == 0) {
-                showArtwork = true
-            } else {
-                showArtwork = false
-            }
+            showArtwork = it.width == 0
         }
     }
 
@@ -254,7 +250,8 @@ fun MediaPlayerView(
                         .build(),
                     contentDescription = null,
                     contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier
+                        .fillMaxHeight()
                         .align(Alignment.Center),
                 )
             } else {

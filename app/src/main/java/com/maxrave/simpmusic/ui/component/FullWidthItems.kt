@@ -80,10 +80,11 @@ fun SongFullWidthItems(
     )
     Box(
         modifier =
-            modifier
-                .clickable {
-                    onClickListener?.invoke(track?.videoId ?: songEntity?.videoId ?: "")
-                }.animateContentSize(),
+        modifier
+            .clickable {
+                onClickListener?.invoke(track?.videoId ?: songEntity?.videoId ?: "")
+            }
+            .animateContentSize(),
     ) {
         Row(
             Modifier
@@ -102,24 +103,24 @@ fun SongFullWidthItems(
                         val thumb = track?.thumbnails?.lastOrNull()?.url ?: songEntity?.thumbnails
                         AsyncImage(
                             model =
-                                ImageRequest
-                                    .Builder(LocalContext.current)
-                                    .data(thumb)
-                                    .diskCachePolicy(CachePolicy.ENABLED)
-                                    .diskCacheKey(thumb)
-                                    .crossfade(true)
-                                    .build(),
+                            ImageRequest
+                                .Builder(LocalContext.current)
+                                .data(thumb)
+                                .diskCachePolicy(CachePolicy.ENABLED)
+                                .diskCacheKey(thumb)
+                                .crossfade(true)
+                                .build(),
                             placeholder = painterResource(R.drawable.holder),
                             error = painterResource(R.drawable.holder),
                             contentDescription = null,
                             contentScale = ContentScale.FillWidth,
                             modifier =
-                                Modifier
-                                    .fillMaxSize(),
+                            Modifier
+                                .fillMaxSize(),
                         )
                     } else {
                         Text(
-                            text = ((index ?: 0) + 1).toString(),
+                            text = (index + 1).toString(),
                             color = Color.White,
                             style = typo.titleMedium,
                             modifier = Modifier.align(Alignment.Center),
@@ -139,50 +140,54 @@ fun SongFullWidthItems(
                     maxLines = 1,
                     color = Color.White,
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .basicMarquee(
+                            iterations = Int.MAX_VALUE,
+                            animationMode = MarqueeAnimationMode.Immediately,
+                        )
+                        .focusable(),
                 )
                 Row {
                     AnimatedVisibility(
                         visible =
-                            if (songEntity != null || track != null) {
-                                downloadState == DownloadState.STATE_DOWNLOADED
-                            } else {
-                                false
-                            },
+                        if (songEntity != null || track != null) {
+                            downloadState == DownloadState.STATE_DOWNLOADED
+                        } else {
+                            false
+                        },
                     ) {
                         Row {
                             Icon(
                                 painter = painterResource(id = R.drawable.download_for_offline_white),
                                 tint = Color.White,
                                 contentDescription = "",
-                                modifier = Modifier.size(20.dp).padding(2.dp),
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(2.dp),
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                         }
                     }
                     Text(
                         text =
-                            (
-                                track?.artists?.toListName()?.connectArtists()
-                                    ?: songEntity?.artistName?.connectArtists()
+                        (
+                            track?.artists?.toListName()?.connectArtists()
+                                ?: songEntity?.artistName?.connectArtists()
                             ) ?: "",
                         style = typo.bodyMedium,
                         maxLines = 1,
                         color = Color(0xC4FFFFFF),
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(align = Alignment.CenterVertically)
-                                .basicMarquee(
-                                    iterations = Int.MAX_VALUE,
-                                    animationMode = MarqueeAnimationMode.Immediately,
-                                ).focusable(),
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(align = Alignment.CenterVertically)
+                            .basicMarquee(
+                                iterations = Int.MAX_VALUE,
+                                animationMode = MarqueeAnimationMode.Immediately,
+                            )
+                            .focusable(),
                     )
                 }
             }
@@ -206,12 +211,13 @@ fun SuggestItems(
     )
     Box(
         modifier =
-            Modifier
-                .clickable {
-                    if (onClickListener != null) {
-                        onClickListener()
-                    }
-                }.animateContentSize(),
+        Modifier
+            .clickable {
+                if (onClickListener != null) {
+                    onClickListener()
+                }
+            }
+            .animateContentSize(),
     ) {
         Row(
             Modifier
@@ -226,21 +232,21 @@ fun SuggestItems(
                         val thumb = track.thumbnails?.lastOrNull()?.url
                         AsyncImage(
                             model =
-                                ImageRequest
-                                    .Builder(LocalContext.current)
-                                    .data(thumb)
-                                    .diskCachePolicy(CachePolicy.ENABLED)
-                                    .diskCacheKey(thumb)
-                                    .crossfade(true)
-                                    .build(),
+                            ImageRequest
+                                .Builder(LocalContext.current)
+                                .data(thumb)
+                                .diskCachePolicy(CachePolicy.ENABLED)
+                                .diskCacheKey(thumb)
+                                .crossfade(true)
+                                .build(),
                             placeholder = painterResource(R.drawable.holder),
                             error = painterResource(R.drawable.holder),
                             contentDescription = null,
                             contentScale = ContentScale.FillWidth,
                             modifier =
-                                Modifier
-                                    .wrapContentHeight()
-                                    .fillMaxWidth(),
+                            Modifier
+                                .wrapContentHeight()
+                                .fillMaxWidth(),
                         )
                     }
                 }
@@ -257,38 +263,40 @@ fun SuggestItems(
                     maxLines = 1,
                     color = Color.White,
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .basicMarquee(
+                            iterations = Int.MAX_VALUE,
+                            animationMode = MarqueeAnimationMode.Immediately,
+                        )
+                        .focusable(),
                 )
                 Text(
                     text =
-                        (
-                            track.artists?.toListName()?.connectArtists()
+                    (
+                        track.artists?.toListName()?.connectArtists()
                         ) ?: "",
                     style = typo.bodySmall,
                     maxLines = 1,
                     color = Color(0xC4FFFFFF),
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .basicMarquee(
+                            iterations = Int.MAX_VALUE,
+                            animationMode = MarqueeAnimationMode.Immediately,
+                        )
+                        .focusable(),
                 )
             }
             RippleIconButton(
                 resId = R.drawable.baseline_add_24,
                 fillMaxSize = false,
                 onClick =
-                    onAddClickListener ?: {
-                    },
+                onAddClickListener ?: {
+                },
             )
         }
     }
@@ -302,10 +310,11 @@ fun PlaylistFullWidthItems(
 ) {
     Box(
         modifier =
-            modifier
-                .clickable {
-                    onClickListener?.invoke()
-                }.animateContentSize(),
+        modifier
+            .clickable {
+                onClickListener?.invoke()
+            }
+            .animateContentSize(),
     ) {
         var title = ""
         var thumb = ""
@@ -326,16 +335,19 @@ fun PlaylistFullWidthItems(
                 secondSubtitle = data.artistName?.connectArtists() ?: ""
                 thirdRowSubtitle = data.year
             }
+
             is PlaylistEntity -> {
                 title = data.title
                 thumb = data.thumbnails
                 secondSubtitle = data.author ?: ""
             }
+
             is LocalPlaylistEntity -> {
                 title = data.title
                 thumb = data.thumbnail ?: ""
                 secondSubtitle = stringResource(R.string.you)
             }
+
             is PlaylistsResult -> {
                 title = data.title
                 thumb = data.thumbnails.lastOrNull()?.url ?: ""
@@ -351,20 +363,20 @@ fun PlaylistFullWidthItems(
             Box(modifier = Modifier.size(50.dp)) {
                 AsyncImage(
                     model =
-                        ImageRequest
-                            .Builder(LocalContext.current)
-                            .data(thumb)
-                            .diskCachePolicy(CachePolicy.ENABLED)
-                            .diskCacheKey(thumb)
-                            .crossfade(true)
-                            .build(),
+                    ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(thumb)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .diskCacheKey(thumb)
+                        .crossfade(true)
+                        .build(),
                     placeholder = painterResource(R.drawable.holder),
                     error = painterResource(R.drawable.holder),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     modifier =
-                        Modifier
-                            .fillMaxSize(),
+                    Modifier
+                        .fillMaxSize(),
                 )
             }
             Column(
@@ -379,13 +391,14 @@ fun PlaylistFullWidthItems(
                     maxLines = 1,
                     color = Color.White,
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .basicMarquee(
+                            iterations = Int.MAX_VALUE,
+                            animationMode = MarqueeAnimationMode.Immediately,
+                        )
+                        .focusable(),
                 )
 
                 Text(
@@ -394,13 +407,14 @@ fun PlaylistFullWidthItems(
                     maxLines = 1,
                     color = Color(0xC4FFFFFF),
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .basicMarquee(
+                            iterations = Int.MAX_VALUE,
+                            animationMode = MarqueeAnimationMode.Immediately,
+                        )
+                        .focusable(),
                 )
 
                 if (thirdRowSubtitle != null) {
@@ -410,13 +424,14 @@ fun PlaylistFullWidthItems(
                         maxLines = 1,
                         color = Color(0xC4FFFFFF),
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(align = Alignment.CenterVertically)
-                                .basicMarquee(
-                                    iterations = Int.MAX_VALUE,
-                                    animationMode = MarqueeAnimationMode.Immediately,
-                                ).focusable(),
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(align = Alignment.CenterVertically)
+                            .basicMarquee(
+                                iterations = Int.MAX_VALUE,
+                                animationMode = MarqueeAnimationMode.Immediately,
+                            )
+                            .focusable(),
                     )
                 }
             }
@@ -445,21 +460,21 @@ fun ArtistFullWidthItems(
             Box(modifier = Modifier.size(50.dp)) {
                 AsyncImage(
                     model =
-                        ImageRequest
-                            .Builder(LocalContext.current)
-                            .data(data.thumbnails)
-                            .diskCachePolicy(CachePolicy.ENABLED)
-                            .diskCacheKey(data.thumbnails)
-                            .crossfade(true)
-                            .build(),
+                    ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(data.thumbnails)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .diskCacheKey(data.thumbnails)
+                        .crossfade(true)
+                        .build(),
                     placeholder = painterResource(R.drawable.holder),
                     error = painterResource(R.drawable.holder),
                     contentDescription = null,
                     contentScale = ContentScale.FillHeight,
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape),
+                    Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape),
                 )
             }
             Column(
@@ -474,13 +489,14 @@ fun ArtistFullWidthItems(
                     maxLines = 1,
                     color = Color.White,
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .basicMarquee(
+                            iterations = Int.MAX_VALUE,
+                            animationMode = MarqueeAnimationMode.Immediately,
+                        )
+                        .focusable(),
                 )
 
                 Text(
@@ -489,13 +505,14 @@ fun ArtistFullWidthItems(
                     maxLines = 1,
                     color = Color(0xC4FFFFFF),
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(align = Alignment.CenterVertically)
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .basicMarquee(
+                            iterations = Int.MAX_VALUE,
+                            animationMode = MarqueeAnimationMode.Immediately,
+                        )
+                        .focusable(),
                 )
             }
         }

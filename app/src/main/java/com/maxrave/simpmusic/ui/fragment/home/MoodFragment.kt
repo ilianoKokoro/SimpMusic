@@ -36,10 +36,6 @@ class MoodFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
