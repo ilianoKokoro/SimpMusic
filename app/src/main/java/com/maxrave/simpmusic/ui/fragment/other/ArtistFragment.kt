@@ -604,7 +604,7 @@ class ArtistFragment : Fragment() {
                                             tvDescription.originalText = (it.description ?: getString(R.string.no_description)).toString()
                                             if (it.songs?.results != null) {
                                                 popularAdapter.updateList(it.songs.results as ArrayList<ResultSong>)
-                                                if (it.songs.results.isEmpty) {
+                                                if (it.songs.results.isEmpty()) {
                                                     binding.tvPopular.visibility = View.GONE
                                                 }
                                             } else {
@@ -612,7 +612,7 @@ class ArtistFragment : Fragment() {
                                             }
                                             if (it.singles?.results != null) {
                                                 singlesAdapter.updateList(it.singles.results as ArrayList<ResultSingle>)
-                                                if (it.singles.results.isEmpty) {
+                                                if (it.singles.results.isEmpty()) {
                                                     binding.tvSingles.visibility = View.GONE
                                                 }
                                             } else {
@@ -620,7 +620,7 @@ class ArtistFragment : Fragment() {
                                             }
                                             if (it.albums?.results != null) {
                                                 albumsAdapter.updateList(it.albums.results as ArrayList<ResultAlbum>)
-                                                if (it.albums.results.isEmpty) {
+                                                if (it.albums.results.isEmpty()) {
                                                     binding.tvAlbums.visibility = View.GONE
                                                 }
                                             } else {
@@ -628,7 +628,7 @@ class ArtistFragment : Fragment() {
                                             }
                                             if (it.video != null) {
                                                 videoAdapter.updateList(it.video as ArrayList<ResultVideo>)
-                                                if (it.video.isEmpty) {
+                                                if (it.video.isEmpty()) {
                                                     binding.tvVideo.visibility = View.GONE
                                                 }
                                             } else {
@@ -636,7 +636,7 @@ class ArtistFragment : Fragment() {
                                             }
                                             if (it.featuredOn != null) {
                                                 featuredOnAdapter.updateList(it.featuredOn as ArrayList<ResultPlaylist>)
-                                                if (it.featuredOn.isEmpty) {
+                                                if (it.featuredOn.isEmpty()) {
                                                     binding.tvFeaturedOn.visibility = View.GONE
                                                 }
                                             } else {
@@ -644,7 +644,7 @@ class ArtistFragment : Fragment() {
                                             }
                                             if (it.related?.results != null) {
                                                 relatedArtistsAdapter.updateList(it.related.results as ArrayList<ResultRelated>)
-                                                if (it.related.results.isEmpty) {
+                                                if (it.related.results.isEmpty()) {
                                                     binding.tvRelatedArtists.visibility = View.GONE
                                                 }
                                             } else {
