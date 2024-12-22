@@ -214,15 +214,15 @@ class MainActivity : AppCompatActivity() {
             binding.miniplayer.visibility = View.GONE
         }
         binding.root.addOnLayoutChangeListener {
-            _,
-            left,
-            top,
-            right,
-            bottom,
-            oldLeft,
-            oldTop,
-            oldRight,
-            oldBottom,
+                _,
+                left,
+                top,
+                right,
+                bottom,
+                oldLeft,
+                oldTop,
+                oldRight,
+                oldBottom,
             ->
             val rect = Rect(left, top, right, bottom)
             val oldRect = Rect(oldLeft, oldTop, oldRight, oldBottom)
@@ -305,7 +305,7 @@ class MainActivity : AppCompatActivity() {
                     when (currentBackStack) {
                         R.id.bottom_navigation_item_library,
                         R.id.favoriteFragment, R.id.localPlaylistFragment,
-                        -> {
+                            -> {
                             binding.bottomNavigationView.menu
                                 .findItem(
                                     R.id.bottom_navigation_item_library,
@@ -686,7 +686,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.checkForUpdate()
         viewModel.githubResponse.observe(this) { response ->
             if (response != null && !this.isInPictureInPictureMode && !viewModel.showedUpdateDialog) {
-                if (response.tagName.versionIsGreaterThanOrInvalid(getString(R.string.version_name))) {
+                if (response.tagName!!.versionIsGreaterThanOrInvalid(getString(R.string.version_name))) {
                     viewModel.showedUpdateDialog = true
                     val inputFormat =
                         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
