@@ -227,7 +227,6 @@ class SearchItemAdapter(
                     placeholder(R.drawable.holder_video)
                 }
                 tvVideoTitle.text = video.title
-                mutableListOf<String>()
                 if (video.artists != null) {
                     tvAuthor.text = video.artists.toListName().connectArtists()
                 } else {

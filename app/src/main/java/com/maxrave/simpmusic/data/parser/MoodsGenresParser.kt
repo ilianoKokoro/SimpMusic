@@ -217,12 +217,6 @@ fun parseGenreObject(data: BrowseResponse?): GenreObject? {
                                         ?.navigationEndpoint
                                         ?.watchEndpoint
                                         ?.videoId
-                                content.musicResponsiveListItemRenderer
-                                    ?.thumbnail
-                                    ?.musicThumbnailRenderer
-                                    ?.thumbnail
-                                    ?.thumbnails
-                                    ?.toListThumbnail()
                                 listItemsSong.add(
                                     ItemsSong(
                                         title = songName ?: "",

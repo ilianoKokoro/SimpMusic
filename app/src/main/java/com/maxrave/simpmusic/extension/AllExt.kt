@@ -363,7 +363,6 @@ fun Track.toMediaItem(): MediaItem {
     if (thumbUrl.contains("w120")) {
         thumbUrl = Regex("([wh])120").replace(thumbUrl, "$1544")
     }
-    this.artists.toListName().connectArtists()
     val isSong =
         (
             this.thumbnails?.last()?.height != 0 &&

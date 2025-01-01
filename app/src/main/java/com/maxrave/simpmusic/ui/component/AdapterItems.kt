@@ -424,7 +424,6 @@ fun QuickPicksItem(
     widthDp: Dp,
     data: Content,
 ) {
-    "QuickPicksItem"
     Box(
         modifier =
             Modifier

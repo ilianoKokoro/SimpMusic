@@ -140,7 +140,6 @@ fun PlaylistScreen(
     navController: NavController,
 ) {
     val context = LocalContext.current
-    rememberCoroutineScope()
 
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.downloading_animation),
