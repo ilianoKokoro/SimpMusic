@@ -17,8 +17,8 @@ android {
         applicationId = "com.maxrave.simpmusic"
         minSdk = 26
         targetSdk = 35
-        versionCode = 24
-        versionName = "0.2.7"
+        versionCode = 25
+        versionName = "0.2.8"
         vectorDrawables.useSupportLibrary = true
 
         ksp {
@@ -51,6 +51,7 @@ android {
                 "hi",
                 "th",
                 "nl",
+                "ko",
             )
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -210,7 +211,10 @@ dependencies {
     implementation(libs.material)
     // Runtime
     implementation(libs.startup.runtime)
+    // Other module
     implementation(project(mapOf("path" to ":kotlinYtmusicScraper")))
+    implementation(project(mapOf("path" to ":spotify")))
+
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     debugImplementation(libs.ui.tooling)

@@ -15,7 +15,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.net.Proxy
 import com.maxrave.simpmusic.common.QUALITY as COMMON_QUALITY
 
 class DataStoreManager(
@@ -359,9 +361,9 @@ class DataStoreManager(
 
     val translationLanguage =
         settingsDataStore.data.map { preferences ->
-            preferences[TRANSLATION_LANGUAGE] ?: if (language.first().length >= 2) {
-                language
-                    .first()
+            val languageValue = language.first()
+            preferences[TRANSLATION_LANGUAGE] ?: if (languageValue.length >= 2) {
+                languageValue
                     .substring(0..1)
             } else {
                 "en"
@@ -615,6 +617,24 @@ class DataStoreManager(
             }
         }
     }
+
+    fun getProxy(): Proxy? =
+        runBlocking {
+            if (usingProxy.first() == TRUE) {
+                val proxyType = proxyType.first()
+                val proxyHost = proxyHost.first()
+                val proxyPort = proxyPort.first()
+                return@runBlocking Proxy(
+                    when (proxyType) {
+                        ProxyType.PROXY_TYPE_HTTP -> Proxy.Type.HTTP
+                        ProxyType.PROXY_TYPE_SOCKS -> Proxy.Type.SOCKS
+                    },
+                    java.net.InetSocketAddress(proxyHost, proxyPort)
+                )
+            } else {
+                return@runBlocking null
+            }
+        }
 
     companion object Settings {
         val COOKIE = stringPreferencesKey("cookie")
