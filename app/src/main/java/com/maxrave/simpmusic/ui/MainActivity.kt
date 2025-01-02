@@ -33,6 +33,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.maxrave.simpmusic.BuildConfig
 import com.maxrave.simpmusic.R
 import com.maxrave.simpmusic.common.Config
 import com.maxrave.simpmusic.common.FIRST_TIME_MIGRATION

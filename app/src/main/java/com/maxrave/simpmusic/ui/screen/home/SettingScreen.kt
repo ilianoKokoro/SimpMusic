@@ -85,6 +85,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.maxrave.kotlinytmusicscraper.extension.isTwoLetterCode
+import com.maxrave.simpmusic.BuildConfig
 import com.maxrave.simpmusic.R
 import com.maxrave.simpmusic.common.LIMIT_CACHE_SIZE
 import com.maxrave.simpmusic.common.QUALITY
@@ -214,7 +215,7 @@ fun SettingScreen(
 
     LaunchedEffect(githubResponse) {
         val res = githubResponse
-        if (res != null && res.tagName != context.getString(R.string.version_name)) {
+        if (res != null && res.tagName != context.getString(R.string.version_format, BuildConfig.VERSION_NAME)) {
             val inputFormat =
                 SimpleDateFormat(
                     "yyyy-MM-dd'T'HH:mm:ss'Z'",
@@ -1121,7 +1122,7 @@ fun SettingScreen(
                 Text(text = stringResource(R.string.about_us), style = typo.labelMedium, modifier = Modifier.padding(vertical = 8.dp))
                 SettingItem(
                     title = stringResource(R.string.version),
-                    subtitle = stringResource(R.string.version_name),
+                    subtitle = stringResource(R.string.version_format, BuildConfig.VERSION_NAME),
                     onClick = {
                         navController.navigateSafe(R.id.action_global_creditFragment)
                     },
