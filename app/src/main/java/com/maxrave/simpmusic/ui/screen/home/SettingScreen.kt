@@ -236,7 +236,7 @@ fun SettingScreen(
                     context.getString(R.string.download) to {
                         uriHandler.openUri(
                             res.assets?.firstOrNull()?.browserDownloadUrl
-                                ?: "https://github.com/maxrave-dev/SimpMusic/releases",
+                                ?: "https://github.com/Iliano101/SimpMusic/releases",
                         )
                     },
                     dismiss = context.getString(R.string.cancel),
@@ -394,16 +394,16 @@ fun SettingScreen(
                             SettingAlertState(
                                 title = context.getString(R.string.video_quality),
                                 selectOne =
-                                    SettingAlertState.SelectData(
-                                        listSelect =
-                                            VIDEO_QUALITY.items.map { item ->
-                                                (item.toString() == videoQuality) to item.toString()
-                                            },
-                                    ),
-                                confirm =
-                                    context.getString(R.string.change) to { state ->
-                                        viewModel.changeVideoQuality(state.selectOne?.getSelected() ?: "")
+                                SettingAlertState.SelectData(
+                                    listSelect =
+                                    VIDEO_QUALITY.items.map { item ->
+                                        (item.toString() == videoQuality) to item.toString()
                                     },
+                                ),
+                                confirm =
+                                context.getString(R.string.change) to { state ->
+                                    viewModel.changeVideoQuality(state.selectOne?.getSelected() ?: "")
+                                },
                                 dismiss = context.getString(R.string.cancel),
                             ),
                         )
@@ -433,38 +433,38 @@ fun SettingScreen(
                         SettingItem(
                             title = stringResource(R.string.proxy_type),
                             subtitle =
-                                when (proxyType) {
-                                    DataStoreManager.Settings.ProxyType.PROXY_TYPE_HTTP -> stringResource(R.string.http)
-                                    DataStoreManager.Settings.ProxyType.PROXY_TYPE_SOCKS -> stringResource(R.string.socks)
-                                },
+                            when (proxyType) {
+                                DataStoreManager.Settings.ProxyType.PROXY_TYPE_HTTP -> stringResource(R.string.http)
+                                DataStoreManager.Settings.ProxyType.PROXY_TYPE_SOCKS -> stringResource(R.string.socks)
+                            },
                             onClick = {
                                 viewModel.setAlertData(
                                     SettingAlertState(
                                         title = context.getString(R.string.proxy_type),
                                         selectOne =
-                                            SettingAlertState.SelectData(
-                                                listSelect =
-                                                    listOf(
-                                                        (proxyType == DataStoreManager.Settings.ProxyType.PROXY_TYPE_HTTP) to
-                                                            context.getString(
-                                                                R.string.http,
-                                                            ),
-                                                        (proxyType == DataStoreManager.Settings.ProxyType.PROXY_TYPE_SOCKS) to
-                                                            context.getString(R.string.socks),
+                                        SettingAlertState.SelectData(
+                                            listSelect =
+                                            listOf(
+                                                (proxyType == DataStoreManager.Settings.ProxyType.PROXY_TYPE_HTTP) to
+                                                    context.getString(
+                                                        R.string.http,
                                                     ),
+                                                (proxyType == DataStoreManager.Settings.ProxyType.PROXY_TYPE_SOCKS) to
+                                                    context.getString(R.string.socks),
                                             ),
+                                        ),
                                         confirm =
-                                            context.getString(R.string.change) to { state ->
-                                                viewModel.setProxy(
-                                                    if (state.selectOne?.getSelected() == context.getString(R.string.socks)) {
-                                                        DataStoreManager.Settings.ProxyType.PROXY_TYPE_SOCKS
-                                                    } else {
-                                                        DataStoreManager.Settings.ProxyType.PROXY_TYPE_HTTP
-                                                    },
-                                                    proxyHost,
-                                                    proxyPort,
-                                                )
-                                            },
+                                        context.getString(R.string.change) to { state ->
+                                            viewModel.setProxy(
+                                                if (state.selectOne?.getSelected() == context.getString(R.string.socks)) {
+                                                    DataStoreManager.Settings.ProxyType.PROXY_TYPE_SOCKS
+                                                } else {
+                                                    DataStoreManager.Settings.ProxyType.PROXY_TYPE_HTTP
+                                                },
+                                                proxyHost,
+                                                proxyPort,
+                                            )
+                                        },
                                         dismiss = context.getString(R.string.cancel),
                                     ),
                                 )
@@ -479,21 +479,21 @@ fun SettingScreen(
                                         title = context.getString(R.string.proxy_host),
                                         message = context.getString(R.string.proxy_host_message),
                                         textField =
-                                            SettingAlertState.TextFieldData(
-                                                label = context.getString(R.string.proxy_host),
-                                                value = proxyHost,
-                                                verifyCodeBlock = {
-                                                    (it.toHttpUrlOrNull() != null) to context.getString(R.string.invalid_host)
-                                                },
-                                            ),
-                                        confirm =
-                                            context.getString(R.string.change) to { state ->
-                                                viewModel.setProxy(
-                                                    proxyType,
-                                                    state.textField?.value ?: "",
-                                                    proxyPort,
-                                                )
+                                        SettingAlertState.TextFieldData(
+                                            label = context.getString(R.string.proxy_host),
+                                            value = proxyHost,
+                                            verifyCodeBlock = {
+                                                (it.toHttpUrlOrNull() != null) to context.getString(R.string.invalid_host)
                                             },
+                                        ),
+                                        confirm =
+                                        context.getString(R.string.change) to { state ->
+                                            viewModel.setProxy(
+                                                proxyType,
+                                                state.textField?.value ?: "",
+                                                proxyPort,
+                                            )
+                                        },
                                         dismiss = context.getString(R.string.cancel),
                                     ),
                                 )
@@ -508,21 +508,21 @@ fun SettingScreen(
                                         title = context.getString(R.string.proxy_port),
                                         message = context.getString(R.string.proxy_port_message),
                                         textField =
-                                            SettingAlertState.TextFieldData(
-                                                label = context.getString(R.string.proxy_port),
-                                                value = proxyPort.toString(),
-                                                verifyCodeBlock = {
-                                                    (it.toIntOrNull() != null) to context.getString(R.string.invalid_port)
-                                                },
-                                            ),
-                                        confirm =
-                                            context.getString(R.string.change) to { state ->
-                                                viewModel.setProxy(
-                                                    proxyType,
-                                                    proxyHost,
-                                                    state.textField?.value?.toIntOrNull() ?: 0,
-                                                )
+                                        SettingAlertState.TextFieldData(
+                                            label = context.getString(R.string.proxy_port),
+                                            value = proxyPort.toString(),
+                                            verifyCodeBlock = {
+                                                (it.toIntOrNull() != null) to context.getString(R.string.invalid_port)
                                             },
+                                        ),
+                                        confirm =
+                                        context.getString(R.string.change) to { state ->
+                                            viewModel.setProxy(
+                                                proxyType,
+                                                proxyHost,
+                                                state.textField?.value?.toIntOrNull() ?: 0,
+                                            )
+                                        },
                                         dismiss = context.getString(R.string.cancel),
                                     ),
                                 )
@@ -1234,23 +1234,29 @@ fun SettingScreen(
                 LaunchedEffect(googleAccounts) {
                     Log.w(
                         "SettingScreen",
-                        "LaunchedEffect: ${googleAccounts.data?.map {
-                            it.name to it.isUsed
-                        }}",
+                        "LaunchedEffect: ${
+                            googleAccounts.data?.map {
+                                it.name to it.isUsed
+                            }
+                        }",
                     )
                 }
                 LazyColumn(modifier = Modifier.padding(8.dp)) {
                     item {
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp)) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                        ) {
                             IconButton(
                                 onClick = { showYouTubeAccountDialog = false },
                                 colors =
-                                    IconButtonDefaults.iconButtonColors().copy(
-                                        contentColor = Color.White,
-                                    ),
-                                modifier = Modifier.align(Alignment.CenterStart).fillMaxHeight(),
+                                IconButtonDefaults.iconButtonColors().copy(
+                                    contentColor = Color.White,
+                                ),
+                                modifier = Modifier
+                                    .align(Alignment.CenterStart)
+                                    .fillMaxHeight(),
                             ) {
                                 Icon(Icons.Outlined.Close, null, tint = Color.White)
                             }
@@ -1258,10 +1264,10 @@ fun SettingScreen(
                                 stringResource(R.string.youtube_account),
                                 style = typo.titleMedium,
                                 modifier =
-                                    Modifier
-                                        .align(Alignment.Center)
-                                        .wrapContentHeight(align = Alignment.CenterVertically)
-                                        .wrapContentWidth(),
+                                Modifier
+                                    .align(Alignment.Center)
+                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                                    .wrapContentWidth(),
                             )
                         }
                     }
@@ -1273,35 +1279,37 @@ fun SettingScreen(
                                     stringResource(R.string.no_account),
                                     style = typo.bodyMedium,
                                     textAlign = TextAlign.Center,
-                                    modifier = Modifier.padding(12.dp).fillMaxWidth(),
+                                    modifier = Modifier
+                                        .padding(12.dp)
+                                        .fillMaxWidth(),
                                 )
                             }
                         } else {
                             items(data) {
                                 Row(
                                     modifier =
-                                        Modifier
-                                            .padding(vertical = 8.dp)
-                                            .clickable {
-                                                viewModel.setUsedAccount(it)
-                                            },
+                                    Modifier
+                                        .padding(vertical = 8.dp)
+                                        .clickable {
+                                            viewModel.setUsedAccount(it)
+                                        },
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     Spacer(Modifier.width(24.dp))
                                     AsyncImage(
                                         model =
-                                            ImageRequest
-                                                .Builder(LocalContext.current)
-                                                .data(it.thumbnailUrl)
-                                                .crossfade(550)
-                                                .build(),
+                                        ImageRequest
+                                            .Builder(LocalContext.current)
+                                            .data(it.thumbnailUrl)
+                                            .crossfade(550)
+                                            .build(),
                                         placeholder = painterResource(R.drawable.baseline_people_alt_24),
                                         error = painterResource(R.drawable.baseline_people_alt_24),
                                         contentDescription = it.name,
                                         modifier =
-                                            Modifier
-                                                .size(48.dp)
-                                                .clip(CircleShape),
+                                        Modifier
+                                            .size(48.dp)
+                                            .clip(CircleShape),
                                     )
                                     Spacer(Modifier.width(12.dp))
                                     Column(Modifier.weight(1f)) {
@@ -1324,7 +1332,10 @@ fun SettingScreen(
                         }
                     } else {
                         item {
-                            CenterLoadingBox(Modifier.fillMaxWidth().height(54.dp))
+                            CenterLoadingBox(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(54.dp))
                         }
                     }
                     item {
@@ -1345,10 +1356,10 @@ fun SettingScreen(
                                         title = context.getString(R.string.warning),
                                         message = context.getString(R.string.log_out_warning),
                                         confirm =
-                                            context.getString(R.string.log_out) to {
-                                                viewModel.logOutAllYouTube()
-                                                showYouTubeAccountDialog = false
-                                            },
+                                        context.getString(R.string.log_out) to {
+                                            viewModel.logOutAllYouTube()
+                                            showYouTubeAccountDialog = false
+                                        },
                                         dismiss = context.getString(R.string.cancel),
                                     ),
                                 )
@@ -1435,16 +1446,16 @@ fun SettingScreen(
                                 viewModel.setAlertData(
                                     alertState.copy(
                                         selectOne =
-                                            alertState.selectOne.copy(
-                                                listSelect =
-                                                    alertState.selectOne.listSelect.toMutableList().map {
-                                                        if (it == item) {
-                                                            true to it.second
-                                                        } else {
-                                                            false to it.second
-                                                        }
-                                                    },
-                                            ),
+                                        alertState.selectOne.copy(
+                                            listSelect =
+                                            alertState.selectOne.listSelect.toMutableList().map {
+                                                if (it == item) {
+                                                    true to it.second
+                                                } else {
+                                                    false to it.second
+                                                }
+                                            },
+                                        ),
                                     ),
                                 )
                             }
@@ -1453,7 +1464,8 @@ fun SettingScreen(
                                     .padding(vertical = 4.dp)
                                     .clickable {
                                         onSelect.invoke()
-                                    }.fillMaxWidth(),
+                                    }
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 RadioButton(
@@ -1476,16 +1488,16 @@ fun SettingScreen(
                                 viewModel.setAlertData(
                                     alertState.copy(
                                         multipleSelect =
-                                            alertState.multipleSelect.copy(
-                                                listSelect =
-                                                    alertState.multipleSelect.listSelect.toMutableList().map {
-                                                        if (it == item) {
-                                                            !it.first to it.second
-                                                        } else {
-                                                            it
-                                                        }
-                                                    },
-                                            ),
+                                        alertState.multipleSelect.copy(
+                                            listSelect =
+                                            alertState.multipleSelect.listSelect.toMutableList().map {
+                                                if (it == item) {
+                                                    !it.first to it.second
+                                                } else {
+                                                    it
+                                                }
+                                            },
+                                        ),
                                     ),
                                 )
                             }
@@ -1494,7 +1506,8 @@ fun SettingScreen(
                                     .padding(vertical = 4.dp)
                                     .clickable {
                                         onCheck.invoke()
-                                    }.fillMaxWidth(),
+                                    }
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Checkbox(
