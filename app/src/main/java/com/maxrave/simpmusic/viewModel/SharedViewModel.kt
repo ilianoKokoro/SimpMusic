@@ -137,8 +137,8 @@ class SharedViewModel(
     private var _format: MutableStateFlow<NewFormatEntity?> = MutableStateFlow(null)
     val format: SharedFlow<NewFormatEntity?> = _format.asSharedFlow()
 
-    private var _canvas: MutableStateFlow<com.maxrave.spotify.model.response.spotify.CanvasResponse?> = MutableStateFlow(null)
-    val canvas: StateFlow<com.maxrave.spotify.model.response.spotify.CanvasResponse?> = _canvas
+    private var _canvas: MutableStateFlow<CanvasResponse?> = MutableStateFlow(null)
+    val canvas: StateFlow<CanvasResponse?> = _canvas
 
     private var canvasJob: Job? = null
 
@@ -1332,6 +1332,7 @@ class SharedViewModel(
                                     ) ?: return@collectLatest,
                                 )
                             }
+
                             is Resource.Error -> {
                                 getSavedLyrics(
                                     song.toTrack().copy(
