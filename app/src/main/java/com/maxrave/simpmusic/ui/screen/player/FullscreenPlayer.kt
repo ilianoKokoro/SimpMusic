@@ -64,7 +64,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -115,7 +114,6 @@ fun FullscreenPlayer(
     var isFullScreen by remember { mutableStateOf(true) }
 
     var shouldEnterPipMode by rememberSaveable { mutableStateOf(false) }
-    val currentShouldEnterPipMode by rememberUpdatedState(newValue = shouldEnterPipMode)
 
     navController.addOnDestinationChangedListener { _, des, _ ->
         shouldEnterPipMode =
@@ -250,9 +248,9 @@ fun FullscreenPlayer(
                         0..(
                             lines.getOrNull(0)?.startTimeMs
                                 ?: "0"
-                        ).toLong()
+                            ).toLong()
+                        )
                     )
-                )
             ) {
                 currentLineIndex = -1
             }
@@ -289,10 +287,10 @@ fun FullscreenPlayer(
                                     color = Color.White,
                                     textAlign = TextAlign.Center,
                                     modifier =
-                                        Modifier
-                                            .padding(4.dp)
-                                            .background(Color.Black.copy(alpha = 0.5f))
-                                            .wrapContentWidth(),
+                                    Modifier
+                                        .padding(4.dp)
+                                        .background(Color.Black.copy(alpha = 0.5f))
+                                        .wrapContentWidth(),
                                 )
                                 Crossfade(nowPlayingState.lyricsData?.translatedLyrics?.lines != null, label = "") { translate ->
                                     val translateLines = nowPlayingState.lyricsData?.translatedLyrics?.lines ?: return@Crossfade
@@ -303,9 +301,9 @@ fun FullscreenPlayer(
                                             color = Color.Yellow,
                                             textAlign = TextAlign.Center,
                                             modifier =
-                                                Modifier
-                                                    .background(Color.Black.copy(alpha = 0.5f))
-                                                    .wrapContentWidth(),
+                                            Modifier
+                                                .background(Color.Black.copy(alpha = 0.5f))
+                                                .wrapContentWidth(),
                                         )
                                     }
                                 }
@@ -326,10 +324,12 @@ fun FullscreenPlayer(
                             topEndPercent = 10,
                             bottomEndPercent = 10,
                         ),
-                    ).indication(
+                    )
+                    .indication(
                         interactionSource = interactionSourceBackward,
                         indication = ripple(),
-                    ).pointerInput(Unit) {
+                    )
+                    .pointerInput(Unit) {
                         detectTapGestures(
                             onTap = {
                                 showHideFullscreenOverlay = !showHideFullscreenOverlay
@@ -378,10 +378,12 @@ fun FullscreenPlayer(
                             topStartPercent = 10,
                             bottomStartPercent = 10,
                         ),
-                    ).indication(
+                    )
+                    .indication(
                         interactionSource = interactionSourceForward,
                         indication = ripple(),
-                    ).pointerInput(Unit) {
+                    )
+                    .pointerInput(Unit) {
                         detectTapGestures(
                             onTap = {
                                 showHideFullscreenOverlay = !showHideFullscreenOverlay
@@ -426,34 +428,35 @@ fun FullscreenPlayer(
             if (it) {
                 Box(
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .background(overlay),
+                    Modifier
+                        .fillMaxSize()
+                        .background(overlay),
                 ) {
                     TopAppBar(
                         modifier =
-                            Modifier
-                                .align(Alignment.TopCenter)
-                                .padding(horizontal = 12.dp)
-                                .fillMaxWidth(),
+                        Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(horizontal = 12.dp)
+                            .fillMaxWidth(),
                         windowInsets = WindowInsets(0, 0, 0, 0),
                         colors =
-                            TopAppBarDefaults.topAppBarColors().copy(
-                                containerColor = Color.Transparent,
-                            ),
+                        TopAppBarDefaults.topAppBarColors().copy(
+                            containerColor = Color.Transparent,
+                        ),
                         title = {
                             Text(
                                 text = nowPlayingState.nowPlayingTitle,
                                 style = typo.titleMedium,
                                 maxLines = 1,
                                 modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentHeight(align = Alignment.CenterVertically)
-                                        .basicMarquee(
-                                            iterations = Int.MAX_VALUE,
-                                            animationMode = MarqueeAnimationMode.Immediately,
-                                        ).focusable(),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                                    .basicMarquee(
+                                        iterations = Int.MAX_VALUE,
+                                        animationMode = MarqueeAnimationMode.Immediately,
+                                    )
+                                    .focusable(),
                             )
                         },
                         navigationIcon = {
@@ -485,16 +488,16 @@ fun FullscreenPlayer(
                     ) {
                         FilledTonalIconButton(
                             colors =
-                                IconButtonDefaults.iconButtonColors().copy(
-                                    containerColor = Color.Transparent,
-                                ),
+                            IconButtonDefaults.iconButtonColors().copy(
+                                containerColor = Color.Transparent,
+                            ),
                             modifier =
-                                Modifier
-                                    .size(48.dp)
-                                    .aspectRatio(1f)
-                                    .clip(
-                                        CircleShape,
-                                    ),
+                            Modifier
+                                .size(48.dp)
+                                .aspectRatio(1f)
+                                .clip(
+                                    CircleShape,
+                                ),
                             enabled = controllerState.isPreviousAvailable,
                             onClick = {
                                 sharedViewModel.onUIEvent(UIEvent.Previous)
@@ -505,22 +508,22 @@ fun FullscreenPlayer(
                                 tint = if (controllerState.isPreviousAvailable) Color.White else Color.DarkGray,
                                 contentDescription = "",
                                 modifier =
-                                    Modifier
-                                        .size(36.dp),
+                                Modifier
+                                    .size(36.dp),
                             )
                         }
                         FilledTonalIconButton(
                             colors =
-                                IconButtonDefaults.iconButtonColors().copy(
-                                    containerColor = Color.Transparent,
-                                ),
+                            IconButtonDefaults.iconButtonColors().copy(
+                                containerColor = Color.Transparent,
+                            ),
                             modifier =
-                                Modifier
-                                    .size(48.dp)
-                                    .aspectRatio(1f)
-                                    .clip(
-                                        CircleShape,
-                                    ),
+                            Modifier
+                                .size(48.dp)
+                                .aspectRatio(1f)
+                                .clip(
+                                    CircleShape,
+                                ),
                             onClick = {
                                 sharedViewModel.onUIEvent(UIEvent.Backward)
                             },
@@ -530,22 +533,22 @@ fun FullscreenPlayer(
                                 tint = Color.White,
                                 contentDescription = "",
                                 modifier =
-                                    Modifier
-                                        .size(36.dp),
+                                Modifier
+                                    .size(36.dp),
                             )
                         }
                         FilledTonalIconButton(
                             colors =
-                                IconButtonDefaults.iconButtonColors().copy(
-                                    containerColor = Color.Transparent,
-                                ),
+                            IconButtonDefaults.iconButtonColors().copy(
+                                containerColor = Color.Transparent,
+                            ),
                             modifier =
-                                Modifier
-                                    .size(64.dp)
-                                    .aspectRatio(1f)
-                                    .clip(
-                                        CircleShape,
-                                    ),
+                            Modifier
+                                .size(64.dp)
+                                .aspectRatio(1f)
+                                .clip(
+                                    CircleShape,
+                                ),
                             onClick = {
                                 sharedViewModel.onUIEvent(UIEvent.PlayPause)
                             },
@@ -557,8 +560,8 @@ fun FullscreenPlayer(
                                         tint = Color.White,
                                         contentDescription = "",
                                         modifier =
-                                            Modifier
-                                                .size(48.dp),
+                                        Modifier
+                                            .size(48.dp),
                                     )
                                 } else {
                                     Icon(
@@ -566,24 +569,24 @@ fun FullscreenPlayer(
                                         tint = Color.White,
                                         contentDescription = "",
                                         modifier =
-                                            Modifier
-                                                .size(48.dp),
+                                        Modifier
+                                            .size(48.dp),
                                     )
                                 }
                             }
                         }
                         FilledTonalIconButton(
                             colors =
-                                IconButtonDefaults.iconButtonColors().copy(
-                                    containerColor = Color.Transparent,
-                                ),
+                            IconButtonDefaults.iconButtonColors().copy(
+                                containerColor = Color.Transparent,
+                            ),
                             modifier =
-                                Modifier
-                                    .size(48.dp)
-                                    .aspectRatio(1f)
-                                    .clip(
-                                        CircleShape,
-                                    ),
+                            Modifier
+                                .size(48.dp)
+                                .aspectRatio(1f)
+                                .clip(
+                                    CircleShape,
+                                ),
                             onClick = {
                                 sharedViewModel.onUIEvent(UIEvent.Forward)
                             },
@@ -593,22 +596,22 @@ fun FullscreenPlayer(
                                 tint = Color.White,
                                 contentDescription = "",
                                 modifier =
-                                    Modifier
-                                        .size(36.dp),
+                                Modifier
+                                    .size(36.dp),
                             )
                         }
                         FilledTonalIconButton(
                             colors =
-                                IconButtonDefaults.iconButtonColors().copy(
-                                    containerColor = Color.Transparent,
-                                ),
+                            IconButtonDefaults.iconButtonColors().copy(
+                                containerColor = Color.Transparent,
+                            ),
                             modifier =
-                                Modifier
-                                    .size(48.dp)
-                                    .aspectRatio(1f)
-                                    .clip(
-                                        CircleShape,
-                                    ),
+                            Modifier
+                                .size(48.dp)
+                                .aspectRatio(1f)
+                                .clip(
+                                    CircleShape,
+                                ),
                             enabled = controllerState.isNextAvailable,
                             onClick = {
                                 sharedViewModel.onUIEvent(UIEvent.Next)
@@ -619,32 +622,32 @@ fun FullscreenPlayer(
                                 tint = if (controllerState.isNextAvailable) Color.White else Color.DarkGray,
                                 contentDescription = "",
                                 modifier =
-                                    Modifier
-                                        .size(36.dp),
+                                Modifier
+                                    .size(36.dp),
                             )
                         }
                     }
                     Column(
                         modifier =
-                            Modifier
-                                .align(Alignment.BottomCenter)
-                                .fillMaxWidth()
-                                .fillMaxHeight(0.3f)
-                                .padding(horizontal = 40.dp),
+                        Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.3f)
+                            .padding(horizontal = 40.dp),
                         verticalArrangement = Arrangement.Bottom,
                     ) {
                         Box(
                             modifier =
-                                Modifier
-                                    .height(32.dp)
-                                    .fillMaxWidth(),
+                            Modifier
+                                .height(32.dp)
+                                .fillMaxWidth(),
                         ) {
                             Row(
                                 modifier =
-                                    Modifier
-                                        .fillMaxHeight()
-                                        .wrapContentWidth()
-                                        .align(Alignment.CenterStart),
+                                Modifier
+                                    .fillMaxHeight()
+                                    .wrapContentWidth()
+                                    .align(Alignment.CenterStart),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
@@ -664,16 +667,16 @@ fun FullscreenPlayer(
                             ) {
                                 FilledTonalIconButton(
                                     colors =
-                                        IconButtonDefaults.iconButtonColors().copy(
-                                            containerColor = Color.Transparent,
-                                        ),
+                                    IconButtonDefaults.iconButtonColors().copy(
+                                        containerColor = Color.Transparent,
+                                    ),
                                     modifier =
-                                        Modifier
-                                            .size(32.dp)
-                                            .aspectRatio(1f)
-                                            .clip(
-                                                CircleShape,
-                                            ),
+                                    Modifier
+                                        .size(32.dp)
+                                        .aspectRatio(1f)
+                                        .clip(
+                                            CircleShape,
+                                        ),
                                     onClick = {
                                         shouldShowSubtitle = !shouldShowSubtitle
                                     },
@@ -685,8 +688,8 @@ fun FullscreenPlayer(
                                                 tint = Color.White,
                                                 contentDescription = "",
                                                 modifier =
-                                                    Modifier
-                                                        .size(24.dp),
+                                                Modifier
+                                                    .size(24.dp),
                                             )
                                         } else {
                                             Icon(
@@ -694,8 +697,8 @@ fun FullscreenPlayer(
                                                 tint = Color.White,
                                                 contentDescription = "",
                                                 modifier =
-                                                    Modifier
-                                                        .size(24.dp),
+                                                Modifier
+                                                    .size(24.dp),
                                             )
                                         }
                                     }
@@ -703,16 +706,16 @@ fun FullscreenPlayer(
                                 Spacer(Modifier.width(8.dp))
                                 FilledTonalIconButton(
                                     colors =
-                                        IconButtonDefaults.iconButtonColors().copy(
-                                            containerColor = Color.Transparent,
-                                        ),
+                                    IconButtonDefaults.iconButtonColors().copy(
+                                        containerColor = Color.Transparent,
+                                    ),
                                     modifier =
-                                        Modifier
-                                            .size(32.dp)
-                                            .aspectRatio(1f)
-                                            .clip(
-                                                CircleShape,
-                                            ),
+                                    Modifier
+                                        .size(32.dp)
+                                        .aspectRatio(1f)
+                                        .clip(
+                                            CircleShape,
+                                        ),
                                     onClick = {
                                         navController.navigateUp()
                                     },
@@ -722,8 +725,8 @@ fun FullscreenPlayer(
                                         tint = Color.White,
                                         contentDescription = "",
                                         modifier =
-                                            Modifier
-                                                .size(24.dp),
+                                        Modifier
+                                            .size(24.dp),
                                     )
                                 }
                             }
@@ -736,9 +739,9 @@ fun FullscreenPlayer(
                         ) {
                             Box(
                                 modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .height(24.dp),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(24.dp),
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Crossfade(timelineState.loading) {
@@ -746,14 +749,15 @@ fun FullscreenPlayer(
                                         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
                                             LinearProgressIndicator(
                                                 modifier =
-                                                    Modifier
-                                                        .fillMaxWidth()
-                                                        .height(4.dp)
-                                                        .padding(
-                                                            horizontal = 3.dp,
-                                                        ).clip(
-                                                            RoundedCornerShape(8.dp),
-                                                        ),
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .height(4.dp)
+                                                    .padding(
+                                                        horizontal = 3.dp,
+                                                    )
+                                                    .clip(
+                                                        RoundedCornerShape(8.dp),
+                                                    ),
                                                 color = Color.Gray,
                                                 trackColor = Color.DarkGray,
                                                 strokeCap = StrokeCap.Round,
@@ -764,14 +768,15 @@ fun FullscreenPlayer(
                                             LinearProgressIndicator(
                                                 progress = { timelineState.bufferedPercent.toFloat() / 100 },
                                                 modifier =
-                                                    Modifier
-                                                        .fillMaxWidth()
-                                                        .height(4.dp)
-                                                        .padding(
-                                                            horizontal = 3.dp,
-                                                        ).clip(
-                                                            RoundedCornerShape(8.dp),
-                                                        ),
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .height(4.dp)
+                                                    .padding(
+                                                        horizontal = 3.dp,
+                                                    )
+                                                    .clip(
+                                                        RoundedCornerShape(8.dp),
+                                                    ),
                                                 color = Color.Gray,
                                                 trackColor = Color.DarkGray,
                                                 strokeCap = StrokeCap.Round,
@@ -791,25 +796,25 @@ fun FullscreenPlayer(
                                     },
                                     valueRange = 0f..100f,
                                     modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .padding(top = 3.dp)
-                                            .align(
-                                                Alignment.TopCenter,
-                                            ),
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 3.dp)
+                                        .align(
+                                            Alignment.TopCenter,
+                                        ),
                                     track = { sliderState ->
                                         SliderDefaults.Track(
                                             modifier =
-                                                Modifier
-                                                    .height(5.dp),
+                                            Modifier
+                                                .height(5.dp),
                                             enabled = true,
                                             sliderState = sliderState,
                                             colors =
-                                                SliderDefaults.colors().copy(
-                                                    thumbColor = Color.White,
-                                                    activeTrackColor = Color.White,
-                                                    inactiveTrackColor = Color.Transparent,
-                                                ),
+                                            SliderDefaults.colors().copy(
+                                                thumbColor = Color.White,
+                                                activeTrackColor = Color.White,
+                                                inactiveTrackColor = Color.Transparent,
+                                            ),
                                             thumbTrackGapSize = 0.dp,
                                             drawTick = { _, _ -> },
                                             drawStopIndicator = null,
@@ -818,23 +823,23 @@ fun FullscreenPlayer(
                                     thumb = {
                                         SliderDefaults.Thumb(
                                             modifier =
-                                                Modifier
-                                                    .height(18.dp)
-                                                    .width(8.dp)
-                                                    .padding(
-                                                        vertical = 4.dp,
-                                                    ),
+                                            Modifier
+                                                .height(18.dp)
+                                                .width(8.dp)
+                                                .padding(
+                                                    vertical = 4.dp,
+                                                ),
                                             thumbSize = DpSize(8.dp, 8.dp),
                                             interactionSource =
-                                                remember {
-                                                    MutableInteractionSource()
-                                                },
+                                            remember {
+                                                MutableInteractionSource()
+                                            },
                                             colors =
-                                                SliderDefaults.colors().copy(
-                                                    thumbColor = Color.White,
-                                                    activeTrackColor = Color.White,
-                                                    inactiveTrackColor = Color.Transparent,
-                                                ),
+                                            SliderDefaults.colors().copy(
+                                                thumbColor = Color.White,
+                                                activeTrackColor = Color.White,
+                                                inactiveTrackColor = Color.Transparent,
+                                            ),
                                             enabled = true,
                                         )
                                     },
