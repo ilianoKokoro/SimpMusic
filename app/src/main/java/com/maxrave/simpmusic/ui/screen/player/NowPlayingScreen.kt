@@ -142,6 +142,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalFoundationApi::class)
 @UnstableApi
@@ -651,7 +652,7 @@ fun NowPlayingScreen(
                                 ) {
                                     // Player
                                     Box(Modifier.fillMaxSize()) {
-                                        MediaPlayerView(player = sharedViewModel.getPlayer(), modifier = Modifier.align(Alignment.Center))
+                                        MediaPlayerView(player = koinInject(), modifier = Modifier.align(Alignment.Center))
                                     }
                                     Box(
                                         modifier =
@@ -817,20 +818,23 @@ fun NowPlayingScreen(
                                             style = typo.bodyMedium,
                                             maxLines = 1,
                                             modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .wrapContentHeight(align = Alignment.CenterVertically)
-                                                .basicMarquee(
-                                                    iterations = Int.MAX_VALUE,
-                                                    animationMode = MarqueeAnimationMode.Immediately,
-                                                )
-                                                .focusable()
-                                                .clickable {
-                                                    navController.navigateSafe(
-                                                        R.id.action_global_artistFragment,
-                                                        bundleOf("channelId" to screenDataState.songInfoData?.authorId),
-                                                    )
-                                                },
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                                                    .basicMarquee(
+                                                        iterations = Int.MAX_VALUE,
+                                                        animationMode = MarqueeAnimationMode.Immediately,
+                                                    ).focusable()
+                                                    .clickable {
+                                                        val song = sharedViewModel.nowPlayingState.value?.songEntity
+                                                        navController.navigateSafe(
+                                                            R.id.action_global_artistFragment,
+                                                            bundleOf(
+                                                                "channelId" to
+                                                                    (song?.artistId?.firstOrNull() ?: screenDataState.songInfoData?.authorId),
+                                                            ),
+                                                        )
+                                                    },
                                         )
                                     }
                                     Spacer(modifier = Modifier.size(10.dp))

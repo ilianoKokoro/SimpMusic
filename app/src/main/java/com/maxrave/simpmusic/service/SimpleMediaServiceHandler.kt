@@ -1053,7 +1053,6 @@ class SimpleMediaServiceHandler(
     }
 
     fun getRelated(videoId: String) {
-//            Queue.clear()
         coroutineScope.launch {
             mainRepository.getRelatedData(videoId).collect { response ->
                 when (response) {

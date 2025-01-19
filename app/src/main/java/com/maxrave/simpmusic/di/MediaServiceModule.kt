@@ -176,7 +176,7 @@ private fun provideResolvingDataSourceFactory(
     mainRepository: MainRepository,
     coroutineScope: CoroutineScope,
 ): DataSource.Factory {
-    val CHUNK_LENGTH = 8 * 512 * 1024L
+    val CHUNK_LENGTH = 10 * 512 * 1024L
     return ResolvingDataSource.Factory(cacheDataSourceFactory) { dataSpec ->
         val mediaId = dataSpec.key ?: error("No media id")
         Log.w("Stream", mediaId)
@@ -275,7 +275,7 @@ private fun provideMediaSourceFactory(
                 downloadCache,
                 playerCache,
                 context,
-                dataStoreManager.getJVMProxy()
+                dataStoreManager.getJVMProxy(),
             ),
             downloadCache,
             playerCache,
@@ -301,7 +301,7 @@ private fun provideMergingMediaSource(
             playerCache,
             mainRepository,
             dataStoreManager,
-            coroutineScope
+            coroutineScope,
         ),
         dataStoreManager,
     )
@@ -361,9 +361,8 @@ private fun provideCacheDataSource(
                                 OkHttpClient
                                     .Builder()
                                     .proxy(
-                                        proxy
-                                    )
-                                    .addInterceptor(
+                                        proxy,
+                                    ).addInterceptor(
                                         HttpLoggingInterceptor()
                                             .apply {
                                                 level = HttpLoggingInterceptor.Level.HEADERS
