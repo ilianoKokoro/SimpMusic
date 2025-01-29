@@ -167,7 +167,19 @@ fun SongFullWidthItems(
                                     .size(20.dp)
                                     .padding(2.dp),
                             )
-                            Spacer(modifier = Modifier.width(10.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
+                    }
+                    AnimatedVisibility(
+                        visible =
+                            songEntity?.isExplicit
+                                ?: (track?.isExplicit ?: false),
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            ExplicitBadge(
+                                modifier = Modifier.size(20.dp).padding(1.dp),
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
                         }
                     }
                     Text(
@@ -191,9 +203,11 @@ fun SongFullWidthItems(
                     )
                 }
             }
-            RippleIconButton(resId = R.drawable.baseline_more_vert_24, fillMaxSize = false) {
-                val videoId = track?.videoId ?: songEntity?.videoId
-                videoId?.let { onMoreClickListener?.invoke(it) }
+            if (onMoreClickListener != null) {
+                RippleIconButton(resId = R.drawable.baseline_more_vert_24, fillMaxSize = false) {
+                    val videoId = track?.videoId ?: songEntity?.videoId
+                    videoId?.let { onMoreClickListener.invoke(it) }
+                }
             }
         }
     }

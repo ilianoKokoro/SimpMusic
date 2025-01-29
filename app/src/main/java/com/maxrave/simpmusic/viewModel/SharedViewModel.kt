@@ -299,6 +299,7 @@ class SharedViewModel(
                         _nowPlayingScreenData.update {
                             it.copy(
                                 thumbnailURL = song.thumbnails,
+                                isExplicit = song.isExplicit,
                             )
                         }
                     }
@@ -1691,6 +1692,7 @@ data class NowPlayingScreenData(
     val nowPlayingTitle: String,
     val artistName: String,
     val isVideo: Boolean,
+    val isExplicit: Boolean = false,
     val thumbnailURL: String?,
     val canvasData: CanvasData? = null,
     val lyricsData: LyricsData? = null,
