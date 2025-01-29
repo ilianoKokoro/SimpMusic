@@ -172,12 +172,14 @@ fun SongFullWidthItems(
                     }
                     AnimatedVisibility(
                         visible =
-                            songEntity?.isExplicit
-                                ?: (track?.isExplicit ?: false),
+                        songEntity?.isExplicit
+                            ?: (track?.isExplicit == true),
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             ExplicitBadge(
-                                modifier = Modifier.size(20.dp).padding(1.dp),
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(1.dp),
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                         }
