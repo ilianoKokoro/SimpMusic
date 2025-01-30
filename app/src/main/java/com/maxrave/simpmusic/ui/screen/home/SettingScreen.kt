@@ -188,6 +188,8 @@ fun SettingScreen(
     val proxyType by viewModel.proxyType.collectAsStateWithLifecycle()
     val proxyHost by viewModel.proxyHost.collectAsStateWithLifecycle()
     val proxyPort by viewModel.proxyPort.collectAsStateWithLifecycle()
+    val autoCheckUpdate by viewModel.autoCheckUpdate.collectAsStateWithLifecycle()
+    val blurFullscreenLyrics by viewModel.blurFullscreenLyrics.collectAsStateWithLifecycle()
     var checkForUpdateSubtitle by rememberSaveable {
         mutableStateOf("")
     }
@@ -267,6 +269,12 @@ fun SettingScreen(
                     subtitle = stringResource(R.string.you_can_see_the_content_below_the_bottom_bar),
                     smallSubtitle = true,
                     switch = (enableTranslucentNavBar to { viewModel.setTranslucentBottomBar(it) }),
+                )
+                SettingItem(
+                    title = stringResource(R.string.blur_fullscreen_lyrics),
+                    subtitle = stringResource(R.string.blur_fullscreen_lyrics_description),
+                    smallSubtitle = true,
+                    switch = (blurFullscreenLyrics to { viewModel.setBlurFullscreenLyrics(it) }),
                 )
             }
         }
@@ -1116,6 +1124,11 @@ fun SettingScreen(
                     onClick = {
                         navController.navigateSafe(R.id.action_global_creditFragment)
                     },
+                )
+                SettingItem(
+                    title = stringResource(R.string.auto_check_for_update),
+                    subtitle = stringResource(R.string.auto_check_for_update_description),
+                    switch = (autoCheckUpdate to { viewModel.setAutoCheckUpdate(it) }),
                 )
                 SettingItem(
                     title = stringResource(R.string.check_for_update),

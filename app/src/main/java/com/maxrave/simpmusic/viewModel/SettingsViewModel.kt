@@ -121,6 +121,10 @@ class SettingsViewModel(
     val proxyHost: StateFlow<String> = _proxyHost
     private var _proxyPort = MutableStateFlow(8000)
     val proxyPort: StateFlow<Int> = _proxyPort
+    private var _autoCheckUpdate = MutableStateFlow(false)
+    val autoCheckUpdate: StateFlow<Boolean> = _autoCheckUpdate
+    private var _blurFullscreenLyrics = MutableStateFlow(false)
+    val blurFullscreenLyrics: StateFlow<Boolean> = _blurFullscreenLyrics
 
     private var _alertData: MutableStateFlow<SettingAlertState?> = MutableStateFlow(null)
     val alertData: StateFlow<SettingAlertState?> = _alertData
@@ -167,8 +171,40 @@ class SettingsViewModel(
         getUsingProxy()
         getCanvasCache()
         getTranslucentBottomBar()
+        getAutoCheckUpdate()
+        getBlurFullscreenLyrics()
         viewModelScope.launch {
             calculateDataFraction()
+        }
+    }
+
+    private fun getBlurFullscreenLyrics() {
+        viewModelScope.launch {
+            dataStoreManager.blurFullscreenLyrics.collect { blurFullscreenLyrics ->
+                _blurFullscreenLyrics.value = blurFullscreenLyrics == DataStoreManager.TRUE
+            }
+        }
+    }
+
+    fun setBlurFullscreenLyrics(blurFullscreenLyrics: Boolean) {
+        viewModelScope.launch {
+            dataStoreManager.setBlurFullscreenLyrics(blurFullscreenLyrics)
+            getBlurFullscreenLyrics()
+        }
+    }
+
+    private fun getAutoCheckUpdate() {
+        viewModelScope.launch {
+            dataStoreManager.autoCheckForUpdates.collect { autoCheckUpdate ->
+                _autoCheckUpdate.value = autoCheckUpdate == DataStoreManager.TRUE
+            }
+        }
+    }
+
+    fun setAutoCheckUpdate(autoCheckUpdate: Boolean) {
+        viewModelScope.launch {
+            dataStoreManager.setAutoCheckForUpdates(autoCheckUpdate)
+            getAutoCheckUpdate()
         }
     }
 
@@ -266,20 +302,20 @@ class SettingsViewModel(
                             it.copy(
                                 otherApp = otherApp.toFloat().div(totalByte.toFloat()),
                                 downloadCache =
-                                downloadCache.cacheSpace
-                                    .bytesToMB()
-                                    .toFloat()
-                                    .div(totalByte.toFloat()),
+                                    downloadCache.cacheSpace
+                                        .bytesToMB()
+                                        .toFloat()
+                                        .div(totalByte.toFloat()),
                                 playerCache =
-                                playerCache.cacheSpace
-                                    .bytesToMB()
-                                    .toFloat()
-                                    .div(totalByte.toFloat()),
+                                    playerCache.cacheSpace
+                                        .bytesToMB()
+                                        .toFloat()
+                                        .div(totalByte.toFloat()),
                                 canvasCache =
-                                canvasCache.cacheSpace
-                                    .bytesToMB()
-                                    .toFloat()
-                                    .div(totalByte.toFloat()),
+                                    canvasCache.cacheSpace
+                                        .bytesToMB()
+                                        .toFloat()
+                                        .div(totalByte.toFloat()),
                                 thumbCache = thumbSize.toFloat().div(totalByte.toFloat()),
                                 freeSpace = freeSpace.toFloat().div(totalByte.toFloat()),
                                 appDatabase = databaseSize.toFloat().div(totalByte.toFloat()),

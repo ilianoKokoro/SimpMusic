@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -669,6 +670,89 @@ class DataStoreManager(
         }
     }
 
+    val shouldShowLogInRequiredAlert =
+        settingsDataStore.data.map { preferences ->
+            preferences[SHOULD_SHOW_LOG_IN_REQUIRED_ALERT] ?: TRUE
+        }
+
+    suspend fun setShouldShowLogInRequiredAlert(shouldShow: Boolean) {
+        withContext(Dispatchers.IO) {
+            if (shouldShow) {
+                settingsDataStore.edit { settings ->
+                    settings[SHOULD_SHOW_LOG_IN_REQUIRED_ALERT] = TRUE
+                }
+            } else {
+                settingsDataStore.edit { settings ->
+                    settings[SHOULD_SHOW_LOG_IN_REQUIRED_ALERT] = FALSE
+                }
+            }
+        }
+    }
+
+    val autoCheckForUpdates =
+        settingsDataStore.data.map { preferences ->
+            preferences[AUTO_CHECK_FOR_UPDATES] ?: TRUE
+        }
+
+    suspend fun setAutoCheckForUpdates(autoCheck: Boolean) {
+        withContext(Dispatchers.IO) {
+            if (autoCheck) {
+                settingsDataStore.edit { settings ->
+                    settings[AUTO_CHECK_FOR_UPDATES] = TRUE
+                }
+            } else {
+                settingsDataStore.edit { settings ->
+                    settings[AUTO_CHECK_FOR_UPDATES] = FALSE
+                }
+            }
+        }
+    }
+
+    val blurFullscreenLyrics =
+        settingsDataStore.data.map { preferences ->
+            preferences[BLUR_FULLSCREEN_LYRICS] ?: FALSE
+        }
+
+    suspend fun setBlurFullscreenLyrics(blur: Boolean) {
+        withContext(Dispatchers.IO) {
+            if (blur) {
+                settingsDataStore.edit { settings ->
+                    settings[BLUR_FULLSCREEN_LYRICS] = TRUE
+                }
+            } else {
+                settingsDataStore.edit { settings ->
+                    settings[BLUR_FULLSCREEN_LYRICS] = FALSE
+                }
+            }
+        }
+    }
+
+    val playbackSpeed =
+        settingsDataStore.data.map { preferences ->
+            preferences[PLAYBACK_SPEED] ?: 1.0f
+        }
+
+    fun setPlaybackSpeed(speed: Float) {
+        runBlocking {
+            settingsDataStore.edit { settings ->
+                settings[PLAYBACK_SPEED] = speed
+            }
+        }
+    }
+
+    val pitch =
+        settingsDataStore.data.map { preferences ->
+            preferences[PITCH] ?: 0
+        }
+
+    fun setPitch(pitch: Int) {
+        runBlocking {
+            settingsDataStore.edit { settings ->
+                settings[PITCH] = pitch
+            }
+        }
+    }
+
     companion object Settings {
         val COOKIE = stringPreferencesKey("cookie")
         val LOGGED_IN = stringPreferencesKey("logged_in")
@@ -711,6 +795,11 @@ class DataStoreManager(
         val PROXY_HOST = stringPreferencesKey("proxy_host")
         val PROXY_PORT = intPreferencesKey("proxy_port")
         val ENDLESS_QUEUE = stringPreferencesKey("endless_queue")
+        val SHOULD_SHOW_LOG_IN_REQUIRED_ALERT = stringPreferencesKey("should_show_log_in_required_alert")
+        val AUTO_CHECK_FOR_UPDATES = stringPreferencesKey("auto_check_for_updates")
+        val BLUR_FULLSCREEN_LYRICS = stringPreferencesKey("blur_fullscreen_lyrics")
+        val PLAYBACK_SPEED = floatPreferencesKey("playback_speed")
+        val PITCH = intPreferencesKey("pitch")
         const val REPEAT_MODE_OFF = "REPEAT_MODE_OFF"
         const val REPEAT_ONE = "REPEAT_ONE"
         const val REPEAT_ALL = "REPEAT_ALL"
