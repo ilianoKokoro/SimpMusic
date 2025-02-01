@@ -43,7 +43,7 @@ class CreditFragment : Fragment() {
             val urlIntent =
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://github.com/Iliano101/SimpMusic"),
+                    Uri.parse("https://github.com/ilianoKokoro/SimpMusic"),
                 )
             startActivity(urlIntent)
         }
@@ -51,7 +51,7 @@ class CreditFragment : Fragment() {
             val urlIntent =
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://github.com/Iliano101/SimpMusic/issues"),
+                    Uri.parse("https://github.com/ilianoKokoro/SimpMusic/issues"),
                 )
             startActivity(urlIntent)
         }

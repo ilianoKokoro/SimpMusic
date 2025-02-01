@@ -240,7 +240,7 @@ fun SettingScreen(
                     context.getString(R.string.download) to {
                         uriHandler.openUri(
                             res.assets?.firstOrNull()?.browserDownloadUrl
-                                ?: "https://github.com/Iliano101/SimpMusic/releases",
+                                ?: "https://github.com/ilianoKokoro/SimpMusic/releases",
                         )
                     },
                     dismiss = context.getString(R.string.cancel),
