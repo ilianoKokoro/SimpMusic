@@ -127,7 +127,11 @@ class MainRepository(
     private val database: MusicDatabase,
     private val context: Context,
 ) {
+    var init = false
+
     fun initYouTube(scope: CoroutineScope) {
+        if (init) return
+        init = true
         youTube.cacheControlInterceptor =
             object : Interceptor {
                 override fun intercept(chain: Interceptor.Chain): Response {
@@ -450,6 +454,11 @@ class MainRepository(
     suspend fun getLikedPlaylists(): Flow<List<PlaylistEntity>> = flow { emit(localDataSource.getLikedPlaylists()) }.flowOn(Dispatchers.IO)
 
     suspend fun insertPlaylist(playlistEntity: PlaylistEntity) = withContext(Dispatchers.IO) { localDataSource.insertPlaylist(playlistEntity) }
+
+    suspend fun insertAndReplacePlaylist(playlistEntity: PlaylistEntity) =
+        withContext(Dispatchers.IO) {
+            localDataSource.insertAndReplacePlaylist(playlistEntity)
+        }
 
     suspend fun insertRadioPlaylist(playlistEntity: PlaylistEntity) =
         withContext(Dispatchers.IO) { localDataSource.insertRadioPlaylist(playlistEntity) }
