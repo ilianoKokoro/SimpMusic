@@ -8,15 +8,15 @@ This fork was created to fix a few issues that I encountered with the original a
 
 ### Latest release APK download
 
-<a href="http://github.com/Iliano101/SimpMusic/releases/latest/download/SimpMusic.apk"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
+<a href="http://github.com/IlianoKokoro/SimpMusic/releases/latest/download/SimpMusic.apk"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
 
 ### Beta APK download
 
 **⚠️ This build may not be stable ⚠️**
 
-[![Download APK](https://github.com/Iliano101/SimpMusic/actions/workflows/beta-build.yml/badge.svg?branch=main)](https://nightly.link/Iliano101/SimpMusic/workflows/beta-build/main/release-build.zip)
+[![Download APK](https://github.com/IlianoKokoro/SimpMusic/actions/workflows/beta-build.yml/badge.svg?branch=main)](https://nightly.link/Iliano101/SimpMusic/workflows/beta-build/main/release-build.zip)
 
-<a href="https://nightly.link/Iliano101/SimpMusic/workflows/beta-build/main/release-build.zip"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
+<a href="https://nightly.link/IlianoKokoro/SimpMusic/workflows/beta-build/main/release-build.zip"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
 
 <hr/>
 
