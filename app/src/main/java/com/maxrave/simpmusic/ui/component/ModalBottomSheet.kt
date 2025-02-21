@@ -209,6 +209,7 @@ fun InfoPlayerBottomSheet(
                                         Text(
                                             text = downloadProgress.errorMessage,
                                             modifier = Modifier.padding(bottom = 5.dp),
+                                            maxLines = 2,
                                             style = typo.bodyMedium,
                                         )
                                     }
@@ -237,6 +238,17 @@ fun InfoPlayerBottomSheet(
                                                     stringResource(
                                                         R.string.downloading_video,
                                                         (downloadProgress.videoDownloadProgress * 100).toString() + "%",
+                                                    ),
+                                                modifier = Modifier.padding(vertical = 5.dp),
+                                                style = typo.bodyMedium,
+                                            )
+                                        }
+                                        if (downloadProgress.downloadSpeed != 0) {
+                                            Text(
+                                                text =
+                                                    stringResource(
+                                                        R.string.download_speed,
+                                                        downloadProgress.downloadSpeed.toString() + " kb/s",
                                                     ),
                                                 modifier = Modifier.padding(vertical = 5.dp),
                                                 style = typo.bodyMedium,
@@ -1835,7 +1847,7 @@ fun PlaybackSpeedPitchBottomSheet(
                     modifier = Modifier,
                     enabled = true,
                     valueRange = 0.25f..2f,
-                    steps = 6,
+                    steps = 13,
                     onValueChangeFinished = {},
                 )
                 Spacer(modifier = Modifier.height(5.dp))
@@ -1924,10 +1936,13 @@ fun AddToPlaylistModalBottomSheet(
                                     Modifier
                                         .fillMaxWidth()
                                         .padding(vertical = 3.dp)
-                                        .clickable {
-                                            onClick(playlist)
-                                            hideModalBottomSheet()
-                                        },
+                                        .clickable(
+                                            enabled = playlist.tracks?.contains(videoId) == false,
+                                            onClick = {
+                                                onClick(playlist)
+                                                hideModalBottomSheet()
+                                            },
+                                        ),
                             ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
@@ -1936,29 +1951,30 @@ fun AddToPlaylistModalBottomSheet(
                                             .padding(12.dp)
                                             .align(Alignment.CenterStart),
                                 ) {
-                                    Image(
-                                        painter =
-                                            painterResource(
-                                                id = R.drawable.baseline_playlist_add_24,
-                                            ),
-                                        contentDescription = "",
-                                    )
+                                    Crossfade(
+                                        targetState = playlist.tracks?.contains(videoId) == true,
+                                    ) {
+                                        if (it) {
+                                            Image(
+                                                painter = painterResource(id = R.drawable.done),
+                                                contentDescription = "",
+                                            )
+                                        } else {
+                                            Image(
+                                                painter =
+                                                    painterResource(
+                                                        id = R.drawable.baseline_playlist_add_24,
+                                                    ),
+                                                contentDescription = "",
+                                            )
+                                        }
+                                    }
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Text(
                                         text = playlist.title,
                                         style = typo.labelSmall,
+                                        color = if (playlist.tracks?.contains(videoId) == true) Color.Gray else Color.White,
                                     )
-                                }
-                                Crossfade(
-                                    targetState = playlist.tracks?.contains(videoId) == true,
-                                ) {
-                                    if (it) {
-                                        Image(
-                                            painter = painterResource(id = R.drawable.done),
-                                            contentDescription = "",
-                                            modifier = Modifier.align(Alignment.CenterEnd),
-                                        )
-                                    }
                                 }
                             }
                         }

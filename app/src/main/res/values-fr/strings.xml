@@ -355,8 +355,8 @@
     <string name="can_t_delete_from_youtube_playlist">Impossible de supprimer un titre de la playlist YouTube</string>
     <string name="loading">Chargement</string>
     <string name="updating">Mise à jour</string>
-    <string name="go_to_log_in_page">Aller à la page de connexion</string>
-    <string name="log_in_warning">YouTube Music exige maintenant que vous vous connectiez pour jouer de la musique, Piped Instance peut parfois ne pas fonctionner non plus. Vous devriez vous connecter à YouTube pour avoir une meilleure expérience avec SimpMusic.</string>
+    <string name="go_to_log_in_page">Accéder à la page de connexion</string>
+    <string name="log_in_warning">YouTube Music nécessite désormais que vous vous connectiez pour diffuser de la musique. Piped Instance ne peut parfois pas fonctionner non plus. Vous devez vous connecter à YouTube pour bénéficier d\'une meilleure expérience avec SimpMusic.</string>
     <string name="spotify_canvas_cache">Cache de la toile Spotify</string>
     <string name="clear_canvas_cache">Vider le cache de la toile</string>
     <string name="proxy">Proxy</string>
@@ -381,5 +381,14 @@
     <string name="blur_fullscreen_lyrics_description">Flouter l\'arrière-plan de l\'effet d\'écran des paroles en plein écran</string>
     <string name="playback_speed_pitch"><![CDATA[Vitesse et hauteur de lecture]]></string>
     <string name="playback_speed">Vitesse de lecture</string>
-    <string name="pitch">Pas</string>
+    <string name="pitch">Hauteur</string>
+    <string name="blur_player_background">Flouter l\'arrière-plan du lecteur</string>
+    <string name="blur_player_background_description">Effet de floutage de l\'arrière-plan de l\'écran en cours de lecture</string>
+    <string name="merging_audio_and_video">Fusionner l\'audio et la vidéo</string>
+    <string name="error_occurred">Une erreur s\'est produite</string>
+    <string name="downloading_audio">Téléchargement audio : %1$s</string>
+    <string name="downloading_video">Téléchargement vidéo : %1$s</string>
+    <string name="ok">OK</string>
+    <string name="to_download_folder">" vers le dossier de téléchargement"</string>
+    <string name="download_speed">Vitesse de téléchargement:  %1$s </string>
 </resources>
