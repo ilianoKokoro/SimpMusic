@@ -10,7 +10,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17) // or appropriate version
+    jvmToolchain(21) // or appropriate version
     compilerOptions {
         freeCompilerArgs.add("-Xwhen-guards")
     }
