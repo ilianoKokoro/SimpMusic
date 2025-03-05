@@ -46,7 +46,7 @@ jobs:
               run: ./gradlew assemble
 
             - name: Remove all unused builds
-              run: find . ! -name '${{env.original_apk}}' -type f -exec rm -f {} +
+              run: cd ${{ env.main_project_module }}/build/outputs/apk/release && find . ! -name '${{env.original_apk}}' -type f -exec rm -f {} +
 
             - uses: filippoLeporati93/android-release-signer@v1
               name: Sign app APK
