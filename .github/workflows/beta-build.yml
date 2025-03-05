@@ -7,6 +7,8 @@ env:
     app_name: SimpMusic
 
     apk_file_name: SimpMusic
+
+    original_apk: app-arm64-v8a-release-unsigned.apk
 on:
     workflow_dispatch:
     push:
@@ -43,6 +45,9 @@ jobs:
             - name: Build apk release project (APK) - ${{ env.main_project_module }} module
               run: ./gradlew assemble
 
+            - name: Remove all unused builds
+              run: find . ! -name '${{env.original_apk}}' -type f -exec rm -f {} +
+
             - uses: filippoLeporati93/android-release-signer@v1
               name: Sign app APK
               id: sign_app
@@ -56,14 +61,8 @@ jobs:
                   # override default build-tools version (33.0.0) -- optional
                   BUILD_TOOLS_VERSION: "35.0.0"
 
-            - uses: jungwinter/split@v1
-              id: signed_files
-              with:
-                  msg: ${{ steps.sign_app.signedReleaseFiles }}
-                  separator: ":"
-
             - name: Rename APK file
-              run: sudo mv ${{steps.signed_files._0}} /${{env.apk_file_name}}.apk
+              run: sudo mv ${{steps.sign_app.outputs.signedReleaseFile}} /${{env.apk_file_name}}.apk
 
             - name: Upload APK Release
               uses: actions/upload-artifact@v4
