@@ -279,28 +279,27 @@ class SharedViewModel(
                     it.songEntity?.videoId
                 }.collectLatest { state ->
                     Log.w(tag, "NowPlayingState is $state")
-                    _nowPlayingState.value = state
-                    _nowPlayingScreenData.value =
-                        NowPlayingScreenData(
-                            nowPlayingTitle = state.track?.title ?: "",
-                            artistName =
-                            state.track
-                                ?.artists
-                                ?.toListName()
-                                ?.firstOrNull() ?: "",
-                            isVideo = false,
-                            thumbnailURL = null,
-                            canvasData = null,
-                            lyricsData = null,
-                            songInfoData = null,
-                            playlistName = simpleMediaServiceHandler.queueData.value?.playlistName ?: "",
-                        )
-                    _likeStatus.value = false
-                    _liked.value = state.songEntity?.liked == true
-                    _format.value = null
-                    _canvas.value = null
                     canvasJob?.cancel()
+                    _nowPlayingState.value = state
+                    state.track?.let { track ->
+                        _nowPlayingScreenData.value =
+                            NowPlayingScreenData(
+                                nowPlayingTitle = state.track.title,
+                                artistName =
+                                    state.track
+                                        .artists
+                                        .toListName()
+                                        .joinToString(", "),
+                                isVideo = false,
+                                thumbnailURL = null,
+                                canvasData = null,
+                                lyricsData = null,
+                                songInfoData = null,
+                                playlistName = simpleMediaServiceHandler.queueData.value?.playlistName ?: "",
+                            )
+                    }
                     state.mediaItem.let { now ->
+                        _canvas.value = null
                         getLikeStatus(now.mediaId)
                         getSongInfo(now.mediaId)
                         getFormat(now.mediaId)
@@ -311,6 +310,7 @@ class SharedViewModel(
                         }
                     }
                     state.songEntity?.let { song ->
+                        _liked.value = song.liked == true
                         _nowPlayingScreenData.update {
                             it.copy(
                                 thumbnailURL = song.thumbnails,
@@ -433,11 +433,10 @@ class SharedViewModel(
     private fun getLikeStatus(videoId: String?) {
         viewModelScope.launch {
             if (videoId != null) {
+                _likeStatus.value = false
                 mainRepository.getLikeStatus(videoId).collectLatest { status ->
                     _likeStatus.value = status
                 }
-            } else {
-                _likeStatus.value = false
             }
         }
     }
@@ -466,17 +465,39 @@ class SharedViewModel(
                 mainRepository.getCanvas(videoId, duration).cancellable().collect { response ->
                     _canvas.value = response
                     Log.w(tag, "Canvas is $response")
-                    if (nowPlayingState.value?.mediaItem?.mediaId == videoId) {
-                        _nowPlayingScreenData.update {
-                            it.copy(
-                                canvasData =
-                                response?.canvases?.firstOrNull()?.canvas_url?.let { canvasUrl ->
-                                    NowPlayingScreenData.CanvasData(
-                                        isVideo = canvasUrl.contains(".mp4"),
-                                        url = canvasUrl,
+                    if (response != null) {
+                        if (nowPlayingState.value?.mediaItem?.mediaId == videoId) {
+                            _nowPlayingScreenData.update {
+                                it.copy(
+                                    canvasData =
+                                        response.canvases.firstOrNull()?.canvas_url?.let { canvasUrl ->
+                                            NowPlayingScreenData.CanvasData(
+                                                isVideo = canvasUrl.contains(".mp4"),
+                                                url = canvasUrl,
+                                            )
+                                        },
+                                )
+                            }
+                            if (response
+                                    .canvases
+                                    .firstOrNull()
+                                    ?.canvas_url
+                                    ?.contains(".mp4") == true
+                            ) {
+                                mainRepository.updateCanvasUrl(videoId, response.canvases.first().canvas_url)
+                            }
+                        } else {
+                            nowPlayingState.value?.songEntity?.canvasUrl?.let { url ->
+                                _nowPlayingScreenData.update {
+                                    it.copy(
+                                        canvasData =
+                                            NowPlayingScreenData.CanvasData(
+                                                isVideo = url.contains(".mp4"),
+                                                url = url,
+                                            ),
                                     )
-                                },
-                            )
+                                }
+                            }
                         }
                     }
                 }
@@ -938,12 +959,13 @@ class SharedViewModel(
     }
 
     private fun getFormat(mediaId: String?) {
-        getFormatFlowJob?.cancel()
-        getFormatFlowJob =
-            viewModelScope.launch {
-                if (mediaId != null) {
+        if (mediaId != _format.value?.videoId && !mediaId.isNullOrEmpty()) {
+            _format.value = null
+            getFormatFlowJob?.cancel()
+            getFormatFlowJob =
+                viewModelScope.launch {
                     mainRepository.getFormatFlow(mediaId).cancellable().collectLatest { f ->
-                        Log.w(tag, "Get format for " + mediaId.toString() + ": " + f.toString())
+                        Log.w(tag, "Get format for $mediaId: $f")
                         if (f != null) {
                             _format.emit(f)
                         } else {
@@ -951,7 +973,7 @@ class SharedViewModel(
                         }
                     }
                 }
-            }
+        }
     }
 
     private var songInfoJob: Job? = null

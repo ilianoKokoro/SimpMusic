@@ -37,6 +37,7 @@ import androidx.media3.datasource.FileDataSource
 import androidx.media3.datasource.cache.CacheDataSink
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.SimpleCache
+import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import coil3.compose.AsyncImage
@@ -91,31 +92,37 @@ fun MediaPlayerView(
             }
         }
 
-    val cacheSink =
-        CacheDataSink
-            .Factory()
-            .setCache(canvasCache)
-    val upstreamFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory())
-    val downStreamFactory = FileDataSource.Factory()
-    val cacheDataSourceFactory =
-        CacheDataSource
-            .Factory()
-            .setCache(canvasCache)
-            .setCacheWriteDataSinkFactory(cacheSink)
-            .setCacheReadDataSourceFactory(downStreamFactory)
-            .setUpstreamDataSourceFactory(upstreamFactory)
-            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-
     // Initialize ExoPlayer
     val exoPlayer =
-        ExoPlayer
-            .Builder(context)
-            .setMediaSourceFactory(
-                DefaultMediaSourceFactory(cacheDataSourceFactory),
-            ).build()
-            .apply {
-                addListener(playerListener)
-            }
+        remember {
+            val cacheSink =
+                CacheDataSink
+                    .Factory()
+                    .setCache(canvasCache)
+            val upstreamFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory())
+            val downStreamFactory = FileDataSource.Factory()
+            val cacheDataSourceFactory =
+                CacheDataSource
+                    .Factory()
+                    .setCache(canvasCache)
+                    .setCacheWriteDataSinkFactory(cacheSink)
+                    .setCacheReadDataSourceFactory(downStreamFactory)
+                    .setUpstreamDataSourceFactory(upstreamFactory)
+                    .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+            ExoPlayer
+                .Builder(context)
+                .setLoadControl(
+                    DefaultLoadControl
+                        .Builder()
+                        .setPrioritizeTimeOverSizeThresholds(false)
+                        .build(),
+                ).setMediaSourceFactory(
+                    DefaultMediaSourceFactory(cacheDataSourceFactory),
+                ).build()
+                .apply {
+                    addListener(playerListener)
+                }
+        }
 
     // Create a MediaSource
     val mediaSource =
