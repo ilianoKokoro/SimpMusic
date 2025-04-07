@@ -227,7 +227,7 @@ class SearchItemAdapter(
                     placeholder(R.drawable.holder_video)
                 }
                 tvVideoTitle.text = video.title
-                val tempArtist = mutableListOf<String>()
+                mutableListOf<String>()
                 if (video.artists != null) {
                     tvAuthor.text = video.artists.toListName().connectArtists()
                 } else {
@@ -439,38 +439,47 @@ class SearchItemAdapter(
                 val binding = ItemSongsSearchResultBinding.inflate(inflater, parent, false)
                 SongViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_ARTIST -> {
                 val binding = ItemArtistSearchResultBinding.inflate(inflater, parent, false)
                 ArtistViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_PLAYLIST -> {
                 val binding = ItemPlaylistSearchResultBinding.inflate(inflater, parent, false)
                 PlaylistViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_ALBUM -> {
                 val binding = ItemAlbumSearchResultBinding.inflate(inflater, parent, false)
                 AlbumViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_VIDEO -> {
                 val binding = ItemsVideosSearchResultBinding.inflate(inflater, parent, false)
                 VideoViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_SONG_ENTITY -> {
                 val binding = ItemSongsSearchResultBinding.inflate(inflater, parent, false)
                 SongEntityViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_ARTIST_ENTITY -> {
                 val binding = ItemArtistSearchResultBinding.inflate(inflater, parent, false)
                 ArtistEntityViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_PLAYLIST_ENTITY -> {
                 val binding = ItemPlaylistSearchResultBinding.inflate(inflater, parent, false)
                 PlaylistEntityViewHolder(binding, mListener)
             }
+
             VIEW_TYPE_ALBUM_ENTITY -> {
                 val binding = ItemAlbumSearchResultBinding.inflate(inflater, parent, false)
                 AlbumEntityViewHolder(binding, mListener)
             }
+
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -485,27 +494,35 @@ class SearchItemAdapter(
             is SongViewHolder -> {
                 holder.bind(searchResultList[position] as SongsResult)
             }
+
             is ArtistViewHolder -> {
                 holder.bind(searchResultList[position] as ArtistsResult)
             }
+
             is PlaylistViewHolder -> {
                 holder.bind(searchResultList[position] as PlaylistsResult)
             }
+
             is AlbumViewHolder -> {
                 holder.bind(searchResultList[position] as AlbumsResult)
             }
+
             is VideoViewHolder -> {
                 holder.bind(searchResultList[position] as VideosResult)
             }
+
             is SongEntityViewHolder -> {
                 holder.bind(searchResultList[position] as SongEntity)
             }
+
             is ArtistEntityViewHolder -> {
                 holder.bind(searchResultList[position] as ArtistEntity)
             }
+
             is PlaylistEntityViewHolder -> {
                 holder.bind(searchResultList[position] as PlaylistEntity)
             }
+
             is AlbumEntityViewHolder -> {
                 holder.bind(searchResultList[position] as AlbumEntity)
             }

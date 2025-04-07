@@ -894,14 +894,17 @@ class SimpleMediaServiceHandler(
                 _simpleMediaState.value = SimpleMediaState.Initial
                 Log.d(TAG, "onPlaybackStateChanged: Idle")
             }
+
             Player.STATE_ENDED -> {
                 _simpleMediaState.value = SimpleMediaState.Ended
                 Log.d(TAG, "onPlaybackStateChanged: Ended")
             }
+
             Player.STATE_READY -> {
                 Log.d(TAG, "onPlaybackStateChanged: Ready")
                 _simpleMediaState.value = SimpleMediaState.Ready(player.duration)
             }
+
             else -> {
                 if (current >= loaded) {
                     _simpleMediaState.value = SimpleMediaState.Buffering(player.currentPosition)
@@ -994,7 +997,7 @@ class SimpleMediaServiceHandler(
                         (0 until trackCount).toMutableList().apply {
                             remove(randomTrackIndex)
                         }
-                    if (listPosition.size <= 0) return@launch
+                    if (listPosition.isEmpty()) return@launch
                     listPosition.shuffle()
                     _queueData.update {
                         it?.copy(
@@ -1155,6 +1158,7 @@ class SimpleMediaServiceHandler(
                                 continuation = response.data?.second,
                             )
                     }
+
                     is Resource.Error -> {
                         Log.d("Check Related", "getRelated: ${response.message}")
                         _queueData.value =
@@ -1486,7 +1490,7 @@ class SimpleMediaServiceHandler(
                     mainRepository
                         .getSongById(id)
                         .singleOrNull()
-                        ?.liked ?: false
+                        ?.liked == true
                 Log.w("Check liked", liked.toString())
                 _controlState.value = _controlState.value.copy(isLiked = liked)
                 setNotificationLayout?.invoke(
@@ -1627,14 +1631,14 @@ class SimpleMediaServiceHandler(
                     track.thumbnails?.lastOrNull()?.height != 0 &&
                         track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
                         track.thumbnails?.lastOrNull()?.height != null
-                ) &&
+                    ) &&
                     (
                         !thumbUrl
                             .contains("hq720") &&
                             !thumbUrl
                                 .contains("maxresdefault") &&
                             !thumbUrl.contains("sddefault")
-                    )
+                        )
             if (track.artists.isNullOrEmpty()) {
                 mainRepository
                     .getSongInfo(track.videoId)
@@ -1761,14 +1765,14 @@ class SimpleMediaServiceHandler(
                         track.thumbnails?.lastOrNull()?.height != 0 &&
                             track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
                             track.thumbnails?.lastOrNull()?.height != null
-                    ) &&
+                        ) &&
                         (
                             !thumbUrl
                                 .contains("hq720") &&
                                 !thumbUrl
                                     .contains("maxresdefault") &&
                                 !thumbUrl.contains("sddefault")
-                        )
+                            )
                 if (downloaded == 1) {
                     if (track.artists.isNullOrEmpty()) {
                         mainRepository.getSongInfo(track.videoId).singleOrNull().let { songInfo ->
@@ -2015,14 +2019,14 @@ class SimpleMediaServiceHandler(
                 track.thumbnails?.lastOrNull()?.height != 0 &&
                     track.thumbnails?.lastOrNull()?.height == track.thumbnails?.lastOrNull()?.width &&
                     track.thumbnails?.lastOrNull()?.height != null
-            ) &&
+                ) &&
                 (
                     !thumbUrl
                         .contains("hq720") &&
                         !thumbUrl
                             .contains("maxresdefault") &&
                         !thumbUrl.contains("sddefault")
-                )
+                    )
         if ((player.currentMediaItemIndex + 1 in 0..(queueData.first()?.listTracks?.size ?: 0))) {
             if (track.artists.isNullOrEmpty()) {
                 mainRepository.getSongInfo(track.videoId).cancellable().first().let { songInfo ->

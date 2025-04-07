@@ -38,9 +38,6 @@ class LyricsProviders(
     private var lyricsClient = createClient()
 
     var musixmatchCookie: String? = null
-        set(value) {
-            field = value
-        }
 
     var musixmatchUserToken: String? = null
 

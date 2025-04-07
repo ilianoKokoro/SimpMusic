@@ -12,7 +12,6 @@ import androidx.media3.exoplayer.offline.Download
 import com.maxrave.kotlinytmusicscraper.models.WatchEndpoint
 import com.maxrave.simpmusic.R
 import com.maxrave.simpmusic.common.Config
-import com.maxrave.simpmusic.common.DownloadState
 import com.maxrave.simpmusic.common.DownloadState.STATE_DOWNLOADED
 import com.maxrave.simpmusic.common.DownloadState.STATE_DOWNLOADING
 import com.maxrave.simpmusic.common.DownloadState.STATE_NOT_DOWNLOADED
@@ -31,7 +30,9 @@ import com.maxrave.simpmusic.service.QueueData
 import com.maxrave.simpmusic.service.test.download.DownloadUtils
 import com.maxrave.simpmusic.utils.Resource
 import com.maxrave.simpmusic.utils.collectLatestResource
-import com.maxrave.simpmusic.viewModel.PlaylistUIState.*
+import com.maxrave.simpmusic.viewModel.PlaylistUIState.Error
+import com.maxrave.simpmusic.viewModel.PlaylistUIState.Loading
+import com.maxrave.simpmusic.viewModel.PlaylistUIState.Success
 import com.maxrave.simpmusic.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -41,7 +42,6 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.flow.stateIn
@@ -181,6 +181,7 @@ class PlaylistViewModel(
                             if (data.second.isNullOrEmpty()) _tracksListState.value = ListState.PAGINATION_EXHAUST
                             mainRepository.insertRadioPlaylist(data.first.toPlaylistEntity())
                         }
+
                         else -> {
                             _uiState.value = Error(res.message ?: "Empty response")
                         }
@@ -217,6 +218,7 @@ class PlaylistViewModel(
                             if (data.second.isNullOrEmpty()) _tracksListState.value = ListState.PAGINATION_EXHAUST
                             getPlaylistEntity(id = data.first.id, playlistBrowse = data.first)
                         }
+
                         else -> {
                             getPlaylistEntity(id)
                         }
@@ -379,16 +381,16 @@ class PlaylistViewModel(
             mainRepository.getSongsByListVideoId(list).collect { values ->
                 var count = 0
                 values.forEach { song ->
-                    if (song.downloadState == DownloadState.STATE_DOWNLOADED) {
+                    if (song.downloadState == STATE_DOWNLOADED) {
                         count++
                     }
                 }
                 mainRepository.updateLocalPlaylistTracks(list, id)
                 Toast.makeText(getApplication(), application.getString(R.string.added_to_playlist), Toast.LENGTH_SHORT).show()
                 if (count == values.size && count > 0) {
-                    mainRepository.updateLocalPlaylistDownloadState(DownloadState.STATE_DOWNLOADED, id)
+                    mainRepository.updateLocalPlaylistDownloadState(STATE_DOWNLOADED, id)
                 } else {
-                    mainRepository.updateLocalPlaylistDownloadState(DownloadState.STATE_NOT_DOWNLOADED, id)
+                    mainRepository.updateLocalPlaylistDownloadState(STATE_NOT_DOWNLOADED, id)
                 }
             }
         }
@@ -439,6 +441,7 @@ class PlaylistViewModel(
                     index,
                 )
             }
+
             PlaylistUIEvent.PlayAll -> {
                 val loadedList = tracks.value
                 if (loadedList.isEmpty()) {
@@ -468,6 +471,7 @@ class PlaylistViewModel(
                     0,
                 )
             }
+
             PlaylistUIEvent.Shuffle -> {
                 val loadedList = tracks.value
                 if (loadedList.isEmpty()) {
@@ -477,8 +481,8 @@ class PlaylistViewModel(
                     return
                 }
 
-                val shuffledList = loadedList.shuffled();
-                val firstSong = shuffledList.first();
+                val shuffledList = loadedList.shuffled()
+                val firstSong = shuffledList.first()
 
                 setQueueData(
                     QueueData(
@@ -500,6 +504,7 @@ class PlaylistViewModel(
                     0,
                 )
             }
+
             PlaylistUIEvent.StartRadio -> {
                 if (data.radioEndpoint == null) {
                     makeToast(
@@ -529,6 +534,7 @@ class PlaylistViewModel(
                                         0,
                                     )
                                 }
+
                                 else -> {
                                     makeToast(
                                         res.message ?: application.getString(R.string.error),
@@ -543,6 +549,7 @@ class PlaylistViewModel(
             PlaylistUIEvent.Download -> {
                 downloadFullPlaylist()
             }
+
             PlaylistUIEvent.Favorite -> {
                 updatePlaylistLiked(!liked.value, data.id)
             }
@@ -632,14 +639,14 @@ sealed class PlaylistUIState(
     class Success(
         data: PlaylistState,
     ) : PlaylistUIState(
-            data = data,
-        )
+        data = data,
+    )
 
     class Error(
         message: String? = null,
     ) : PlaylistUIState(
-            message = message,
-        )
+        message = message,
+    )
 }
 
 data class PlaylistState(

@@ -217,13 +217,12 @@ fun parseGenreObject(data: BrowseResponse?): GenreObject? {
                                         ?.navigationEndpoint
                                         ?.watchEndpoint
                                         ?.videoId
-                                val thumbnails =
-                                    content.musicResponsiveListItemRenderer
-                                        ?.thumbnail
-                                        ?.musicThumbnailRenderer
-                                        ?.thumbnail
-                                        ?.thumbnails
-                                        ?.toListThumbnail()
+                                content.musicResponsiveListItemRenderer
+                                    ?.thumbnail
+                                    ?.musicThumbnailRenderer
+                                    ?.thumbnail
+                                    ?.thumbnails
+                                    ?.toListThumbnail()
                                 listItemsSong.add(
                                     ItemsSong(
                                         title = songName ?: "",

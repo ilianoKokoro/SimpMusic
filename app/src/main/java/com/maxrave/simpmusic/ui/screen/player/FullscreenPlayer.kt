@@ -3,6 +3,7 @@ package com.maxrave.simpmusic.ui.screen.player
 import android.content.pm.ActivityInfo
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.MarqueeAnimationMode
 import androidx.compose.foundation.background
@@ -64,7 +65,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -80,7 +80,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import android.view.WindowManager
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -116,7 +115,6 @@ fun FullscreenPlayer(
     var isFullScreen by remember { mutableStateOf(true) }
 
     var shouldEnterPipMode by rememberSaveable { mutableStateOf(false) }
-    val currentShouldEnterPipMode by rememberUpdatedState(newValue = shouldEnterPipMode)
 
     navController.addOnDestinationChangedListener { _, des, _ ->
         shouldEnterPipMode =
@@ -156,7 +154,7 @@ fun FullscreenPlayer(
     LaunchedEffect(true) {
         val activity = context.findActivity()
         val window = activity.window
-        
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
@@ -257,9 +255,9 @@ fun FullscreenPlayer(
                         0..(
                             lines.getOrNull(0)?.startTimeMs
                                 ?: "0"
-                        ).toLong()
+                            ).toLong()
+                        )
                     )
-                )
             ) {
                 currentLineIndex = -1
             }
@@ -333,10 +331,12 @@ fun FullscreenPlayer(
                             topEndPercent = 10,
                             bottomEndPercent = 10,
                         ),
-                    ).indication(
+                    )
+                    .indication(
                         interactionSource = interactionSourceBackward,
                         indication = ripple(),
-                    ).pointerInput(Unit) {
+                    )
+                    .pointerInput(Unit) {
                         detectTapGestures(
                             onTap = {
                                 showHideFullscreenOverlay = !showHideFullscreenOverlay
@@ -385,10 +385,12 @@ fun FullscreenPlayer(
                             topStartPercent = 10,
                             bottomStartPercent = 10,
                         ),
-                    ).indication(
+                    )
+                    .indication(
                         interactionSource = interactionSourceForward,
                         indication = ripple(),
-                    ).pointerInput(Unit) {
+                    )
+                    .pointerInput(Unit) {
                         detectTapGestures(
                             onTap = {
                                 showHideFullscreenOverlay = !showHideFullscreenOverlay
@@ -460,7 +462,8 @@ fun FullscreenPlayer(
                                         .basicMarquee(
                                             iterations = Int.MAX_VALUE,
                                             animationMode = MarqueeAnimationMode.Immediately,
-                                        ).focusable(),
+                                        )
+                                        .focusable(),
                             )
                         },
                         navigationIcon = {
@@ -758,7 +761,8 @@ fun FullscreenPlayer(
                                                         .height(4.dp)
                                                         .padding(
                                                             horizontal = 3.dp,
-                                                        ).clip(
+                                                        )
+                                                        .clip(
                                                             RoundedCornerShape(8.dp),
                                                         ),
                                                 color = Color.Gray,
@@ -776,7 +780,8 @@ fun FullscreenPlayer(
                                                         .height(4.dp)
                                                         .padding(
                                                             horizontal = 3.dp,
-                                                        ).clip(
+                                                        )
+                                                        .clip(
                                                             RoundedCornerShape(8.dp),
                                                         ),
                                                 color = Color.Gray,

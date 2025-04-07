@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.compose.ui.text.fromHtml
 import androidx.core.net.toUri
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.media3.common.MediaItem
@@ -135,7 +134,7 @@ fun SongsResult.toTrack(): Track =
         this.duration ?: "",
         this.durationSeconds ?: 0,
         true,
-        this.isExplicit ?: false,
+        this.isExplicit == true,
         "",
         this.thumbnails,
         this.title ?: "",
@@ -371,13 +370,13 @@ fun Track.toMediaItem(): MediaItem {
     if (thumbUrl.contains("w120")) {
         thumbUrl = Regex("([wh])120").replace(thumbUrl, "$1544")
     }
-    val artistName: String = this.artists.toListName().connectArtists()
+    this.artists.toListName().connectArtists()
     val isSong =
         (
             this.thumbnails?.last()?.height != 0 &&
                 this.thumbnails?.last()?.height == this.thumbnails?.last()?.width &&
                 this.thumbnails?.last()?.height != null
-        ) &&
+            ) &&
             (!thumbUrl.contains("hq720") && !thumbUrl.contains("maxresdefault"))
     return MediaItem
         .Builder()
@@ -905,7 +904,7 @@ fun formatDuration(
     val seconds: Long = (
         TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) -
             minutes * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES)
-    )
+        )
     return String.format(Locale.ENGLISH, "%02d:%02d", minutes, seconds)
 }
 

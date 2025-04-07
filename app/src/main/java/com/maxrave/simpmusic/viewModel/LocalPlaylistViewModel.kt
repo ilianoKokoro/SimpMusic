@@ -16,7 +16,6 @@ import com.maxrave.simpmusic.R
 import com.maxrave.simpmusic.common.ASC
 import com.maxrave.simpmusic.common.Config
 import com.maxrave.simpmusic.common.DESC
-import com.maxrave.simpmusic.common.DownloadState
 import com.maxrave.simpmusic.common.DownloadState.STATE_DOWNLOADED
 import com.maxrave.simpmusic.common.DownloadState.STATE_DOWNLOADING
 import com.maxrave.simpmusic.common.DownloadState.STATE_NOT_DOWNLOADED
@@ -781,6 +780,7 @@ class LocalPlaylistViewModel(
                     loadedList.indexOf(clickedSong),
                 )
             }
+
             is LocalPlaylistUIEvent.SuggestionsItemClick -> {
                 val suggestionsList = uiState.value.suggestions?.songs ?: return
                 val clickedSong = suggestionsList.find { it.videoId == ev.videoId } ?: return
@@ -807,6 +807,7 @@ class LocalPlaylistViewModel(
                     0,
                 )
             }
+
             is LocalPlaylistUIEvent.PlayClick -> {
                 val loadedList =
                     lazyTrackPagingItems.value?.itemSnapshotList?.toList().let {
@@ -847,6 +848,7 @@ class LocalPlaylistViewModel(
                     0,
                 )
             }
+
             is LocalPlaylistUIEvent.ShuffleClick -> {
                 viewModelScope.launch {
                     val listVideoId = localPlaylistManager.getListTrackVideoId(uiState.value.id)
@@ -983,7 +985,7 @@ data class LocalPlaylistState(
             md_theme_dark_background,
         ),
     val inLibrary: LocalDateTime? = null,
-    val downloadState: Int = DownloadState.STATE_NOT_DOWNLOADED,
+    val downloadState: Int = STATE_NOT_DOWNLOADED,
     val syncState: Int = LocalPlaylistEntity.YouTubeSyncState.NotSynced,
     val ytPlaylistId: String? = null,
     val trackCount: Int = 0,

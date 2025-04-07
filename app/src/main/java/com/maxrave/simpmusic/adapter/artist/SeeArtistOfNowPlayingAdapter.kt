@@ -40,7 +40,7 @@ class SeeArtistOfNowPlayingAdapter(
     override fun getItemCount(): Int = listArtist.size
 
     override fun onBindViewHolder(
-        holder: SeeArtistOfNowPlayingAdapter.ViewHolder,
+        holder: ViewHolder,
         position: Int,
     ) {
         val artist = listArtist[position]

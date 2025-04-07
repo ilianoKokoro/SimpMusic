@@ -83,7 +83,8 @@ fun SongFullWidthItems(
             modifier
                 .clickable {
                     onClickListener?.invoke(track?.videoId ?: songEntity?.videoId ?: "")
-                }.animateContentSize(),
+                }
+                .animateContentSize(),
     ) {
         Row(
             Modifier
@@ -145,7 +146,8 @@ fun SongFullWidthItems(
                             .basicMarquee(
                                 iterations = Int.MAX_VALUE,
                                 animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                            )
+                            .focusable(),
                 )
                 Row {
                     AnimatedVisibility(
@@ -161,7 +163,9 @@ fun SongFullWidthItems(
                                 painter = painterResource(id = R.drawable.download_for_offline_white),
                                 tint = Color.White,
                                 contentDescription = "",
-                                modifier = Modifier.size(20.dp).padding(2.dp),
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(2.dp),
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                         }
@@ -169,11 +173,13 @@ fun SongFullWidthItems(
                     AnimatedVisibility(
                         visible =
                             songEntity?.isExplicit
-                                ?: (track?.isExplicit ?: false),
+                                ?: (track?.isExplicit == true),
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             ExplicitBadge(
-                                modifier = Modifier.size(20.dp).padding(1.dp),
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(1.dp),
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                         }
@@ -183,7 +189,7 @@ fun SongFullWidthItems(
                             (
                                 track?.artists?.toListName()?.connectArtists()
                                     ?: songEntity?.artistName?.connectArtists()
-                            ) ?: "",
+                                ) ?: "",
                         style = typo.bodyMedium,
                         maxLines = 1,
                         color = Color(0xC4FFFFFF),
@@ -194,7 +200,8 @@ fun SongFullWidthItems(
                                 .basicMarquee(
                                     iterations = Int.MAX_VALUE,
                                     animationMode = MarqueeAnimationMode.Immediately,
-                                ).focusable(),
+                                )
+                                .focusable(),
                     )
                 }
             }
@@ -225,7 +232,8 @@ fun SuggestItems(
                     if (onClickListener != null) {
                         onClickListener()
                     }
-                }.animateContentSize(),
+                }
+                .animateContentSize(),
     ) {
         Row(
             Modifier
@@ -277,13 +285,14 @@ fun SuggestItems(
                             .basicMarquee(
                                 iterations = Int.MAX_VALUE,
                                 animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                            )
+                            .focusable(),
                 )
                 Text(
                     text =
                         (
                             track.artists?.toListName()?.connectArtists()
-                        ) ?: "",
+                            ) ?: "",
                     style = typo.bodySmall,
                     maxLines = 1,
                     color = Color(0xC4FFFFFF),
@@ -294,7 +303,8 @@ fun SuggestItems(
                             .basicMarquee(
                                 iterations = Int.MAX_VALUE,
                                 animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                            )
+                            .focusable(),
                 )
             }
             RippleIconButton(
@@ -319,7 +329,8 @@ fun PlaylistFullWidthItems(
             modifier
                 .clickable {
                     onClickListener?.invoke()
-                }.animateContentSize(),
+                }
+                .animateContentSize(),
     ) {
         var title = ""
         var thumb = ""
@@ -340,16 +351,19 @@ fun PlaylistFullWidthItems(
                 secondSubtitle = data.artistName?.connectArtists() ?: ""
                 thirdRowSubtitle = data.year
             }
+
             is PlaylistEntity -> {
                 title = data.title
                 thumb = data.thumbnails
                 secondSubtitle = data.author ?: ""
             }
+
             is LocalPlaylistEntity -> {
                 title = data.title
                 thumb = data.thumbnail ?: ""
                 secondSubtitle = stringResource(R.string.you)
             }
+
             is PlaylistsResult -> {
                 title = data.title
                 thumb = data.thumbnails.lastOrNull()?.url ?: ""
@@ -399,7 +413,8 @@ fun PlaylistFullWidthItems(
                             .basicMarquee(
                                 iterations = Int.MAX_VALUE,
                                 animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                            )
+                            .focusable(),
                 )
 
                 Text(
@@ -414,7 +429,8 @@ fun PlaylistFullWidthItems(
                             .basicMarquee(
                                 iterations = Int.MAX_VALUE,
                                 animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                            )
+                            .focusable(),
                 )
 
                 if (thirdRowSubtitle != null) {
@@ -430,7 +446,8 @@ fun PlaylistFullWidthItems(
                                 .basicMarquee(
                                     iterations = Int.MAX_VALUE,
                                     animationMode = MarqueeAnimationMode.Immediately,
-                                ).focusable(),
+                                )
+                                .focusable(),
                     )
                 }
             }
@@ -494,7 +511,8 @@ fun ArtistFullWidthItems(
                             .basicMarquee(
                                 iterations = Int.MAX_VALUE,
                                 animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                            )
+                            .focusable(),
                 )
 
                 Text(
@@ -509,7 +527,8 @@ fun ArtistFullWidthItems(
                             .basicMarquee(
                                 iterations = Int.MAX_VALUE,
                                 animationMode = MarqueeAnimationMode.Immediately,
-                            ).focusable(),
+                            )
+                            .focusable(),
                 )
             }
         }

@@ -20,8 +20,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Sensors
-import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.outlined.Sensors
 import androidx.compose.material.icons.outlined.Shuffle
 import androidx.compose.material3.ButtonDefaults
@@ -96,8 +94,7 @@ fun ArtistScreen(
     sharedViewModel: SharedViewModel = viewModel(),
     navController: NavController,
 ) {
-    @Suppress("ktlint:standard:property-naming")
-    val TAG = "ArtistScreen"
+    "ArtistScreen"
     val context = LocalContext.current
 
     val artistScreenState by viewModel.artistScreenState.collectAsState()
@@ -131,6 +128,7 @@ fun ArtistScreen(
                     )
                 }
             }
+
             is ArtistScreenState.Success -> {
                 CollapsingToolbarParallaxEffect(
                     modifier = Modifier.fillMaxSize(),
@@ -151,7 +149,8 @@ fun ArtistScreen(
                                                 md_theme_dark_background,
                                             ),
                                     ),
-                                ).padding(vertical = 16.dp, horizontal = 20.dp),
+                                )
+                                .padding(vertical = 16.dp, horizontal = 20.dp),
                         ) {
                             Row {
                                 Text(
@@ -198,7 +197,8 @@ fun ArtistScreen(
                                                                     alpha = 0.8f,
                                                                 ),
                                                             shape = RoundedCornerShape(4.dp),
-                                                        ).clip(RoundedCornerShape(4.dp))
+                                                        )
+                                                        .clip(RoundedCornerShape(4.dp))
                                                         .clickable {
                                                             val firstQueue: Track = canvas.second.toTrack()
                                                             viewModel.setQueueData(
@@ -206,9 +206,11 @@ fun ArtistScreen(
                                                                     listTracks = arrayListOf(firstQueue),
                                                                     firstPlayedTrack = firstQueue,
                                                                     playlistId = "RDAMVM${firstQueue.videoId}",
-                                                                    playlistName = "\"${(state.data.title ?: "")}\" ${context.getString(
-                                                                        R.string.popular,
-                                                                    )}",
+                                                                    playlistName = "\"${(state.data.title ?: "")}\" ${
+                                                                        context.getString(
+                                                                            R.string.popular,
+                                                                        )
+                                                                    }",
                                                                     playlistType = PlaylistType.RADIO,
                                                                     continuation = null,
                                                                 ),
@@ -721,6 +723,7 @@ fun ArtistScreen(
                     }
                 }
             }
+
             is ArtistScreenState.Error -> {
                 Toast.makeText(LocalContext.current, state.message ?: stringResource(R.string.error), Toast.LENGTH_LONG).show()
                 navController.navigateUp()
