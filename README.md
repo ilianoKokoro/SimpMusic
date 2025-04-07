@@ -1,18 +1,8 @@
 ## This is a fork of SimpMusic
 
-This fork was created to fix a few issues that I encountered with the original application.
+This fork was created to build an optimized Nightly release version of SimpMusic
 
-#### Current issues that this fork solves :
-
--   Changed the shuffle behavior of online playlists to fit with other music players.
-
-### Latest release APK download
-
-<a href="http://github.com/IlianoKokoro/SimpMusic/releases/latest/download/SimpMusic.apk"><img src="https://i.postimg.cc/sxWv2J29/badge-github.png" height="80"></a>
-
-### Beta APK download
-
-**⚠️ This build may not be stable ⚠️**
+**⚠️ The build may not be stable as it is not a release ⚠️**
 
 [![Download APK](https://github.com/IlianoKokoro/SimpMusic/actions/workflows/beta-build.yml/badge.svg?branch=main)](https://nightly.link/Iliano101/SimpMusic/workflows/beta-build/main/release-build.zip)
 
