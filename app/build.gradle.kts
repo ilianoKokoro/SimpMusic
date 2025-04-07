@@ -10,7 +10,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17) // or appropriate version
+    jvmToolchain(21) // or appropriate version
     compilerOptions {
         freeCompilerArgs.add("-Xwhen-guards")
     }
@@ -19,7 +19,7 @@ kotlin {
 android {
     namespace = "com.maxrave.simpmusic"
     compileSdk = 35
-
+    
     defaultConfig {
         applicationId = "com.maxrave.simpmusic"
         minSdk = 26
@@ -87,21 +87,20 @@ android {
         }
         debug {
             isMinifyEnabled = false
+            isShrinkResources = false
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
         }
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
-        jvmToolchain(17)
+        jvmToolchain(21)
     }
     kotlinOptions {
         freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
     // enable view binding
     buildFeatures {
@@ -194,6 +193,7 @@ android {
                 "META-INF/*.kotlin_module",
             )
     }
+
 }
 
 dependencies {

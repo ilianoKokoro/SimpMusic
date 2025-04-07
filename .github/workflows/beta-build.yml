@@ -1,0 +1,75 @@
+name: Build the latest beta APK
+
+env:
+    # The name of the main module repository
+    main_project_module: app
+
+    app_name: SimpMusic
+
+    apk_file_name: SimpMusic
+
+    original_apk: app-arm64-v8a-release-unsigned.apk
+on:
+    workflow_dispatch:
+    push:
+        branches: ["main"]
+        paths-ignore:
+            - "README.md"
+            - ".github/**/*.md"
+            - ".github/ISSUE_TEMPLATE/**"
+
+    pull_request:
+        branches: ["main"]
+        paths-ignore:
+            - "README.md"
+            - ".github/**/*.md"
+            - ".github/ISSUE_TEMPLATE/**"
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: "recursive"
+
+            - name: Set Up JDK
+              uses: actions/setup-java@v4
+              with:
+                  distribution: "temurin"
+                  java-version: 21
+                  cache: "gradle"
+
+            - name: Change wrapper permissions
+              run: chmod +x ./gradlew
+
+            # Create APK Release
+            - name: Build apk release project (APK) - ${{ env.main_project_module }} module
+              run: ./gradlew assemble
+
+            - name: Remove all unused builds
+              run: cd ${{ env.main_project_module }}/build/outputs/apk/release && find . ! -name '${{env.original_apk}}' -type f -exec rm -f {} +
+
+            - uses: filippoLeporati93/android-release-signer@v1
+              name: Sign app APK
+              id: sign_app
+              with:
+                  releaseDirectory: ${{ env.main_project_module }}/build/outputs/apk/release
+                  signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+                  alias: ${{ secrets.ALIAS }}
+                  keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+                  keyPassword: ${{ secrets.KEY_PASSWORD }}
+              env:
+                  # override default build-tools version (33.0.0) -- optional
+                  BUILD_TOOLS_VERSION: "35.0.0"
+
+            - name: Rename APK file
+              run: sudo mv ${{steps.sign_app.outputs.signedReleaseFile}} /${{env.apk_file_name}}.apk
+
+            - name: Upload APK Release
+              uses: actions/upload-artifact@v4
+              with:
+                  name: release-build
+                  path: /${{env.apk_file_name}}.apk
+                  overwrite: true
+                  if-no-files-found: error
