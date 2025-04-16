@@ -694,7 +694,7 @@ class MainActivity : AppCompatActivity() {
                 if (response != null && !this.isInPictureInPictureMode && !viewModel.showedUpdateDialog) {
                     Log.w("MainActivity", "Check for update")
                     Log.w("MainActivity", "Current version: ${getString(R.string.version_format, VersionManager.getVersionName())}")
-                    if (response.tagName != getString(R.string.version_format, VersionManager.getVersionName())) {
+                    if (response.tagName!!.versionIsGreaterThanOrInvalid(getString(R.string.version_format, VersionManager.getVersionName()))) {
                         viewModel.showedUpdateDialog = true
                         val inputFormat =
                             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
@@ -778,6 +778,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    private fun String.versionIsGreaterThanOrInvalid(rightVersion: String): Boolean {
+        try {
+            if (rightVersion == this) {
+                return false
+            }
+
+            val leftVersionArray = this.drop(1).split(".").toList()
+            val rightVersionArray = rightVersion.drop(1).split(".").toList()
+
+            if (leftVersionArray.count() != rightVersionArray.count()) {
+                return true
+            }
+            for (leftVersionNumberString in leftVersionArray) {
+                val leftVersionNumber = leftVersionNumberString.toInt()
+                val rightVersionNumber = rightVersionArray[leftVersionArray.indexOf(leftVersionNumberString)].toInt()
+                if (leftVersionNumber > rightVersionNumber) {
+                    return true
+                }
+            }
+            return false
+        } catch (_: Exception) {
+            return true // Switch to false for loose check
+        }
+    }
+
 
     private fun putString(
         key: String,
