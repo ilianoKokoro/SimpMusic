@@ -9,6 +9,7 @@ env:
     apk_file_name: SimpMusic
 
     original_apk: app-arm64-v8a-release-unsigned.apk
+
 on:
     workflow_dispatch:
     push:
@@ -24,6 +25,11 @@ on:
             - "README.md"
             - ".github/**/*.md"
             - ".github/ISSUE_TEMPLATE/**"
+
+concurrency:
+    group: cancel-on-new-run
+    cancel-in-progress: true
+
 jobs:
     build:
         runs-on: ubuntu-latest
