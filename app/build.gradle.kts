@@ -18,12 +18,12 @@ kotlin {
 
 android {
     namespace = "com.maxrave.simpmusic"
-    compileSdk = 35
-    
+    compileSdk = 36
+
     defaultConfig {
         applicationId = "com.maxrave.simpmusic"
-        minSdk = 26
-        targetSdk = 35
+        minSdk = 28
+        targetSdk = 36
         versionCode =
             libs.versions.version.code
                 .get()
