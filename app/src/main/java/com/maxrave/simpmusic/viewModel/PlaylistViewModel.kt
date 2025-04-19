@@ -1,5 +1,3 @@
-@file:Suppress("ktlint:standard:no-wildcard-imports")
-
 package com.maxrave.simpmusic.viewModel
 
 import android.app.Application
@@ -10,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.Download
 import com.maxrave.kotlinytmusicscraper.models.WatchEndpoint
-import com.maxrave.kotlinytmusicscraper.test.main
 import com.maxrave.simpmusic.R
 import com.maxrave.simpmusic.common.Config
 import com.maxrave.simpmusic.common.DownloadState.STATE_DOWNLOADED
@@ -45,14 +42,12 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.core.component.inject
 import java.time.LocalDateTime
 
@@ -281,9 +276,11 @@ class PlaylistViewModel(
                     )
                     delay(500)
                     playlistBrowse.tracks.forEach { tracks ->
-                        mainRepository.insertSong(tracks.toSongEntity().copy(
-                            inLibrary = Config.REMOVED_SONG_DATE_TIME
-                        )).firstOrNull()?.let {
+                        mainRepository.insertSong(
+                            tracks.toSongEntity().copy(
+                                inLibrary = Config.REMOVED_SONG_DATE_TIME
+                            )
+                        ).firstOrNull()?.let {
                             log("Insert song: $it")
                         }
                     }
@@ -327,7 +324,7 @@ class PlaylistViewModel(
                             ).firstOrNull()
                             Log.d(tag, "List song: $listSong")
                             if (!listSong.isNullOrEmpty() && listSong.size == playlistEntity.tracks?.size && listSong.all {
-                                it.downloadState == STATE_DOWNLOADED
+                                    it.downloadState == STATE_DOWNLOADED
                                 }) {
                                 updatePlaylistDownloadState(playlistEntity.id, STATE_DOWNLOADED)
                             }
