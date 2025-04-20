@@ -247,7 +247,7 @@ class SharedViewModel(
                         .getDownloadedSongsAsFlow(offset = 0)
                         .distinctUntilChanged()
                         .collectLatest {
-                            _downloadList.value = it?.toCollection(ArrayList())
+                            _downloadList.value = it.toCollection(ArrayList())
                         }
                 }
 

@@ -120,7 +120,7 @@ fun SongFullWidthItems(
                         )
                     } else {
                         Text(
-                            text = ((index ?: 0) + 1).toString(),
+                            text = (index + 1).toString(),
                             color = Color.White,
                             style = typo.titleMedium,
                             modifier = Modifier.align(Alignment.Center),

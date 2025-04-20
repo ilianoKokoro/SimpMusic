@@ -1387,7 +1387,7 @@ class YouTube(
                         }
                     }
                 }
-                throw Exception(playerResponse.playabilityStatus.status ?: "Unknown error")
+                throw Exception(playerResponse.playabilityStatus.status)
             } else {
                 val firstThumb =
                     decodedSigResponse.videoDetails

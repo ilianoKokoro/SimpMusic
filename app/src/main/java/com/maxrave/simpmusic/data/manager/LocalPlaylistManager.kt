@@ -50,7 +50,7 @@ class LocalPlaylistManager(
     fun listTrackFlow(id: Long): Flow<List<String>> =
         localDataSource
             .getListTracksFlowOfLocalPlaylist(id)
-            .map { Converters().fromString(it?.firstOrNull()) ?: emptyList() }
+            .map { Converters().fromString(it.firstOrNull()) ?: emptyList() }
 
     fun getTracksPaging(
         id: Long,

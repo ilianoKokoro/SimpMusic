@@ -285,20 +285,20 @@ class LocalDataSource(
                 .getPlaylistPairSongByOffsetDesc(
                     playlistId,
                     totalCount - (offset + 1) * 50,
-                )?.reversed()
+                ).reversed()
         } else if ((totalCount - (offset + 1) * 50) >= -50) {
             databaseDao
                 .getPlaylistPairSongByFromToDesc(
                     playlistId,
                     0,
                     totalCount - (offset + 1) * 50 + 50,
-                )?.reversed()
+                ).reversed()
         } else if (offset == 0) {
             databaseDao
                 .getPlaylistPairSongByOffsetDesc(
                     playlistId,
                     0,
-                )?.reversed()
+                ).reversed()
         } else {
             null
         }
