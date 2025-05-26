@@ -60,3 +60,4 @@ output.json
 #NDK
 obj/
 .externalNativeBuild
+/ffmpeg-kit/build/

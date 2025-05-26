@@ -84,6 +84,7 @@ import com.maxrave.simpmusic.viewModel.ArtistViewModel
 import com.maxrave.simpmusic.viewModel.SharedViewModel
 import kotlinx.coroutines.flow.map
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 @UnstableApi
@@ -91,7 +92,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ArtistScreen(
     channelId: String,
     viewModel: ArtistViewModel = koinViewModel(),
-    sharedViewModel: SharedViewModel = viewModel(),
+    sharedViewModel: SharedViewModel = koinInject(),
     navController: NavController,
 ) {
     "ArtistScreen"
